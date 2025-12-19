@@ -1,16 +1,36 @@
 {
   "name": "ascendtracker",
   "version": "1.0.0",
-  "main": "server.js",
+  "main": "server/index.js",
   "scripts": {
-    "dev": "nodemon server.js"
+    "dev": "nodemon server/index.js",
+    "start": "node server/index.js"
   },
   "dependencies": {
-    "express": "^4.19.2",
+    "body-parser": "^2.2.1",
+    "cors": "^2.8.5",
+    "dotenv": "^17.2.3",
+    "express": "^4.22.1",
     "sqlite3": "^5.1.7",
     "uuid": "^9.0.1"
   },
   "devDependencies": {
     "nodemon": "^3.1.11"
-  }
+  },
+  "description": "",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lucaswood082-dot/AscendTracker.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "engines": {
+    "node": "20.x"
+  },
+  "bugs": {
+    "url": "https://github.com/lucaswood082-dot/AscendTracker/issues"
+  },
+  "homepage": "https://github.com/lucaswood082-dot/AscendTracker#readme"
 }
