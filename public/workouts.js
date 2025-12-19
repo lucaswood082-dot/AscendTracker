@@ -6,15 +6,54 @@ const saveWorkoutBtn = document.getElementById("saveWorkout");
 
 let exercises = [];
 
+/* ---------------- SHOW POPUP FUNCTION ---------------- */
+function showPopup(message) {
+  const popup = document.getElementById("popup");
+  popup.textContent = message;
+  popup.classList.add("show");
+  popup.classList.remove("hidden");
+
+  setTimeout(() => {
+    popup.classList.remove("show");
+    popup.classList.add("hidden");
+  }, 2000);
+}
+
+/* ---------------- CREATE SET ELEMENT ---------------- */
+function createSetElement(isUnilateral, weightValue = "") {
+  const setLi = document.createElement("li");
+
+  if (isUnilateral) {
+    setLi.innerHTML = `
+      <input type="number" placeholder="Left Reps" class="set-left" />
+      <input type="number" placeholder="Right Reps" class="set-right" />
+      <input type="number" placeholder="Weight" class="set-weight" value="${weightValue}" />
+      <button class="remove-set">Remove</button>
+    `;
+  } else {
+    setLi.innerHTML = `
+      <input type="number" placeholder="Reps" class="set-reps" />
+      <input type="number" placeholder="Weight" class="set-weight" value="${weightValue}" />
+      <button class="remove-set">Remove</button>
+    `;
+  }
+
+  setLi.querySelector(".remove-set").addEventListener("click", () => {
+    setLi.parentElement.removeChild(setLi);
+  });
+
+  return setLi;
+}
+
 /* ---------------- CREATE EXERCISE ELEMENT ---------------- */
-function createExerciseElement(exercise, index) {
+function createExerciseElement(exercise) {
   const li = document.createElement("li");
   li.classList.add("exercise-item");
 
   li.innerHTML = `
     <div class="exercise-header">
       <input type="text" placeholder="Exercise Name" class="exercise-name" value="${exercise.name}" />
-      <div class="arrow-box"><span class="arrow">▼</span></div>
+      <span class="arrow">▼</span>
     </div>
 
     <div class="exercise-body">
@@ -37,59 +76,32 @@ function createExerciseElement(exercise, index) {
   const addSetBtn = li.querySelector(".add-set");
   const setsList = li.querySelector(".sets-list");
   const unilateralToggle = li.querySelector(".unilateral-toggle");
+  const nameInput = li.querySelector(".exercise-name");
 
-  // COLLAPSE/EXPAND
-  header.addEventListener("click", () => {
-    body.style.display = body.style.display === "none" ? "block" : "none";
-    arrow.classList.toggle("open");
+  // Initialize body as visible
+  body.style.display = "block";
+
+  // Collapse/expand with arrow rotation
+  header.addEventListener("click", (e) => {
+    if (e.target === nameInput) return; // Don't toggle when editing name
+    const isCollapsed = body.style.display === "none";
+    body.style.display = isCollapsed ? "block" : "none";
+    arrow.style.transform = isCollapsed ? "rotate(180deg)" : "rotate(0deg)";
   });
 
-  // CREATE SET
-  function createSetElement(isUnilateral, setData = {}) {
-    const setLi = document.createElement("li");
-
-    if (isUnilateral) {
-      setLi.innerHTML = `
-        <input type="number" placeholder="Left Reps" class="set-left" value="${setData.leftReps || ""}" />
-        <input type="number" placeholder="Right Reps" class="set-right" value="${setData.rightReps || ""}" />
-        <input type="number" placeholder="Weight" class="set-weight" value="${setData.weight || ""}" />
-        <button class="remove-set">Remove</button>
-      `;
-    } else {
-      setLi.innerHTML = `
-        <input type="number" placeholder="Reps" class="set-reps" value="${setData.reps || ""}" />
-        <input type="number" placeholder="Weight" class="set-weight" value="${setData.weight || ""}" />
-        <button class="remove-set">Remove</button>
-      `;
-    }
-
-    setLi.querySelector(".remove-set").addEventListener("click", () => {
-      setsList.removeChild(setLi);
-    });
-
-    return setLi;
-  }
-
-  // INITIAL SETS
-  if (exercise.sets) {
-    exercise.sets.forEach((set) => {
-      setsList.appendChild(createSetElement(exercise.unilateral, set));
-    });
-  }
-
-  // ADD SET BUTTON
+  // Add set
   addSetBtn.addEventListener("click", () => {
     const setLi = createSetElement(unilateralToggle.checked);
     setsList.appendChild(setLi);
   });
 
-  // TOGGLE UNILATERAL
+  // Toggle unilateral
   unilateralToggle.addEventListener("change", () => {
     const setLis = Array.from(setsList.children);
     setLis.forEach((setLi) => {
       const weightInput = setLi.querySelector(".set-weight");
       const weight = weightInput ? weightInput.value : "";
-      const newSetLi = createSetElement(unilateralToggle.checked, { weight });
+      const newSetLi = createSetElement(unilateralToggle.checked, weight);
       setsList.replaceChild(newSetLi, setLi);
     });
   });
@@ -100,8 +112,8 @@ function createExerciseElement(exercise, index) {
 /* ---------------- RENDER ALL EXERCISES ---------------- */
 function renderExercises() {
   exerciseList.innerHTML = "";
-  exercises.forEach((exercise, index) => {
-    const li = createExerciseElement(exercise, index);
+  exercises.forEach(ex => {
+    const li = createExerciseElement(ex);
     exerciseList.appendChild(li);
   });
 }
@@ -147,6 +159,7 @@ saveWorkoutBtn.addEventListener("click", () => {
   });
 
   console.log("Workout saved:", exercises);
+
   showPopup("Workout Saved!");
 
   const savedWorkouts = JSON.parse(localStorage.getItem("workouts") || "[]");
@@ -157,19 +170,3 @@ saveWorkoutBtn.addEventListener("click", () => {
   });
   localStorage.setItem("workouts", JSON.stringify(savedWorkouts));
 });
-
-/* ---------------- SHOW POPUP FUNCTION ---------------- */
-function showPopup(message) {
-  const popup = document.getElementById("popup");
-  popup.textContent = message;
-  popup.classList.add("show");
-  popup.classList.remove("hidden");
-
-  setTimeout(() => {
-    popup.classList.remove("show");
-    popup.classList.add("hidden");
-  }, 2000);
-}
-
-/* ---------------- INITIAL RENDER ---------------- */
-renderExercises();

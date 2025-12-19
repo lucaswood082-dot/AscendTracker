@@ -312,24 +312,39 @@ input:checked + .slider::after {
   font-size: 1rem;
   flex-grow: 1;
 }
+.exercise-header {
+  position: relative;
+  display: flex;
+  align-items: center;
+  background: #1f2937;
+  padding: 0.5rem 0.8rem;
+  border-radius: 0.5rem;
+  margin-bottom: 0.3rem;
+  cursor: pointer;
+}
+
+.exercise-header input.exercise-name {
+  flex-grow: 1;
+  background: transparent;
+  border: 1px solid #334155;
+  border-radius: 0.5rem;
+  padding: 0.5rem 2rem 0.5rem 0.5rem; /* space for arrow */
+  color: #f1f5f9;
+  font-weight: 600;
+  font-size: 1rem;
+}
 
 .exercise-header input.exercise-name:focus {
   outline: none;
+  border-color: #38bdf8;
 }
 
-.arrow-box {
-  width: 28px;
-  height: 28px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background: #38bdf8;
-  border-radius: 0.3rem;
-  color: #020617;
-  font-weight: bold;
+.exercise-header .arrow {
+  position: absolute;
+  right: 10px;
+  pointer-events: none;
   transition: transform 0.3s ease;
-}
-
-.arrow.open {
-  transform: rotate(180deg);
+  font-size: 0.9rem;
+  color: #38bdf8;
+  font-weight: bold;
 }
