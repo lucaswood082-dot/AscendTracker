@@ -2,6 +2,7 @@
   "name": "ascendtracker",
   "version": "1.0.0",
   "main": "server/index.js",
+  "type": "module",
   "scripts": {
     "dev": "nodemon server/index.js",
     "start": "node server/index.js"
@@ -27,7 +28,6 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "type": "commonjs",
   "engines": {
     "node": "20.x"
   },
