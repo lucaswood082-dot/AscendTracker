@@ -34,9 +34,13 @@
   </style>
 </head>
 <script>
-if ("serviceWorker" in navigator) {
-  navigator.serviceWorker.register("/sw.js");
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('/sw.js')
+    .then(() => console.log('Service Worker registered'))
+    .catch((err) => console.error('Service Worker failed:', err));
 }
+</script>
+
 </script>
 
 <body>
