@@ -1,0 +1,287 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  background: #0f172a;
+  color: #e5e7eb;
+}
+
+/* Mobile-first layout */
+.page {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.container {
+  width: 100%;
+  max-width: 480px; /* perfect for mobile */
+  padding: 1.25rem;
+}
+
+/* Cards */
+.card {
+  background: #111827;
+  border-radius: 14px;
+  padding: 1.25rem;
+  margin-bottom: 1rem;
+  border: 1px solid #1f2937;
+}
+
+/* Headings */
+h1, h2, h3 {
+  margin-top: 0;
+  margin-bottom: 1rem;
+}
+
+/* Inputs */
+input {
+  width: 100%;
+  padding: 0.75rem;
+  border-radius: 10px;
+  border: 1px solid #1f2937;
+  background: #020617;
+  color: white;
+  margin-bottom: 0.75rem;
+}
+
+/* Buttons */
+button {
+  width: 100%;
+  padding: 0.75rem;
+  border-radius: 10px;
+  border: none;
+  background: #38bdf8;
+  color: #020617;
+  font-weight: 600;
+  cursor: pointer;
+  margin-top: 0.5rem;
+}
+
+button.secondary {
+  background: #1f2937;
+  color: #e5e7eb;
+}
+
+button.danger {
+  background: #ef4444;
+  color: white;
+}
+
+/* Exercise block */
+.exercise {
+  border: 1px solid #1f2937;
+  border-radius: 12px;
+  padding: 1rem;
+  margin-top: 1rem;
+}
+
+/* Set rows */
+.set-row {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.set-row input {
+  flex: 1;
+  margin-bottom: 0;
+}
+
+/* View workouts */
+details {
+  background: #020617;
+  border: 1px solid #1f2937;
+  border-radius: 12px;
+  padding: 1rem;
+  margin-bottom: 1rem;
+}
+
+summary {
+  cursor: pointer;
+  font-weight: 600;
+}
+.toast {
+  position: fixed;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #1e1e1e;
+  color: white;
+  padding: 12px 20px;
+  border-radius: 12px;
+  font-size: 14px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  z-index: 999;
+}
+
+.toast.show {
+  opacity: 1;
+  transform: translateX(-50%) translateY(-6px);
+}
+.popup {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background-color: #4caf50; /* green - change to match your theme */
+  color: white;
+  padding: 15px 25px;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+  font-weight: bold;
+  font-size: 16px;
+  opacity: 0;
+  transform: translateY(-20px);
+  transition: opacity 0.4s ease, transform 0.4s ease;
+  z-index: 1000;
+}
+
+.popup.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.popup.hidden {
+  display: none;
+}
+.popup {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background-color: #4caf50;
+  color: white;
+  padding: 15px 25px;
+  border-radius: 10px;
+  font-weight: bold;
+  font-size: 16px;
+  opacity: 0;
+  transform: translateY(-20px);
+  transition: opacity 0.4s ease, transform 0.4s ease;
+  z-index: 1000;
+}
+
+.popup.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.popup.hidden {
+  display: none;
+}
+.summary-arrow {
+  display: inline-block;
+  margin-right: 8px;
+  transition: transform 0.3s ease;
+}
+
+details[open] .summary-arrow {
+  transform: rotate(90deg);
+}
+/* ===== Sticky Top Navigation ===== */
+.top-nav {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: #020617;
+  border-bottom: 1px solid #1f2937;
+  padding: 0.75rem 1rem;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.nav-title {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #e5e7eb;
+}
+
+.nav-btn {
+  background: none;
+  border: none;
+  color: #93c5fd;
+  font-size: 0.9rem;
+  cursor: pointer;
+}
+
+.nav-btn:hover {
+  text-decoration: underline;
+}
+.toggle-switch {
+  position: relative;
+  display: inline-block;
+  width: 60px;
+  height: 28px;
+}
+
+.toggle-switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background-color: #1f2937; /* OFF background */
+  border-radius: 8px;
+  border: 1px solid #38bdf8;
+  transition: 0.3s;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 2px;  /* small padding */
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #cbd5e1;
+  user-select: none;
+  box-sizing: border-box;
+}
+
+.slider:before {
+  content: "";
+  position: absolute;
+  height: 20px;
+  width: 26px;
+  left: 2px;       /* padding */
+  bottom: 3px;
+  background-color: #38bdf8; /* knob color */
+  border-radius: 6px;
+  transition: 0.3s;
+  box-sizing: border-box;
+}
+
+input:checked + .slider:before {
+  transform: translateX(28px); /* fully inside slider */
+}
+
+.slider::after {
+  content: "OFF";
+  position: absolute;
+  right: 4px;
+  font-size: 0.7rem;
+}
+
+input:checked + .slider::after {
+  content: "ON";
+  left: 4px;
+  right: auto;
+}
+.exercise-item {
+  list-style: none; /* removes the default bullet */
+  margin: 0;        /* optional: remove default margin */
+  padding: 0;       /* optional: remove default padding */
+}
+.set-item, .sets-list li {
+  list-style: none; /* removes bullet */
+  margin: 0;        /* optional: remove default margin */
+  padding: 0;       /* optional: remove default padding */
+}
+

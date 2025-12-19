@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Create Workout</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    /* Sticky Top Navigation (refined to match app style) */
+    .top-nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: #111827;
+      border-bottom: 1px solid #1f2937;
+      padding: 1rem;
+      text-align: center;
+      font-weight: 600;
+      color: #38bdf8; /* matches blue theme */
+      font-size: 1.2rem;
+    }
+
+    .back-btn {
+      display: inline-block;
+      margin-top: 0.5rem;
+      padding: 0.5rem 1rem;
+      border-radius: 10px;
+      border: none;
+      background: #38bdf8;
+      color: #020617;
+      font-weight: 600;
+      cursor: pointer;
+      font-size: 0.9rem;
+    }
+
+    .back-btn:hover {
+      opacity: 0.85;
+    }
+
+    /* Ensure page content isn't hidden under sticky nav */
+    .page {
+      padding-top: 1rem;
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV BAR -->
+<div class="top-nav">
+  Ascend
+</div>
+<div style="text-align:center;">
+  <button class="back-btn" onclick="window.location.href='dashboard.html'">← Back to Dashboard</button>
+</div>
+
+<div class="page">
+  <div class="container">
+    <div class="card">
+
+      <input id="workoutName" placeholder="Workout name" />
+
+      <div id="exerciseList"></div>
+
+      <button type="button" id="addExercise">Add Exercise</button>
+      <button type="button" id="saveWorkout">Save Workout</button>
+
+      <button
+        type="button"
+        class="secondary"
+        onclick="location.href='view.html'"
+      >
+        View My Workouts
+      </button>
+
+    </div>
+  </div>
+</div>
+
+<!-- Popup for saving workout -->
+<div id="popup" class="popup hidden">Workout Saved!</div>
+
+<script src="workouts.js"></script>
+</body>
+</html>
+<div id="popup" class="popup hidden">Workout Saved!</div>

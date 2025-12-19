@@ -1,0 +1,22 @@
+{
+  "users": [
+    {
+      "id": "e572ac1c-be42-4869-94c3-fcc49c260081",
+      "username": "Lucas"
+    },
+    {
+      "id": "bb21c9e8-1037-4f54-9298-7a3c4b4902d4",
+      "username": "test1"
+    }
+  ],
+  "workouts": [
+    {
+      "id": "2925bea2-4b0c-4b37-91c5-5c9129e0c164",
+      "userId": "e572ac1c-be42-4869-94c3-fcc49c260081",
+      "name": "bench",
+      "sets": null,
+      "reps": null,
+      "weight": null
+    }
+  ]
+}

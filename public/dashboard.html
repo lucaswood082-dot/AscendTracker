@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Dashboard</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    .top-nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: #111827;
+      border-bottom: 1px solid #1f2937;
+      padding: 1rem;
+      text-align: center;
+      font-weight: 600;
+      color: #38bdf8;
+      font-size: 1.2rem;
+    }
+    .page { padding-top: 1rem; }
+    .back-btn, .logout-btn {
+      display: inline-block;
+      margin-top: 0.5rem;
+      padding: 0.5rem 1rem;
+      border-radius: 10px;
+      border: none;
+      background: #38bdf8;
+      color: #020617;
+      font-weight: 600;
+      cursor: pointer;
+      font-size: 0.9rem;
+      margin-right: 5px;
+    }
+    .back-btn:hover, .logout-btn:hover { opacity: 0.85; }
+  </style>
+</head>
+<body>
+
+<div class="top-nav">Ascend</div>
+
+<div style="text-align:center;">
+  <button class="logout-btn" onclick="logout()">Logout</button>
+</div>
+
+<div class="page">
+  <div class="container">
+    <div class="card">
+      <h2 id="dashboardTitle">Dashboard</h2>
+
+      <button onclick="location.href='workout.html'">Create Workout</button>
+      <button class="secondary" onclick="location.href='view.html'">View My Workouts</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// Redirect if not logged in
+window.addEventListener("DOMContentLoaded", () => {
+  const currentUser = JSON.parse(localStorage.getItem("currentUser"));
+  if (!currentUser) {
+    setTimeout(() => window.location.href = "index.html", 50);
+  } else {
+    document.getElementById("dashboardTitle").textContent =
+      `Welcome, ${currentUser.username}`;
+  }
+});
+
+function logout() {
+  localStorage.removeItem("currentUser");
+  window.location.href = "index.html";
+}
+
+function goBack() {
+  window.location.href = "index.html";
+}
+</script>
+
+</body>
+</html>

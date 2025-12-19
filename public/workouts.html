@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>My Workouts</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    /* Minimal toast styling, adjust as needed */
+    .toast {
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      background-color: #333;
+      color: #fff;
+      padding: 10px 20px;
+      border-radius: 5px;
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+    .toast.show {
+      opacity: 1;
+    }
+    .exercise, .set-row {
+      margin-bottom: 10px;
+    }
+    .secondary {
+      margin-top: 5px;
+    }
+  </style>
+</head>
+<body>
+
+  <nav class="top-nav">
+    <h1>AscendTracker</h1>
+    <button onclick="location.href='dashboard.html'">Back</button>
+  </nav>
+
+  <main class="container">
+    <h2>Create Workout</h2>
+
+    <!-- Workout Name -->
+    <input type="text" id="workoutName" placeholder="Workout Name" />
+
+    <!-- Exercise List -->
+    <div id="exerciseList"></div>
+
+    <!-- Buttons -->
+    <button id="addExercise">Add Exercise</button>
+    <button id="saveWorkout">Save Workout</button>
+  </main>
+
+  <!-- Toast for messages -->
+  <div id="toast" class="toast"></div>
+
+  <script src="workouts.js" defer></script>
+</body>
+</html>
