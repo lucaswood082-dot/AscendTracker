@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
+  <meta charset="UTF-8">
   <title>My Workouts</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <link rel="stylesheet" href="style.css">
 
   <style>
-    /* --- Ensure body/page scroll works --- */
+    /* --- Scrollable page while keeping UI --- */
     html, body {
       height: 100%;
       margin: 0;
@@ -15,17 +15,30 @@
       overflow-x: hidden;           /* prevent horizontal scroll */
       overflow-y: auto;             /* allow vertical scroll */
       -webkit-overflow-scrolling: touch; /* smooth scroll on mobile */
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      font-family: inherit;
+      background-color: #020617;    /* same background as app */
     }
 
     .page {
       padding: 1rem;
       min-height: 100%;
-      overflow-x: hidden;
       overflow-y: auto;
     }
 
-    /* --- Sticky Top Navigation --- */
+    .container {
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    .card {
+      background: #111827;
+      border-radius: 12px;
+      padding: 1rem;
+      margin-bottom: 1rem;
+      color: #ffffff;
+    }
+
+    /* Sticky Top Navigation */
     .top-nav {
       position: sticky;
       top: 0;
@@ -39,7 +52,7 @@
       font-size: 1.2rem;
     }
 
-    /* --- Back Button --- */
+    /* Back Button */
     .back-btn {
       display: inline-block;
       margin: 0.5rem auto 1rem auto;
@@ -58,25 +71,14 @@
       opacity: 0.85;
     }
 
-    /* --- Card & Container Styling --- */
-    .container {
-      max-width: 600px;
-      margin: 0 auto;
-    }
-
-    .card {
-      background: #fff;
-      border-radius: 12px;
-      padding: 1rem;
-      margin-bottom: 1rem;
-    }
-
+    /* Exercise details and sets */
     details.exercise {
       background: #020617;
       border: 1px solid #1f2937;
       border-radius: 12px;
       padding: 0.75rem;
       margin-bottom: 0.75rem;
+      color: #ffffff;
     }
 
     summary {
@@ -87,6 +89,20 @@
       align-items: center;
     }
 
+    .summary-left {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .summary-arrow {
+      transition: transform 0.3s ease;
+    }
+
+    details[open] .summary-arrow {
+      transform: rotate(90deg);
+    }
+
     .exercise-details {
       margin-top: 0.5rem;
       padding-left: 0.5rem;
@@ -94,8 +110,8 @@
 
     .exercise-name {
       font-weight: 600;
-      margin-top: 0.5rem;
       font-size: 1rem;
+      margin-top: 0.5rem;
     }
 
     .set-item {
@@ -116,126 +132,100 @@
       font-size: 0.8rem;
       margin-left: 0.5rem;
     }
-
-    .summary-left {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
-
-    .summary-arrow {
-      transition: transform 0.3s ease;
-    }
-
-    details[open] .summary-arrow {
-      transform: rotate(90deg);
-    }
-
-    button.secondary {
-      margin-top: 0.5rem;
-      display: block;
-      width: 100%;
-      padding: 0.5rem;
-      border-radius: 8px;
-      border: none;
-      background: #f3f4f6;
-      color: #111827;
-      font-weight: 600;
-      cursor: pointer;
-    }
   </style>
 </head>
 <body>
 
-  <!-- NAV BAR -->
-  <div class="top-nav">Ascend</div>
+<!-- NAV BAR -->
+<div class="top-nav">Ascend</div>
 
-  <!-- Back Button -->
-  <div style="text-align:center;">
-    <button class="back-btn" onclick="window.location.href='workout.html'">← Back to Create Workout</button>
-  </div>
+<!-- Back Button -->
+<div style="text-align:center;">
+  <button class="back-btn" onclick="window.location.href='workout.html'">← Back to Create Workout</button>
+</div>
 
-  <div class="page">
-    <div class="container">
-      <div class="card">
-        <h2>My Workouts</h2>
-        <div id="workoutsList"></div>
+<div class="page">
+  <div class="container">
+    <div class="card">
+      <h2>My Workouts</h2>
+      <div id="workoutsList"></div>
 
-        <button type="button" class="secondary" onclick="location.href='workout.html'">
-          Create New Workout
-        </button>
-      </div>
+      <button type="button" class="secondary" onclick="location.href='workout.html'">
+        Create New Workout
+      </button>
     </div>
   </div>
+</div>
 
-  <script>
-    const workoutsList = document.getElementById("workoutsList");
+<script>
+const workoutsList = document.getElementById("workoutsList");
 
-    function loadWorkouts() {
-      const savedWorkouts = JSON.parse(localStorage.getItem("workouts") || "[]");
-      workoutsList.innerHTML = "";
+function loadWorkouts() {
+  const savedWorkouts = JSON.parse(localStorage.getItem("workouts") || "[]");
+  workoutsList.innerHTML = "";
 
-      savedWorkouts.forEach((workout, index) => {
-        const details = document.createElement("details");
-        details.classList.add("exercise");
+  savedWorkouts.forEach((workout, index) => {
+    const details = document.createElement("details");
+    details.classList.add("exercise");
 
-        const summary = document.createElement("summary");
-        const left = document.createElement("div");
-        left.classList.add("summary-left");
+    const summary = document.createElement("summary");
+    const left = document.createElement("div");
+    left.classList.add("summary-left");
 
-        const arrow = document.createElement("span");
-        arrow.classList.add("summary-arrow");
-        arrow.textContent = "▶";
+    const arrow = document.createElement("span");
+    arrow.classList.add("summary-arrow");
+    arrow.textContent = "▶";
 
-        const title = document.createElement("span");
-        title.textContent = `${workout.name} (${workout.date.split("T")[0]})`;
+    const title = document.createElement("span");
+    title.textContent = `${workout.name} (${workout.date.split("T")[0]})`;
 
-        left.appendChild(arrow);
-        left.appendChild(title);
+    left.appendChild(arrow);
+    left.appendChild(title);
 
-        const deleteBtn = document.createElement("button");
-        deleteBtn.textContent = "Delete";
-        deleteBtn.classList.add("danger");
-        deleteBtn.addEventListener("click", (e) => {
-          e.stopPropagation();
-          savedWorkouts.splice(index, 1);
-          localStorage.setItem("workouts", JSON.stringify(savedWorkouts));
-          loadWorkouts();
-        });
+    const deleteBtn = document.createElement("button");
+    deleteBtn.textContent = "Delete";
+    deleteBtn.classList.add("danger");
+    deleteBtn.addEventListener("click", (e) => {
+      e.stopPropagation();
+      savedWorkouts.splice(index, 1);
+      localStorage.setItem("workouts", JSON.stringify(savedWorkouts));
+      loadWorkouts();
+    });
 
-        summary.appendChild(left);
-        summary.appendChild(deleteBtn);
-        details.appendChild(summary);
+    summary.appendChild(left);
+    summary.appendChild(deleteBtn);
+    details.appendChild(summary);
 
-        const detailsDiv = document.createElement("div");
-        detailsDiv.classList.add("exercise-details");
+    const detailsDiv = document.createElement("div");
+    detailsDiv.classList.add("exercise-details");
 
-        workout.exercises.forEach(ex => {
-          const exName = document.createElement("div");
-          exName.classList.add("exercise-name");
-          exName.textContent = ex.name;
-          detailsDiv.appendChild(exName);
+    workout.exercises.forEach(ex => {
+      const exName = document.createElement("div");
+      exName.classList.add("exercise-name");
+      exName.textContent = ex.name;
+      detailsDiv.appendChild(exName);
 
-          ex.sets.forEach(s => {
-            const setDiv = document.createElement("div");
-            setDiv.classList.add("set-item");
+      ex.sets.forEach(s => {
+        const setDiv = document.createElement("div");
+        setDiv.classList.add("set-item");
 
-            if (ex.unilateral) {
-              setDiv.innerHTML = `<span>Left: ${s.leftReps}</span> <span>Right: ${s.rightReps}</span> <span>Weight: ${s.weight}kg</span>`;
-            } else {
-              setDiv.innerHTML = `<span>Reps: ${s.reps}</span> <span>Weight: ${s.weight}kg</span>`;
-            }
+        if (ex.unilateral) {
+          setDiv.innerHTML = `<span>Left: ${s.leftReps}</span> <span>Right: ${s.rightReps}</span> <span>Weight: ${s.weight}kg</span>`;
+        } else {
+          setDiv.innerHTML = `<span>Reps: ${s.reps}</span> <span>Weight: ${s.weight}kg</span>`;
+        }
 
-            detailsDiv.appendChild(setDiv);
-          });
-        });
-
-        details.appendChild(detailsDiv);
-        workoutsList.appendChild(details);
+        detailsDiv.appendChild(setDiv);
       });
-    }
+    });
 
-    loadWorkouts();
-  </script>
+    details.appendChild(detailsDiv);
+    workoutsList.appendChild(details);
+  });
+}
+
+loadWorkouts();
+</script>
+
 </body>
 </html>
