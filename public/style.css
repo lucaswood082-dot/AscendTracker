@@ -296,22 +296,40 @@ input:checked + .slider::after {
 .exercise-header {
   display: flex;
   justify-content: space-between;
-  padding: 0.75rem 1rem;
-  cursor: pointer;
-  color: #38bdf8;
-  font-weight: 600;
-}
-
-.exercise-sets {
-  padding: 0.75rem 1rem;
+  align-items: center;
   background: #1f2937;
-  display: none; /* hidden by default */
+  padding: 0.5rem 0.8rem;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  margin-bottom: 0.3rem;
 }
 
-.arrow {
+.exercise-header input.exercise-name {
+  background: transparent;
+  border: none;
+  color: #f1f5f9;
+  font-weight: 600;
+  font-size: 1rem;
+  flex-grow: 1;
+}
+
+.exercise-header input.exercise-name:focus {
+  outline: none;
+}
+
+.arrow-box {
+  width: 28px;
+  height: 28px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #38bdf8;
+  border-radius: 0.3rem;
+  color: #020617;
+  font-weight: bold;
   transition: transform 0.3s ease;
 }
 
 .arrow.open {
-  transform: rotate(90deg); /* rotates arrow when expanded */
+  transform: rotate(180deg);
 }

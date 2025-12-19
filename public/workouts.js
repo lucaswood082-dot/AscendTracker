@@ -12,12 +12,12 @@ function createExerciseElement(exercise, index) {
   li.classList.add("exercise-item");
 
   li.innerHTML = `
-    <div class="exercise-header" style="display:flex; justify-content:space-between; align-items:center; cursor:pointer;">
+    <div class="exercise-header">
       <input type="text" placeholder="Exercise Name" class="exercise-name" value="${exercise.name}" />
-      <span class="arrow">▼</span>
+      <div class="arrow-box"><span class="arrow">▼</span></div>
     </div>
 
-    <div class="exercise-body" style="display:block; margin-top:0.5rem;">
+    <div class="exercise-body">
       <div style="display:flex; align-items:center; gap:8px; margin-bottom:0.5rem;">
         <label class="toggle-switch">
           <input type="checkbox" class="unilateral-toggle" ${exercise.unilateral ? "checked" : ""}>
@@ -37,15 +37,14 @@ function createExerciseElement(exercise, index) {
   const addSetBtn = li.querySelector(".add-set");
   const setsList = li.querySelector(".sets-list");
   const unilateralToggle = li.querySelector(".unilateral-toggle");
-  const nameInput = li.querySelector(".exercise-name");
 
-  /* ---------------- COLLAPSE/EXPAND ---------------- */
+  // COLLAPSE/EXPAND
   header.addEventListener("click", () => {
     body.style.display = body.style.display === "none" ? "block" : "none";
     arrow.classList.toggle("open");
   });
 
-  /* ---------------- CREATE SET ---------------- */
+  // CREATE SET
   function createSetElement(isUnilateral, setData = {}) {
     const setLi = document.createElement("li");
 
@@ -71,20 +70,20 @@ function createExerciseElement(exercise, index) {
     return setLi;
   }
 
-  /* ---------------- INITIAL SETS ---------------- */
+  // INITIAL SETS
   if (exercise.sets) {
     exercise.sets.forEach((set) => {
       setsList.appendChild(createSetElement(exercise.unilateral, set));
     });
   }
 
-  /* ---------------- ADD SET BUTTON ---------------- */
+  // ADD SET BUTTON
   addSetBtn.addEventListener("click", () => {
     const setLi = createSetElement(unilateralToggle.checked);
     setsList.appendChild(setLi);
   });
 
-  /* ---------------- TOGGLE UNILATERAL ---------------- */
+  // TOGGLE UNILATERAL
   unilateralToggle.addEventListener("change", () => {
     const setLis = Array.from(setsList.children);
     setLis.forEach((setLi) => {
