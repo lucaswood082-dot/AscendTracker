@@ -324,3 +324,10 @@ input:checked + .slider::after {
 .exercise-header .arrow.open {
   transform: translateY(-50%) rotate(180deg);
 }
+.exercise-header .arrow {
+  opacity: 0.7;
+}
+
+.exercise-header:hover .arrow {
+  opacity: 1;
+}
