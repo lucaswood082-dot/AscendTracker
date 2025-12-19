@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+]<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
@@ -37,13 +37,13 @@
       opacity: 0.85;
     }
 
-    /* Ensure page content isn't hidden under sticky nav */
+    /* Full-page scroll */
     body, html {
       margin: 0;
       padding: 0;
       height: 100%;
-      overflow-y: auto; /* allow full-page vertical scrolling */
-      -webkit-overflow-scrolling: touch; /* smooth scroll on mobile */
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
     }
 
     .page {
@@ -51,7 +51,6 @@
       padding-bottom: 2rem;
     }
 
-    /* Container and card styling remain unchanged */
     .container {
       display: flex;
       flex-direction: column;
@@ -67,17 +66,31 @@
       display: flex;
       flex-direction: column;
       gap: 0.5rem;
-      /* Remove fixed max-height so scrolling is handled by page */
-      overflow: visible;
+    }
+
+    /* Individual exercise card */
+    .exercise-item {
+      background: #020617;
+      border: 1px solid #1f2937;
+      border-radius: 10px;
+      padding: 0.5rem;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Sets container scroll */
+    .sets-list {
+      max-height: 150px; /* adjust based on preference */
+      overflow-y: auto;
+      margin-top: 0.5rem;
+      -webkit-overflow-scrolling: touch; /* smooth scrolling on mobile */
     }
   </style>
 </head>
 <body>
 
 <!-- NAV BAR -->
-<div class="top-nav">
-  Ascend
-</div>
+<div class="top-nav">Ascend</div>
 
 <div style="text-align:center;">
   <button class="back-btn" onclick="window.location.href='dashboard.html'">← Back to Dashboard</button>
@@ -94,11 +107,7 @@
       <button type="button" id="addExercise">Add Exercise</button>
       <button type="button" id="saveWorkout">Save Workout</button>
 
-      <button
-        type="button"
-        class="secondary"
-        onclick="location.href='view.html'"
-      >
+      <button type="button" class="secondary" onclick="location.href='view.html'">
         View My Workouts
       </button>
 
@@ -106,7 +115,6 @@
   </div>
 </div>
 
-<!-- Popup for saving workout -->
 <div id="popup" class="popup hidden">Workout Saved!</div>
 
 <script src="workouts.js"></script>
