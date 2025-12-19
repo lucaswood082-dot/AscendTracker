@@ -7,8 +7,11 @@
   <link rel="stylesheet" href="style.css" />
 
   <!-- PWA Manifest -->
-  <link rel="manifest" href="/manifest.json">
+  <link rel="manifest" href="manifest.json">
   <meta name="theme-color" content="#38bdf8">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 
   <style>
     .top-nav {
@@ -24,9 +27,7 @@
       font-size: 1.2rem;
     }
 
-    .page {
-      padding-top: 1rem;
-    }
+    .page { padding-top: 1rem; }
 
     .toggle-text {
       text-align: center;
@@ -39,7 +40,6 @@
     .hidden { display: none; }
   </style>
 </head>
-
 <body>
 
   <div class="top-nav">Ascend</div>
@@ -74,7 +74,6 @@
 
   <div id="toast" class="toast"></div>
 
-  <!-- Scripts -->
   <script>
     let isLogin = true;
 
@@ -85,9 +84,9 @@
         setTimeout(() => window.location.href = "dashboard.html", 50);
       }
 
-      // Register Service Worker for PWA
+      // Register Service Worker
       if ('serviceWorker' in navigator) {
-        navigator.serviceWorker.register('/sw.js')
+        navigator.serviceWorker.register('sw.js')
           .then(() => console.log('Service Worker registered'))
           .catch(err => console.error('Service Worker failed:', err));
       }
