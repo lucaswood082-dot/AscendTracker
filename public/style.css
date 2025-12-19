@@ -331,3 +331,15 @@ input:checked + .slider::after {
 .exercise-header:hover .arrow {
   opacity: 1;
 }
+input, textarea, select, button {
+  font-size: 16px; /* 16px prevents iOS zoom */
+}
+html, body {
+  overscroll-behavior: none;
+  touch-action: manipulation;
+}
+body {
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+}
