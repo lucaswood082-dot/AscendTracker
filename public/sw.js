@@ -1,44 +1,32 @@
-const CACHE_NAME = 'ascendtracker-cache-v1';
-const FILES_TO_CACHE = [
-  '/',
-  '/index.html',
-  '/style.css',
-  '/manifest.json',
-  '/icons/icon-192x192.png',
-  '/icons/icon-512x512.png'
+const CACHE_NAME = "ascend-tracker-cache-v1";
+const urlsToCache = [
+  "/index.html",
+  "/style.css",
+  "/manifest.json",
+  "/images/icon-192x192.png",
+  "/images/icon-512x512.png"
 ];
 
-// Install
-self.addEventListener('install', (event) => {
-  console.log('[ServiceWorker] Install');
+self.addEventListener("install", event => {
   event.waitUntil(
-    caches.open(CACHE_NAME).then((cache) => cache.addAll(FILES_TO_CACHE))
+    caches.open(CACHE_NAME).then(cache => cache.addAll(urlsToCache))
   );
   self.skipWaiting();
 });
 
-// Activate
-self.addEventListener('activate', (event) => {
-  console.log('[ServiceWorker] Activate');
+self.addEventListener("activate", event => {
   event.waitUntil(
-    caches.keys().then((keyList) =>
-      Promise.all(
-        keyList.map((key) => {
-          if (key !== CACHE_NAME) {
-            console.log('[ServiceWorker] Removing old cache', key);
-            return caches.delete(key);
-          }
-        })
-      )
+    caches.keys().then(keys => 
+      Promise.all(keys.map(key => {
+        if (key !== CACHE_NAME) return caches.delete(key);
+      }))
     )
   );
   self.clients.claim();
 });
 
-// Fetch
-self.addEventListener('fetch', (event) => {
-  if (event.request.method !== 'GET') return;
+self.addEventListener("fetch", event => {
   event.respondWith(
-    caches.match(event.request).then((response) => response || fetch(event.request))
+    caches.match(event.request).then(resp => resp || fetch(event.request))
   );
 });

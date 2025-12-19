@@ -2,14 +2,14 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>AscendTracker</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AscendTracker</title>
+  <link rel="stylesheet" href="style.css" />
 
   <!-- PWA Manifest -->
   <link rel="manifest" href="/manifest.json">
   <meta name="theme-color" content="#38bdf8">
 
-  <link rel="stylesheet" href="style.css" />
   <style>
     .top-nav {
       position: sticky;
@@ -23,19 +23,14 @@
       color: #38bdf8;
       font-size: 1.2rem;
     }
+
     .page { padding-top: 1rem; }
-    .toggle-text {
-      text-align: center;
-      margin-top: 1rem;
-      font-size: 0.9rem;
-      color: #9ca3af;
-      cursor: pointer;
-    }
+    .toggle-text { text-align: center; margin-top: 1rem; font-size: 0.9rem; color: #9ca3af; cursor: pointer; }
     .hidden { display: none; }
   </style>
 </head>
-<body>
 
+<body>
   <div class="top-nav">Ascend</div>
 
   <div class="page">
@@ -72,11 +67,9 @@
     // Auto-redirect if already logged in
     window.addEventListener("DOMContentLoaded", () => {
       const currentUser = JSON.parse(localStorage.getItem("currentUser"));
-      if (currentUser) {
-        setTimeout(() => window.location.href = "dashboard.html", 50);
-      }
+      if (currentUser) window.location.href = "dashboard.html";
 
-      // Register Service Worker
+      // Register service worker
       if ('serviceWorker' in navigator) {
         navigator.serviceWorker.register('/sw.js')
           .then(() => console.log('Service Worker registered'))
