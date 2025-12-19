@@ -85,7 +85,7 @@ function createExerciseElement(exercise) {
   arrow.addEventListener("click", () => {
     const isCollapsed = body.style.display === "none";
     body.style.display = isCollapsed ? "block" : "none";
-    arrow.style.transform = isCollapsed ? "rotate(180deg)" : "rotate(0deg)";
+    arrow.classList.toggle("open");
   });
 
   // Add set
