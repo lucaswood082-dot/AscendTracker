@@ -81,9 +81,8 @@ function createExerciseElement(exercise) {
   // Initialize body as visible
   body.style.display = "block";
 
-  // Collapse/expand with arrow rotation
-  header.addEventListener("click", (e) => {
-    if (e.target === nameInput) return; // Don't toggle when editing name
+  // Arrow click toggles collapse only
+  arrow.addEventListener("click", () => {
     const isCollapsed = body.style.display === "none";
     body.style.display = isCollapsed ? "block" : "none";
     arrow.style.transform = isCollapsed ? "rotate(180deg)" : "rotate(0deg)";
