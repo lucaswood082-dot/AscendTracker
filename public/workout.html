@@ -1,50 +1,25 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <head>
   <meta charset="UTF-8" />
   <title>Workout Page</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <link rel="stylesheet" href="style.css" /> <!-- optional -->
+  <link rel="stylesheet" href="style.css" />
 
   <style>
-    html, body {
-  height: 100%;
-  margin: 0;
-  padding: 0;
-  overflow-x: hidden;          /* prevent horizontal scroll */
-  overflow-y: auto;            /* allow vertical scroll */
-}
-
-.page {
-  padding: 1rem;
-  min-height: 100%;
-  overflow-x: hidden;          /* safety */
-  overflow-y: auto;            /* vertical scroll allowed */
-}
-
+    /* --- Ensure scroll works while preserving UI --- */
     html, body {
       height: 100%;
       margin: 0;
       padding: 0;
-      overflow-y: auto;
-      overflow-x: hidden;
-      -webkit-overflow-scrolling: touch;
+      overflow-x: hidden;           /* prevent horizontal scroll */
+      overflow-y: auto;             /* allow vertical scroll */
+      -webkit-overflow-scrolling: touch; /* smooth scroll on mobile */
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;       /* keep original font */
+      background-color: #020617;    /* match original app background */
     }
 
-    .page {
-      padding-top: 1rem;
-      padding-bottom: 1rem;
-    }
-  </style>
-</head>
-
-  <meta charset="UTF-8" />
-  <title>Create Workout</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link rel="stylesheet" href="style.css" />
-  <style>
-    /* Sticky Top Navigation (refined to match app style) */
+    /* --- Sticky Top Navigation --- */
     .top-nav {
       position: sticky;
       top: 0;
@@ -54,13 +29,69 @@
       padding: 1rem;
       text-align: center;
       font-weight: 600;
-      color: #38bdf8; /* matches blue theme */
+      color: #38bdf8; /* matches app theme */
       font-size: 1.2rem;
+    }
+
+    /* --- Page Container --- */
+    .page {
+      padding: 1rem;
+      min-height: 100%;
+      overflow-y: auto;
+    }
+
+    .container {
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    .card {
+      background: #111827; /* keep card color same as app */
+      border-radius: 12px;
+      padding: 1rem;
+      margin-bottom: 1rem;
+      color: #ffffff; /* text color consistent */
+    }
+
+    input, button {
+      font-family: inherit;
+      font-size: 1rem;
+    }
+
+    input#workoutName {
+      width: 100%;
+      padding: 0.5rem;
+      margin-bottom: 0.5rem;
+      border-radius: 8px;
+      border: 1px solid #1f2937;
+      background: #020617;
+      color: #ffffff;
+    }
+
+    button {
+      cursor: pointer;
+      border: none;
+      border-radius: 8px;
+      padding: 0.5rem 1rem;
+      font-weight: 600;
+      margin-top: 0.5rem;
+    }
+
+    button#addExercise, button#saveWorkout {
+      background: #38bdf8;
+      color: #020617;
+    }
+
+    button.secondary {
+      background: #1f2937;
+      color: #38bdf8;
+      width: 100%;
+      margin-top: 0.5rem;
     }
 
     .back-btn {
       display: inline-block;
-      margin-top: 0.5rem;
+      margin: 0.5rem auto 1rem auto;
       padding: 0.5rem 1rem;
       border-radius: 10px;
       border: none;
@@ -69,24 +100,111 @@
       font-weight: 600;
       cursor: pointer;
       font-size: 0.9rem;
+      text-align: center;
     }
 
     .back-btn:hover {
       opacity: 0.85;
     }
 
-    /* Ensure page content isn't hidden under sticky nav */
-    .page {
-      padding-top: 1rem;
+    /* --- Popup for saving workout --- */
+    .popup {
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #38bdf8;
+      color: #020617;
+      padding: 0.5rem 1rem;
+      border-radius: 8px;
+      display: none;
+      z-index: 999;
+      font-weight: 600;
+    }
+
+    .popup.show {
+      display: block;
+    }
+
+    /* --- Exercise list styles --- */
+    .exercise-item {
+      background: #020617;
+      border: 1px solid #1f2937;
+      border-radius: 12px;
+      padding: 0.75rem;
+      margin-bottom: 0.75rem;
+      color: #ffffff;
+    }
+
+    .exercise-name {
+      font-weight: 600;
+      font-size: 1rem;
+    }
+
+    .sets-list {
+      margin-top: 0.5rem;
+    }
+
+    .set-item {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 0.25rem;
+    }
+
+    .set-item input {
+      width: 60px;
+      padding: 0.25rem;
+      border-radius: 4px;
+      border: 1px solid #1f2937;
+      background: #111827;
+      color: #ffffff;
+    }
+
+    .remove-set {
+      background: #ef4444;
+      color: #ffffff;
+      padding: 0.25rem 0.5rem;
+      border-radius: 4px;
+      font-size: 0.8rem;
+    }
+
+    .toggle-switch input {
+      display: none;
+    }
+
+    .toggle-switch .slider {
+      width: 40px;
+      height: 20px;
+      background: #1f2937;
+      display: inline-block;
+      border-radius: 12px;
+      position: relative;
+      transition: 0.3s;
+    }
+
+    .toggle-switch .slider::before {
+      content: "";
+      position: absolute;
+      width: 18px;
+      height: 18px;
+      left: 1px;
+      top: 1px;
+      background: #38bdf8;
+      border-radius: 50%;
+      transition: 0.3s;
+    }
+
+    .toggle-switch input:checked + .slider::before {
+      transform: translateX(20px);
     }
   </style>
 </head>
 <body>
 
 <!-- NAV BAR -->
-<div class="top-nav">
-  Ascend
-</div>
+<div class="top-nav">Ascend</div>
+
+<!-- Back Button -->
 <div style="text-align:center;">
   <button class="back-btn" onclick="window.location.href='dashboard.html'">← Back to Dashboard</button>
 </div>
@@ -94,7 +212,6 @@
 <div class="page">
   <div class="container">
     <div class="card">
-
       <input id="workoutName" placeholder="Workout name" />
 
       <div id="exerciseList"></div>
@@ -102,14 +219,9 @@
       <button type="button" id="addExercise">Add Exercise</button>
       <button type="button" id="saveWorkout">Save Workout</button>
 
-      <button
-        type="button"
-        class="secondary"
-        onclick="location.href='view.html'"
-      >
+      <button type="button" class="secondary" onclick="location.href='view.html'">
         View My Workouts
       </button>
-
     </div>
   </div>
 </div>
@@ -120,4 +232,3 @@
 <script src="workouts.js"></script>
 </body>
 </html>
-<div id="popup" class="popup hidden">Workout Saved!</div>

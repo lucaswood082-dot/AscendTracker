@@ -1,49 +1,43 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <head>
-  <meta charset="UTF-8" />
-  <title>Workout Page</title>
+  <meta charset="UTF-8">
+  <title>My Workouts</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <link rel="stylesheet" href="style.css" /> <!-- optional -->
+  <link rel="stylesheet" href="style.css">
 
   <style>
-    html, body {
-  height: 100%;
-  margin: 0;
-  padding: 0;
-  overflow-x: hidden;          /* prevent horizontal scroll */
-  overflow-y: auto;            /* allow vertical scroll */
-}
-
-.page {
-  padding: 1rem;
-  min-height: 100%;
-  overflow-x: hidden;          /* safety */
-  overflow-y: auto;            /* vertical scroll allowed */
-}
-
+    /* --- Scrollable page while keeping UI --- */
     html, body {
       height: 100%;
       margin: 0;
       padding: 0;
-      overflow-y: auto;
-      overflow-x: hidden;
-      -webkit-overflow-scrolling: touch;
+      overflow-x: hidden;           /* prevent horizontal scroll */
+      overflow-y: auto;             /* allow vertical scroll */
+      -webkit-overflow-scrolling: touch; /* smooth scroll on mobile */
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+      background-color: #020617;    /* same background as app */
     }
 
     .page {
-      padding-top: 1rem;
-      padding-bottom: 1rem;
+      padding: 1rem;
+      min-height: 100%;
+      overflow-y: auto;
     }
-  </style>
-</head>
 
-  <meta charset="UTF-8">
-  <title>My Workouts</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="style.css">
-  <style>
+    .container {
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    .card {
+      background: #111827;
+      border-radius: 12px;
+      padding: 1rem;
+      margin-bottom: 1rem;
+      color: #ffffff;
+    }
+
     /* Sticky Top Navigation */
     .top-nav {
       position: sticky;
@@ -54,10 +48,11 @@
       padding: 1rem;
       text-align: center;
       font-weight: 600;
-      color: #38bdf8; /* blue theme */
+      color: #38bdf8;
       font-size: 1.2rem;
     }
 
+    /* Back Button */
     .back-btn {
       display: inline-block;
       margin: 0.5rem auto 1rem auto;
@@ -76,16 +71,14 @@
       opacity: 0.85;
     }
 
-    .page {
-      padding-top: 1rem;
-    }
-
+    /* Exercise details and sets */
     details.exercise {
       background: #020617;
       border: 1px solid #1f2937;
       border-radius: 12px;
       padding: 0.75rem;
       margin-bottom: 0.75rem;
+      color: #ffffff;
     }
 
     summary {
@@ -94,35 +87,6 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-    }
-
-    .exercise-details {
-      margin-top: 0.5rem;
-      padding-left: 0.5rem;
-    }
-
-    .exercise-name {
-      font-weight: 600;
-      margin-top: 0.5rem;
-    }
-
-    .set-item {
-      margin-left: 10px;
-      font-size: 0.9rem;
-      display: flex;
-      gap: 12px; /* space between left/right/weight */
-    }
-
-    .set-item span {
-      display: inline-block;
-      min-width: 50px; /* aligns nicely */
-    }
-
-    button.danger {
-      width: auto;
-      padding: 0.25rem 0.5rem;
-      font-size: 0.8rem;
-      margin-left: 0.5rem;
     }
 
     .summary-left {
@@ -138,14 +102,42 @@
     details[open] .summary-arrow {
       transform: rotate(90deg);
     }
+
+    .exercise-details {
+      margin-top: 0.5rem;
+      padding-left: 0.5rem;
+    }
+
+    .exercise-name {
+      font-weight: 600;
+      font-size: 1rem;
+      margin-top: 0.5rem;
+    }
+
+    .set-item {
+      margin-left: 10px;
+      font-size: 0.9rem;
+      display: flex;
+      gap: 12px;
+    }
+
+    .set-item span {
+      display: inline-block;
+      min-width: 50px;
+    }
+
+    button.danger {
+      width: auto;
+      padding: 0.25rem 0.5rem;
+      font-size: 0.8rem;
+      margin-left: 0.5rem;
+    }
   </style>
 </head>
 <body>
 
 <!-- NAV BAR -->
-<div class="top-nav">
-  Ascend
-</div>
+<div class="top-nav">Ascend</div>
 
 <!-- Back Button -->
 <div style="text-align:center;">
@@ -155,18 +147,12 @@
 <div class="page">
   <div class="container">
     <div class="card">
-
       <h2>My Workouts</h2>
       <div id="workoutsList"></div>
 
-      <button
-        type="button"
-        class="secondary"
-        onclick="location.href='workout.html'"
-      >
+      <button type="button" class="secondary" onclick="location.href='workout.html'">
         Create New Workout
       </button>
-
     </div>
   </div>
 </div>
