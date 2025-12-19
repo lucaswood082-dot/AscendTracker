@@ -310,7 +310,7 @@ input:checked + .slider::after {
 /* ARROW INSIDE INPUT */
 .exercise-header .arrow {
   position: absolute;
-  top: 40%;
+  top: 80%;
   right: 12px;
   transform: translateY(-50%) rotate(0deg);
   cursor: pointer;
