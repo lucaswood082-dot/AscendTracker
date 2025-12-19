@@ -41,6 +41,11 @@
     /* Ensure page content isn't hidden under sticky nav */
     .page {
       padding-top: 1rem;
+
+      /* ALLOW VERTICAL SCROLLING */
+      max-height: calc(100vh - 60px); /* adjust if needed based on nav height */
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch; /* smooth scrolling on mobile */
     }
   </style>
 </head>
@@ -83,4 +88,3 @@
 <script src="workouts.js"></script>
 </body>
 </html>
-<div id="popup" class="popup hidden">Workout Saved!</div>
