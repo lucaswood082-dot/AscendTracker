@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <link rel="manifest" href="/manifest.json">
+<meta name="theme-color" content="#38bdf8">
   <meta charset="UTF-8" />
   <title>AscendTracker</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -31,6 +33,12 @@
     .hidden { display: none; }
   </style>
 </head>
+<script>
+if ("serviceWorker" in navigator) {
+  navigator.serviceWorker.register("/sw.js");
+}
+</script>
+
 <body>
 
 <div class="top-nav">Ascend</div>
