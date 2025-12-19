@@ -343,3 +343,20 @@ body {
   height: 100vh;
   overflow: hidden;
 }
+html, body {
+  overflow: hidden; /* disables scrolling */
+  height: 100%;
+  width: 100%;
+  touch-action: none; /* prevents some default touch behaviors */
+  -ms-touch-action: none; /* for IE/Edge */
+}
+
+body {
+  margin: 0;
+  padding: 0;
+}
+.page {
+  height: 100vh; /* full viewport height */
+  width: 100vw;  /* full viewport width */
+  overflow: hidden; /* just in case */
+}
