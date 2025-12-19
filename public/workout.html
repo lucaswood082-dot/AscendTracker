@@ -8,25 +8,44 @@
   <link rel="stylesheet" href="style.css">
 
   <style>
-    /* General Page */
+    /* === Page Background & Font === */
     html, body {
       height: 100%;
       margin: 0;
       padding: 0;
-      background: #020617; /* match your app background */
+      background-color: #020617; /* match app background */
       color: #ffffff;
-      font-family: 'Inter', sans-serif; /* match other pages */
+      font-family: 'Inter', sans-serif; /* match app font */
       overflow-x: hidden;
+      overflow-y: auto;
       -webkit-overflow-scrolling: touch;
     }
 
+    /* === Page Layout === */
     .page {
       padding: 1rem;
       min-height: 100%;
-      overflow-y: auto; /* allow vertical scrolling */
+      overflow-y: auto; /* vertical scroll */
+      display: flex;
+      justify-content: center;
+      align-items: flex-start; /* top alignment */
     }
 
-    /* Top Navigation */
+    /* === Card / Container === */
+    .container {
+      width: 100%;
+      max-width: 500px; /* consistent width */
+      margin: 0 auto;
+    }
+
+    .card {
+      background-color: #111827; /* same as other cards */
+      border-radius: 12px;
+      padding: 1rem;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.4);
+    }
+
+    /* === Top Navigation === */
     .top-nav {
       position: sticky;
       top: 0;
@@ -40,9 +59,10 @@
       font-size: 1.2rem;
     }
 
-    /* Back Button */
+    /* === Back Button === */
     .back-btn {
       display: block;
+      width: fit-content;
       margin: 0.5rem auto 1rem auto;
       padding: 0.5rem 1rem;
       border-radius: 10px;
@@ -52,27 +72,13 @@
       font-weight: 600;
       cursor: pointer;
       font-size: 0.9rem;
-      text-align: center;
     }
 
     .back-btn:hover {
       opacity: 0.85;
     }
 
-    /* Card Container */
-    .container {
-      max-width: 600px;
-      margin: 0 auto;
-      padding: 0.5rem;
-    }
-
-    .card {
-      background: #111827;
-      border-radius: 12px;
-      padding: 1rem;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.4);
-    }
-
+    /* === Input Fields === */
     input {
       width: 100%;
       padding: 0.5rem;
@@ -85,6 +91,7 @@
       font-size: 1rem;
     }
 
+    /* === Buttons === */
     button {
       padding: 0.5rem 1rem;
       margin: 0.25rem 0;
@@ -93,19 +100,16 @@
       cursor: pointer;
       font-weight: 600;
       font-family: inherit;
-    }
-
-    #addExercise, #saveWorkout {
+      width: 100%;
       background: #38bdf8;
       color: #020617;
-      width: 100%;
     }
 
-    #addExercise:hover, #saveWorkout:hover {
+    button:hover {
       opacity: 0.85;
     }
 
-    /* Exercise Item */
+    /* === Exercise List === */
     .exercise-item {
       margin-bottom: 1rem;
       border: 1px solid #1f2937;
@@ -114,7 +118,6 @@
       background: #111827;
     }
 
-    /* Exercise Name + Arrow */
     .exercise-header {
       display: flex;
       justify-content: space-between;
@@ -139,6 +142,7 @@
       margin-bottom: 0.25rem;
     }
 
+    /* === Popup === */
     .popup {
       position: fixed;
       bottom: 1rem;
@@ -156,6 +160,7 @@
     .popup.show {
       display: block;
     }
+
   </style>
 </head>
 <body>
