@@ -1,29 +1,41 @@
+/* ===== Reset & Base ===== */
 * {
   box-sizing: border-box;
 }
 
-body {
+html, body {
   margin: 0;
+  padding: 0;
+  width: 100%;
+  min-height: 100%;
+  overflow-y: auto;                 /* ✅ ENABLE SCROLL */
+  overflow-x: hidden;
+  -webkit-overflow-scrolling: touch;
+}
+
+body {
   font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
   background: #0f172a;
   color: #e5e7eb;
 }
 
-/* Mobile-first layout */
+/* ===== Layout ===== */
 .page {
-  min-height: 100vh;
+  min-height: 100vh;                /* allow growth */
   display: flex;
   justify-content: center;
-  align-items: center;
+  align-items: flex-start;          /* IMPORTANT: prevents scroll lock */
+  padding-top: 1rem;
+  padding-bottom: 2rem;
 }
 
 .container {
   width: 100%;
-  max-width: 480px; /* perfect for mobile */
+  max-width: 480px;
   padding: 1.25rem;
 }
 
-/* Cards */
+/* ===== Cards ===== */
 .card {
   background: #111827;
   border-radius: 14px;
@@ -32,14 +44,16 @@ body {
   border: 1px solid #1f2937;
 }
 
-/* Headings */
+/* ===== Headings ===== */
 h1, h2, h3 {
   margin-top: 0;
   margin-bottom: 1rem;
 }
 
-/* Inputs */
-input {
+/* ===== Inputs ===== */
+input,
+textarea,
+select {
   width: 100%;
   padding: 0.75rem;
   border-radius: 10px;
@@ -47,9 +61,15 @@ input {
   background: #020617;
   color: white;
   margin-bottom: 0.75rem;
+  font-size: 16px; /* prevents iOS zoom */
 }
 
-/* Buttons */
+input:focus {
+  outline: none;
+  border-color: #38bdf8;
+}
+
+/* ===== Buttons ===== */
 button {
   width: 100%;
   padding: 0.75rem;
@@ -72,15 +92,57 @@ button.danger {
   color: white;
 }
 
-/* Exercise block */
-.exercise {
+/* ===== Exercise Blocks ===== */
+.exercise,
+.exercise-card {
   border: 1px solid #1f2937;
   border-radius: 12px;
   padding: 1rem;
   margin-top: 1rem;
+  background: #111827;
 }
 
-/* Set rows */
+/* Remove bullets */
+.exercise-item,
+.set-item,
+.sets-list li {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+/* ===== Exercise Header ===== */
+.exercise-header {
+  position: relative;
+  width: 100%;
+}
+
+.exercise-name {
+  padding-right: 2.5rem;
+}
+
+.exercise-header .arrow {
+  position: absolute;
+  top: 50%;
+  right: 12px;
+  transform: translateY(-50%) rotate(0deg);
+  cursor: pointer;
+  color: #38bdf8;
+  font-size: 1rem;
+  transition: transform 0.25s ease;
+  user-select: none;
+  opacity: 0.7;
+}
+
+.exercise-header .arrow.open {
+  transform: translateY(-50%) rotate(180deg);
+}
+
+.exercise-header:hover .arrow {
+  opacity: 1;
+}
+
+/* ===== Sets ===== */
 .set-row {
   display: flex;
   gap: 0.5rem;
@@ -92,7 +154,7 @@ button.danger {
   margin-bottom: 0;
 }
 
-/* View workouts */
+/* ===== Details (View Page) ===== */
 details {
   background: #020617;
   border: 1px solid #1f2937;
@@ -105,51 +167,109 @@ summary {
   cursor: pointer;
   font-weight: 600;
 }
-.toast {
-  position: fixed;
-  bottom: 24px;
-  left: 50%;
-  transform: translateX(-50%);
-  background: #1e1e1e;
-  color: white;
-  padding: 12px 20px;
-  border-radius: 12px;
-  font-size: 14px;
+
+.summary-arrow {
+  display: inline-block;
+  margin-right: 8px;
+  transition: transform 0.3s ease;
+}
+
+details[open] .summary-arrow {
+  transform: rotate(90deg);
+}
+
+/* ===== Sticky Top Navigation ===== */
+.top-nav {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: #020617;
+  border-bottom: 1px solid #1f2937;
+  padding: 0.75rem 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.nav-title {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #e5e7eb;
+}
+
+.nav-btn {
+  background: none;
+  border: none;
+  color: #93c5fd;
+  font-size: 0.9rem;
+  cursor: pointer;
+}
+
+.nav-btn:hover {
+  text-decoration: underline;
+}
+
+/* ===== Toggle Switch ===== */
+.toggle-switch {
+  position: relative;
+  display: inline-block;
+  width: 60px;
+  height: 28px;
+}
+
+.toggle-switch input {
   opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.3s ease, transform 0.3s ease;
-  z-index: 999;
+  width: 0;
+  height: 0;
 }
 
-.toast.show {
-  opacity: 1;
-  transform: translateX(-50%) translateY(-6px);
-}
-.popup {
-  position: fixed;
-  top: 20px;
-  right: 20px;
-  background-color: #4caf50; /* green - change to match your theme */
-  color: white;
-  padding: 15px 25px;
-  border-radius: 10px;
-  box-shadow: 0 4px 6px rgba(0,0,0,0.2);
-  font-weight: bold;
-  font-size: 16px;
-  opacity: 0;
-  transform: translateY(-20px);
-  transition: opacity 0.4s ease, transform 0.4s ease;
-  z-index: 1000;
+.slider {
+  position: absolute;
+  inset: 0;
+  background-color: #1f2937;
+  border-radius: 8px;
+  border: 1px solid #38bdf8;
+  transition: 0.3s;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 4px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #cbd5e1;
+  user-select: none;
 }
 
-.popup.show {
-  opacity: 1;
-  transform: translateY(0);
+.slider:before {
+  content: "";
+  position: absolute;
+  height: 20px;
+  width: 26px;
+  left: 2px;
+  bottom: 3px;
+  background-color: #38bdf8;
+  border-radius: 6px;
+  transition: 0.3s;
 }
 
-.popup.hidden {
-  display: none;
+input:checked + .slider:before {
+  transform: translateX(28px);
 }
+
+.slider::after {
+  content: "OFF";
+  position: absolute;
+  right: 6px;
+  font-size: 0.7rem;
+}
+
+input:checked + .slider::after {
+  content: "ON";
+  left: 6px;
+  right: auto;
+}
+
+/* ===== Popup / Toast ===== */
 .popup {
   position: fixed;
   top: 20px;
@@ -173,204 +293,4 @@ summary {
 
 .popup.hidden {
   display: none;
-}
-.summary-arrow {
-  display: inline-block;
-  margin-right: 8px;
-  transition: transform 0.3s ease;
-}
-
-details[open] .summary-arrow {
-  transform: rotate(90deg);
-}
-/* ===== Sticky Top Navigation ===== */
-.top-nav {
-  position: sticky;
-  top: 0;
-  z-index: 100;
-  background: #020617;
-  border-bottom: 1px solid #1f2937;
-  padding: 0.75rem 1rem;
-
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
-.nav-title {
-  font-size: 1rem;
-  font-weight: 600;
-  color: #e5e7eb;
-}
-
-.nav-btn {
-  background: none;
-  border: none;
-  color: #93c5fd;
-  font-size: 0.9rem;
-  cursor: pointer;
-}
-
-.nav-btn:hover {
-  text-decoration: underline;
-}
-.toggle-switch {
-  position: relative;
-  display: inline-block;
-  width: 60px;
-  height: 28px;
-}
-
-.toggle-switch input {
-  opacity: 0;
-  width: 0;
-  height: 0;
-}
-
-.slider {
-  position: absolute;
-  top: 0; left: 0; right: 0; bottom: 0;
-  background-color: #1f2937; /* OFF background */
-  border-radius: 8px;
-  border: 1px solid #38bdf8;
-  transition: 0.3s;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0 2px;  /* small padding */
-  font-size: 0.75rem;
-  font-weight: 600;
-  color: #cbd5e1;
-  user-select: none;
-  box-sizing: border-box;
-}
-
-.slider:before {
-  content: "";
-  position: absolute;
-  height: 20px;
-  width: 26px;
-  left: 2px;       /* padding */
-  bottom: 3px;
-  background-color: #38bdf8; /* knob color */
-  border-radius: 6px;
-  transition: 0.3s;
-  box-sizing: border-box;
-}
-
-input:checked + .slider:before {
-  transform: translateX(28px); /* fully inside slider */
-}
-
-.slider::after {
-  content: "OFF";
-  position: absolute;
-  right: 4px;
-  font-size: 0.7rem;
-}
-
-input:checked + .slider::after {
-  content: "ON";
-  left: 4px;
-  right: auto;
-}
-.exercise-item {
-  list-style: none; /* removes the default bullet */
-  margin: 0;        /* optional: remove default margin */
-  padding: 0;       /* optional: remove default padding */
-}
-.set-item, .sets-list li {
-  list-style: none; /* removes bullet */
-  margin: 0;        /* optional: remove default margin */
-  padding: 0;       /* optional: remove default padding */
-}
-
-.exercise-card {
-  border: 1px solid #1f2937;
-  border-radius: 12px;
-  margin-bottom: 1rem;
-  overflow: hidden;
-  background: #111827;
-}
-
-.exercise-header {
-  position: relative;
-  width: 100%;
-}
-
-.exercise-name {
-  padding-right: 2.5rem; /* space for arrow ONLY */
-}
-
-.exercise-name:focus {
-  outline: none;
-  border-color: #38bdf8;
-}
-
-/* ARROW INSIDE INPUT */
-.exercise-header .arrow {
-  position: absolute;
-  top: 40%;
-  right: 12px;
-  transform: translateY(-50%) rotate(0deg);
-  cursor: pointer;
-  color: #38bdf8;
-  font-size: 1rem;
-  transition: transform 0.25s ease;
-  user-select: none;
-}
-
-/* rotated state */
-.exercise-header .arrow.open {
-  transform: translateY(-50%) rotate(180deg);
-}
-.exercise-header .arrow {
-  opacity: 0.7;
-}
-
-.exercise-header:hover .arrow {
-  opacity: 1;
-}
-input, textarea, select, button {
-  font-size: 16px; /* 16px prevents iOS zoom */
-}
-html, body {
-  overscroll-behavior: none;
-  touch-action: manipulation;
-}
-body {
-  width: 100vw;
-  height: 100vh;
-  overflow: hidden;
-}
-html, body {
-  overflow: hidden; /* disables scrolling */
-  height: 100%;
-  width: 100%;
-  touch-action: none; /* prevents some default touch behaviors */
-  -ms-touch-action: none; /* for IE/Edge */
-}
-
-body {
-  margin: 0;
-  padding: 0;
-}
-.page {
-  height: 100vh; /* full viewport height */
-  width: 100vw;  /* full viewport width */
-  overflow: hidden; /* just in case */
-}
-/* Allow vertical scrolling but prevent horizontal scroll */
-html, body {
-  height: 100%;
-  margin: 0;
-  padding: 0;
-  overflow-y: auto;           /* vertical scroll */
-  overflow-x: hidden;         /* prevent horizontal scroll */
-  -webkit-overflow-scrolling: touch; /* smooth scroll on iOS */
-}
-
-.page {
-  padding-top: 1rem;
-  padding-bottom: 1rem;
 }
