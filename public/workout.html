@@ -38,11 +38,11 @@
       opacity: 0.85;
     }
 
-    /* MAIN PAGE SCROLL — ALWAYS ENABLED */
+    /* FULL PAGE SCROLL — ALWAYS */
     html, body {
       margin: 0;
       padding: 0;
-      height: 100%;
+      min-height: 100%;
       overflow-y: auto;
       -webkit-overflow-scrolling: touch;
     }
@@ -63,17 +63,19 @@
       gap: 0.75rem;
     }
 
-    /* SHARED EXERCISE LIST SCROLL */
+    /* IMPORTANT:
+       Exercise list grows naturally.
+       NO height limits.
+       NO internal scrolling.
+    */
     #exerciseList {
-      max-height: 60vh;          /* controls when list starts scrolling */
-      overflow-y: auto;
       display: flex;
       flex-direction: column;
       gap: 0.5rem;
-      -webkit-overflow-scrolling: touch;
     }
   </style>
 </head>
+
 <body>
 
   <!-- NAV BAR -->
@@ -91,7 +93,7 @@
 
         <input id="workoutName" placeholder="Workout name" />
 
-        <!-- EXERCISES SCROLL TOGETHER HERE -->
+        <!-- ONE CONTINUOUS LIST -->
         <div id="exerciseList"></div>
 
         <button type="button" id="addExercise">Add Exercise</button>
@@ -109,7 +111,6 @@
     </div>
   </div>
 
-  <!-- Popup -->
   <div id="popup" class="popup hidden">Workout Saved!</div>
 
   <script src="workouts.js"></script>
