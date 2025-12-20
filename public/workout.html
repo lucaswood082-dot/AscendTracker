@@ -3,14 +3,20 @@
 <head>
   <meta charset="UTF-8" />
   <title>Create Workout</title>
-
-  <!-- MOBILE SAFE -->
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  <!-- GLOBAL STYLES -->
   <link rel="stylesheet" href="style.css" />
 
   <style>
+    /* 🔒 FORCE SCROLL BACK ON (OVERRIDES style.css) */
+    html, body {
+      height: auto !important;
+      min-height: 100% !important;
+      overflow-y: auto !important;
+      overflow-x: hidden !important;
+      -webkit-overflow-scrolling: touch !important;
+    }
+
     /* Sticky Top Navigation */
     .top-nav {
       position: sticky;
@@ -37,54 +43,26 @@
       font-size: 0.9rem;
     }
 
-    .back-btn:hover {
-      opacity: 0.85;
-    }
+    .back-btn:hover { opacity: 0.85; }
 
-    /* 🔑 SCROLL FIX — DO NOT TOUCH */
-    html, body {
-      margin: 0;
-      padding: 0;
-      min-height: 100%;
-      overflow-y: auto;
-      -webkit-overflow-scrolling: touch;
-    }
-
-    /* Normal flowing page */
+    /* MAIN PAGE FLOW — NO HEIGHT LIMITS */
     .page {
       padding: 1rem 0 2rem;
+      height: auto !important;
+      overflow: visible !important;
     }
 
-    .container {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
-
-    .card {
-      width: 100%;
-      max-width: 420px;
-      display: flex;
-      flex-direction: column;
-      gap: 0.75rem;
-    }
-
-    /* IMPORTANT:
-       - NO height limits
-       - NO overflow rules
-       - This must grow naturally
-    */
+    .container,
+    .card,
     #exerciseList {
-      display: flex;
-      flex-direction: column;
-      gap: 0.5rem;
+      height: auto !important;
+      overflow: visible !important;
     }
   </style>
 </head>
 
 <body>
 
-  <!-- NAV -->
   <div class="top-nav">Ascend</div>
 
   <div style="text-align:center;">
@@ -93,24 +71,19 @@
     </button>
   </div>
 
-  <!-- CONTENT -->
   <div class="page">
     <div class="container">
       <div class="card">
 
         <input id="workoutName" placeholder="Workout name" />
 
-        <!-- CONTINUOUS SCROLLING CONTENT -->
+        <!-- THIS WILL NOW SCROLL WITH PAGE -->
         <div id="exerciseList"></div>
 
         <button id="addExercise" type="button">Add Exercise</button>
         <button id="saveWorkout" type="button">Save Workout</button>
 
-        <button
-          class="secondary"
-          type="button"
-          onclick="location.href='view.html'"
-        >
+        <button class="secondary" type="button" onclick="location.href='view.html'">
           View My Workouts
         </button>
 
@@ -118,10 +91,8 @@
     </div>
   </div>
 
-  <!-- POPUP -->
   <div id="popup" class="popup hidden">Workout Saved!</div>
 
-  <!-- LOGIC -->
   <script src="workouts.js"></script>
 </body>
 </html>
