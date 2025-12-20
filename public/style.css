@@ -328,8 +328,22 @@ input:checked + .slider::after {
   cursor: pointer;
 }
 
-.bottom-nav .icon {
-  font-size: 1.3rem;
+.bottom-nav {
+  position: fixed;
+  bottom: env(safe-area-inset-bottom);
+  left: 0;
+  width: 100%;
+  height: 72px;
+
+  padding-bottom: env(safe-area-inset-bottom);
+  padding-top: 6px;
+
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+
+  background: #0b1f3a; /* your existing blue */
+  z-index: 100;
 }
 
 /* ACTIVE TAB */
@@ -342,20 +356,19 @@ input:checked + .slider::after {
 ================================ */
 
 .create-btn {
-  width: 58px;
-  height: 58px;
-  margin-top: -24px;
+  width: 56px;
+  height: 56px;
 
   border-radius: 50%;
-  background: #38bdf8;
-  color: #020617;
+  background: #1e90ff;
 
   display: flex;
   align-items: center;
   justify-content: center;
 
-  font-size: 1.8rem;
-  box-shadow: 0 8px 18px rgba(56, 189, 248, 0.35);
+  margin-top: -14px; /* lifts it slightly but keeps it IN the bar */
+
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.35);
 }
 
 .create-btn .icon {
@@ -372,4 +385,10 @@ input:checked + .slider::after {
 
 .page {
   padding-bottom: 90px;
+}
+.bottom-nav button {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
