@@ -395,8 +395,3 @@ input:checked + .slider::after {
 .bottom-nav button {
   transform: translateY(-16px); /* move up */
 }
-.tab-icon {
-  width: 24px;   /* adjust size */
-  height: 24px;  /* adjust size */
-  object-fit: contain;
-}
