@@ -3,7 +3,11 @@
 <head>
   <meta charset="UTF-8" />
   <title>Create Workout</title>
+
+  <!-- MOBILE SAFE -->
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- GLOBAL STYLES -->
   <link rel="stylesheet" href="style.css" />
 
   <style>
@@ -22,7 +26,6 @@
     }
 
     .back-btn {
-      display: inline-block;
       margin-top: 0.5rem;
       padding: 0.5rem 1rem;
       border-radius: 10px;
@@ -38,7 +41,7 @@
       opacity: 0.85;
     }
 
-    /* FULL PAGE SCROLL — ALWAYS */
+    /* 🔑 SCROLL FIX — DO NOT TOUCH */
     html, body {
       margin: 0;
       padding: 0;
@@ -47,26 +50,29 @@
       -webkit-overflow-scrolling: touch;
     }
 
+    /* Normal flowing page */
     .page {
-      padding-top: 1rem;
-      padding-bottom: 2rem;
+      padding: 1rem 0 2rem;
     }
 
     .container {
       display: flex;
       flex-direction: column;
+      align-items: center;
     }
 
     .card {
+      width: 100%;
+      max-width: 420px;
       display: flex;
       flex-direction: column;
       gap: 0.75rem;
     }
 
     /* IMPORTANT:
-       Exercise list grows naturally.
-       NO height limits.
-       NO internal scrolling.
+       - NO height limits
+       - NO overflow rules
+       - This must grow naturally
     */
     #exerciseList {
       display: flex;
@@ -78,30 +84,31 @@
 
 <body>
 
-  <!-- NAV BAR -->
+  <!-- NAV -->
   <div class="top-nav">Ascend</div>
 
   <div style="text-align:center;">
-    <button class="back-btn" onclick="window.location.href='dashboard.html'">
+    <button class="back-btn" onclick="location.href='dashboard.html'">
       ← Back to Dashboard
     </button>
   </div>
 
+  <!-- CONTENT -->
   <div class="page">
     <div class="container">
       <div class="card">
 
         <input id="workoutName" placeholder="Workout name" />
 
-        <!-- ONE CONTINUOUS LIST -->
+        <!-- CONTINUOUS SCROLLING CONTENT -->
         <div id="exerciseList"></div>
 
-        <button type="button" id="addExercise">Add Exercise</button>
-        <button type="button" id="saveWorkout">Save Workout</button>
+        <button id="addExercise" type="button">Add Exercise</button>
+        <button id="saveWorkout" type="button">Save Workout</button>
 
         <button
-          type="button"
           class="secondary"
+          type="button"
           onclick="location.href='view.html'"
         >
           View My Workouts
@@ -111,8 +118,10 @@
     </div>
   </div>
 
+  <!-- POPUP -->
   <div id="popup" class="popup hidden">Workout Saved!</div>
 
+  <!-- LOGIC -->
   <script src="workouts.js"></script>
 </body>
 </html>
