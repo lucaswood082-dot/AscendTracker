@@ -338,7 +338,7 @@ input:checked + .slider::after {
   left: 0;
   width: 100%;
   height: 85px; /* adjust entire bar height */
-  padding-top: 2px;
+  padding-top: -2px;
   padding-bottom: env(safe-area-inset-bottom);
   display: flex;
   justify-content: space-around;
