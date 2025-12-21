@@ -204,6 +204,7 @@ details[open] .summary-arrow {
 .popup.hidden {
   display: none;
 }
+
 /* ===== UNILATERAL TOGGLE SWITCH ===== */
 .toggle-switch {
   position: relative;
@@ -262,6 +263,7 @@ input:checked + .slider::after {
   left: 6px;
   right: auto;
 }
+
 /* ===== EXERCISE COLLAPSE ARROW ===== */
 .exercise-header {
   position: relative;
@@ -292,69 +294,17 @@ input:checked + .slider::after {
 .exercise-header:hover .arrow {
   opacity: 1;
 }
+
 /* ================================
-   Bottom Navigation (App Style)
+   Prevent content under nav
 ================================ */
-
-.bottom-nav {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
-
-  height: 70px;
-  background: #111827;
-  border-top: 1px solid #1f2937;
-
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-
-  z-index: 500;
-}
-
-/* Normal tab buttons */
-.bottom-nav button {
-  background: none;
-  border: none;
-  color: #9ca3af;
-
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0px;
-
-  font-size: 0.7rem;
-  cursor: pointer;
-}
-
-.bottom-nav {
-  position: fixed;
-  bottom: env(safe-area-inset-bottom);
-  left: 0;
-  width: 100%;
-  height: 94px;
-
-  padding-bottom: env(safe-area-inset-bottom);
-  padding-top: 6px;
-
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-
-  background: #0b1f3a; /* your existing blue */
-  z-index: 100;
-}
-
-/* ACTIVE TAB */
-.bottom-nav button.active {
-  color: #38bdf8;
+.page {
+  padding-bottom: 90px;
 }
 
 /* ================================
    CENTER CREATE BUTTON
 ================================ */
-
 .create-btn {
   width: 50px;
   height: 50px;
@@ -366,7 +316,7 @@ input:checked + .slider::after {
   align-items: center;
   justify-content: center;
 
-  margin-top: 10px; /* lifts it slightly but keeps it IN the bar */
+  margin-top: 2px; /* lifts it slightly but keeps it IN the bar */
 
   box-shadow: 0 6px 14px rgba(0, 0, 0, 0.35);
 }
@@ -380,32 +330,59 @@ input:checked + .slider::after {
 }
 
 /* ================================
-   Prevent content under nav
+   BOTTOM NAVIGATION (CLEAN & EDITABLE)
 ================================ */
-
-.page {
-  padding-bottom: 90px;
+.bottom-nav {
+  position: fixed;
+  bottom: env(safe-area-inset-bottom);
+  left: 0;
+  width: 100%;
+  height: 94px; /* adjust entire bar height */
+  padding-top: 6px;
+  padding-bottom: env(safe-area-inset-bottom);
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  background: #0b1f3a;
+  border-top: 1px solid #1f2937;
+  z-index: 100;
 }
+
+/* Bottom nav buttons */
 .bottom-nav button {
   display: flex;
-  flex-direction: column;
+  flex-direction: column;      /* icon above text */
   align-items: center;
   justify-content: center;
-}
-.bottom-nav button {
-  transform: translateY(-22px); /* move up */
-}
-/* Hide any stray icons inside the page content */
-.page .icon {
-  display: none;
-}
-.page .icon:not(.create-btn .icon) {
-  display: none !important;
+  gap: 4px;                    /* space between icon and label */
+  background: none;
+  border: none;
+  color: #9ca3af;
+  font-size: 0.7rem;
+  cursor: pointer;
+  transform: translateY(0);    /* move entire button up/down */
 }
 
-/* Bottom nav icon sizing */
+/* Active tab color */
+.bottom-nav button.active {
+  color: #38bdf8;
+}
+
+/* Bottom nav icons */
 .bottom-nav .nav-icon {
-  width: 40px;      /* adjust as needed */
+  width: 40px;        /* adjust icon size */
   height: 40px;
-  object-fit: contain;  /* preserves aspect ratio */
+  object-fit: contain; /* preserve aspect ratio */
+  display: block;
+}
+
+/* Bottom nav labels */
+.bottom-nav .label {
+  font-size: 0.7rem;  /* adjust text size */
+  margin-top: 0;      /* adjust vertical spacing relative to icon */
+}
+
+/* Optional: adjust spacing of icon and label independently */
+.bottom-nav button .icon {
+  margin-bottom: 2px; /* moves icon closer/farther from label */
 }
