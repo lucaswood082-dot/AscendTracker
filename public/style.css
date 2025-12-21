@@ -378,20 +378,6 @@ input:checked + .slider::after {
 .create-btn.active {
   background: #0ea5e9;
 }
-.create-btn {
-  transition: transform 0.12s ease;
-}
-
-.create-btn:active {
-  transform: scale(1.15);
-}
-.create-btn {
-  transition: transform 0.15s cubic-bezier(0.34, 1.56, 0.64, 1);
-}
-
-.create-btn:active {
-  transform: scale(1.18);
-}
 
 /* ================================
    Prevent content under nav
