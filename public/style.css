@@ -402,3 +402,8 @@ input:checked + .slider::after {
 .page .icon:not(.create-btn .icon) {
   display: none !important;
 }
+.bottom-nav .nav-icon {
+  width: 24px;   /* or whatever fits your bottom nav */
+  height: 24px;
+  object-fit: contain;
+}
