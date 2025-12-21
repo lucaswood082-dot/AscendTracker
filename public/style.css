@@ -409,7 +409,7 @@ input:checked + .slider::after {
 }
 /* Bottom nav icon sizing */
 .bottom-nav .nav-icon {
-  width: 24px;      /* adjust as needed */
-  height: 24px;
+  width: 30px;      /* adjust as needed */
+  height: 30px;
   object-fit: contain;  /* preserves aspect ratio */
 }
