@@ -322,7 +322,7 @@ input:checked + .slider::after {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 2px;
+  gap: 0px;
 
   font-size: 0.7rem;
   cursor: pointer;
@@ -393,7 +393,7 @@ input:checked + .slider::after {
   justify-content: center;
 }
 .bottom-nav button {
-  transform: translateY(-18px); /* move up */
+  transform: translateY(-22px); /* move up */
 }
 /* Hide any stray icons inside the page content */
 .page .icon {
