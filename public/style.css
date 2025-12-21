@@ -395,3 +395,7 @@ input:checked + .slider::after {
 .bottom-nav button {
   transform: translateY(-16px); /* move up */
 }
+/* Hide any stray icons inside the page content */
+.page .icon {
+  display: none;
+}
