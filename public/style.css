@@ -407,3 +407,9 @@ input:checked + .slider::after {
   height: 24px;
   object-fit: contain;
 }
+/* Bottom nav icon sizing */
+.bottom-nav .nav-icon {
+  width: 24px;      /* adjust as needed */
+  height: 24px;
+  object-fit: contain;  /* preserves aspect ratio */
+}
