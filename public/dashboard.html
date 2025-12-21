@@ -82,36 +82,7 @@ function goBack() {
   window.location.href = "index.html";
 }
 </script>
-<nav class="bottom-nav">
-  <button data-page="dashboard" onclick="location.href='dashboard.html'">
-    <span class="icon">🏠</span>
-    <span class="label">Home</span>
-  </button>
 
-  <button data-page="view" onclick="location.href='view.html'">
-    <span class="icon">📋</span>
-    <span class="label">Workouts</span>
-  </button>
-
-  <!-- CENTER CREATE BUTTON -->
-  <button
-    data-page="workout"
-    class="create-btn"
-    onclick="location.href='workout.html'"
-  >
-    <span class="icon">＋</span>
-  </button>
-
-  <button data-page="stats" disabled>
-    <span class="icon">📊</span>
-    <span class="label">Stats</span>
-  </button>
-
-  <button data-page="profile" disabled>
-    <span class="icon">👤</span>
-    <span class="label">Profile</span>
-  </button>
-</nav>
 <script>
   const current = location.pathname.split("/").pop().replace(".html", "");
 
