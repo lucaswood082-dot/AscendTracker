@@ -402,14 +402,10 @@ input:checked + .slider::after {
 .page .icon:not(.create-btn .icon) {
   display: none !important;
 }
-.bottom-nav .nav-icon {
-  width: 24px;   /* or whatever fits your bottom nav */
-  height: 24px;
-  object-fit: contain;
-}
+
 /* Bottom nav icon sizing */
 .bottom-nav .nav-icon {
-  width: 30px;      /* adjust as needed */
-  height: 30px;
+  width: 50px;      /* adjust as needed */
+  height: 50px;
   object-fit: contain;  /* preserves aspect ratio */
 }
