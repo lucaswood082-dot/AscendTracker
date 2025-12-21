@@ -393,7 +393,7 @@ input:checked + .slider::after {
   justify-content: center;
 }
 .bottom-nav button {
-  transform: translateY(-22px); /* move up */
+  transform: translateY(-18px); /* move up */
 }
 /* Hide any stray icons inside the page content */
 .page .icon {
