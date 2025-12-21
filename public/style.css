@@ -399,3 +399,6 @@ input:checked + .slider::after {
 .page .icon {
   display: none;
 }
+.page .icon:not(.create-btn .icon) {
+  display: none !important;
+}
