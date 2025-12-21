@@ -405,7 +405,7 @@ input:checked + .slider::after {
 
 /* Bottom nav icon sizing */
 .bottom-nav .nav-icon {
-  width: 55px;      /* adjust as needed */
-  height: 55px;
+  width: 45px;      /* adjust as needed */
+  height: 45px;
   object-fit: contain;  /* preserves aspect ratio */
 }
