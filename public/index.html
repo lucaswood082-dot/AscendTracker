@@ -4,12 +4,10 @@
   <meta charset="UTF-8" />
   <title>AscendTracker</title>
 
-  <!-- Mobile-safe viewport -->
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-
   <link rel="stylesheet" href="style.css" />
 
-  <!-- PWA -->
+  <!-- PWA Manifest -->
   <link rel="manifest" href="/manifest.json">
   <meta name="theme-color" content="#38bdf8">
 
@@ -44,7 +42,7 @@
       margin: 0;
       padding: 0;
       overflow: hidden;
-      touch-action: manipulation; /* ✅ allow taps */
+      touch-action: manipulation;
       font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
       background: #0f172a;
       color: #e5e7eb;
@@ -120,8 +118,12 @@
       document.getElementById("toggleText").addEventListener("click", toggleForm);
 
       if ('serviceWorker' in navigator) {
-        navigator.serviceWorker.register('/sw.js')
-          .catch(() => {});
+        navigator.serviceWorker.register('/sw.js').catch(() => {});
+      }
+
+      // Ensure users array exists
+      if (!localStorage.getItem("users")) {
+        localStorage.setItem("users", JSON.stringify([]));
       }
     });
 
@@ -150,7 +152,14 @@
         return;
       }
 
-      localStorage.setItem("user", JSON.stringify({ username, password }));
+      let users = JSON.parse(localStorage.getItem("users"));
+      if (users.find(u => u.username === username)) {
+        showToast("Username already exists");
+        return;
+      }
+
+      users.push({ username, password });
+      localStorage.setItem("users", JSON.stringify(users));
       showToast("Account created — log in now");
       toggleForm();
     }
@@ -158,15 +167,11 @@
     function login() {
       const username = document.getElementById("loginUsername").value.trim();
       const password = document.getElementById("loginPassword").value.trim();
-      const storedUser = JSON.parse(localStorage.getItem("user"));
+      const users = JSON.parse(localStorage.getItem("users")) || [];
 
-      if (!storedUser) {
-        showToast("No account found — sign up first");
-        return;
-      }
-
-      if (username === storedUser.username && password === storedUser.password) {
-        localStorage.setItem("currentUser", JSON.stringify(storedUser));
+      const matchedUser = users.find(u => u.username === username && u.password === password);
+      if (matchedUser) {
+        localStorage.setItem("currentUser", JSON.stringify(matchedUser));
         window.location.href = "dashboard.html";
       } else {
         showToast("Incorrect username or password");
