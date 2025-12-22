@@ -2,16 +2,17 @@
 <html lang="en">
 <head>
   <!-- Status bar / browser UI colour -->
-<meta name="theme-color" content="#111827">
+  <meta name="theme-color" content="#111827">
 
-<!-- iOS PWA status bar -->
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-capable" content="yes">
+  <!-- iOS PWA status bar -->
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-capable" content="yes">
 
   <meta charset="UTF-8" />
   <title>Dashboard</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="stylesheet" href="style.css" />
+
   <style>
     .top-nav {
       position: sticky;
@@ -58,47 +59,23 @@
       <button onclick="location.href='workout.html'">Create Workout</button>
       <button class="secondary" onclick="location.href='view.html'">View My Workouts</button>
     </div>
+
+    <!-- Planner Preview Card -->
+    <div class="card planner-card">
+      <div class="planner-header">
+        <h3>Planner</h3>
+        <button class="planner-link" onclick="location.href='planner.html'">
+          Show more →
+        </button>
+      </div>
+      <div id="plannerPreview" class="planner-preview">
+        <p class="planner-empty">No workout planned for today</p>
+      </div>
+    </div>
+
   </div>
 </div>
 
-<script>
-// Redirect if not logged in
-window.addEventListener("DOMContentLoaded", () => {
-  const currentUser = JSON.parse(localStorage.getItem("currentUser"));
-  if (!currentUser) {
-    setTimeout(() => window.location.href = "index.html", 50);
-  } else {
-    document.getElementById("dashboardTitle").textContent =
-      `Welcome, ${currentUser.username}`;
-  }
-  <!-- PLANNER PREVIEW CARD -->
-<div class="card planner-card">
-  <div class="planner-header">
-    <h3>Planner</h3>
-    <button
-      class="planner-link"
-      onclick="location.href='planner.html'"
-    >
-      Show more →
-    </button>
-  </div>
-
-  <div id="plannerPreview" class="planner-preview">
-    <p class="planner-empty">No workout planned for today</p>
-  </div>
-</div>
-
-});
-
-function logout() {
-  localStorage.removeItem("currentUser");
-  window.location.href = "index.html";
-}
-
-function goBack() {
-  window.location.href = "index.html";
-}
-</script>
 <!-- BOTTOM NAVIGATION -->
 <nav class="bottom-nav">
   <!-- Home -->
@@ -117,12 +94,8 @@ function goBack() {
     <span class="label">Workouts</span>
   </button>
 
-  <!-- CENTER CREATE BUTTON (UNCHANGED) -->
-  <button
-    data-page="workout"
-    class="create-btn"
-    onclick="location.href='workout.html'"
-  >
+  <!-- CENTER CREATE BUTTON -->
+  <button data-page="workout" class="create-btn" onclick="location.href='workout.html'">
     <span class="icon">＋</span>
   </button>
 
@@ -143,30 +116,35 @@ function goBack() {
   </button>
 </nav>
 
-
 <script>
-  const current = location.pathname.split("/").pop().replace(".html", "");
-
-  document.querySelectorAll(".bottom-nav button").forEach(btn => {
-    if (btn.dataset.page === current) {
-      btn.classList.add("active");
+  // Redirect if not logged in
+  window.addEventListener("DOMContentLoaded", () => {
+    const currentUser = JSON.parse(localStorage.getItem("currentUser"));
+    if (!currentUser) {
+      setTimeout(() => window.location.href = "index.html", 50);
+    } else {
+      document.getElementById("dashboardTitle").textContent =
+        `Welcome, ${currentUser.username}`;
     }
-  });
-</script>
-<script>
-  document.addEventListener("DOMContentLoaded", () => {
-    const logoutBtn = document.getElementById("logoutBtn");
 
+    const logoutBtn = document.getElementById("logoutBtn");
     if (logoutBtn) {
       logoutBtn.addEventListener("click", () => {
-        localStorage.clear();
+        // Only log out user, do NOT delete accounts
+        localStorage.removeItem("currentUser");
         window.location.href = "index.html";
       });
     }
+
+    // Highlight active bottom nav button
+    const current = location.pathname.split("/").pop().replace(".html", "");
+    document.querySelectorAll(".bottom-nav button").forEach(btn => {
+      if (btn.dataset.page === current) {
+        btn.classList.add("active");
+      }
+    });
   });
 </script>
-</body>
-</html>
 
 </body>
 </html>
