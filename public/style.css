@@ -384,7 +384,7 @@ input:checked + .slider::after {
 
 .planner-card {
   margin-top: 20px;             /* moves card lower on the page */
-  background: #111827;
+  background: #111827;          /* matches other cards */
   border-radius: 14px;
   padding: 1.25rem;
   border: 1px solid #1f2937;
@@ -392,7 +392,6 @@ input:checked + .slider::after {
 
 .planner-header {
   display: flex;
-  justify-content: flex-start;  /* keep only title on the left */
   align-items: center;
   margin-bottom: 0.5rem;
 }
@@ -403,23 +402,21 @@ input:checked + .slider::after {
   color: #e5e7eb;
 }
 
-/* remove the old 'Show more' button completely */
-
 /* Planner preview box */
 .planner-preview {
-  min-height: 80px;            /* box height */
+  min-height: 80px;             /* fixed box height */
   display: flex;
-  align-items: center;         /* vertically center text */
-  justify-content: center;     /* horizontally center text */
+  align-items: center;          /* vertical center */
+  justify-content: center;      /* horizontal center */
   text-align: center;
   padding: 1rem;
   border-radius: 10px;
-  background: #020617;
+  background: transparent;       /* no extra color */
   border: 1px solid #1f2937;
 }
 
 .planner-preview .planner-empty {
-  margin-top: 10px;            /* moves text slightly down */
+  margin: 0;                     /* remove weird spacing */
   font-size: 0.95rem;
   color: #9ca3af;
 }
@@ -428,12 +425,12 @@ input:checked + .slider::after {
    Bottom Nav Fix
 ================================ */
 
-/* Reset any translateY on bottom nav buttons so they don't cover content */
+/* Reset all bottom nav buttons to not interfere */
 .bottom-nav button {
-  transform: none;
+  transform: none;               /* remove translateY */
 }
 
-/* Ensure page content doesn't get hidden under bottom nav */
+/* Make sure page content doesn’t go under nav */
 .page {
   padding-bottom: 100px;
 }
