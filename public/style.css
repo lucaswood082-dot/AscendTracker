@@ -414,3 +414,19 @@ input:checked + .slider::after {
   font-size: 0.9rem;
   color: #cbd5e1;
 }
+/* Planner preview adjustments */
+.planner-preview {
+  min-height: 120px;          /* extends the box downward */
+  display: flex;             /* centers text */
+  align-items: center;       /* vertical alignment */
+  justify-content: center;   /* horizontal alignment */
+  padding: 1rem;             /* optional inner spacing */
+  text-align: center;
+}
+
+/* Optional: move the "No workout planned..." text further down */
+.planner-preview .planner-empty {
+  margin-top: 10px;          /* push text down inside the box */
+  font-size: 0.95rem;        /* adjust text size if needed */
+  color: #9ca3af;            /* subtle grey text */
+}
