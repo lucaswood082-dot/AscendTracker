@@ -47,8 +47,7 @@
 <div class="top-nav">Ascend</div>
 
 <div style="text-align:center;">
-<button id="logoutBtn">Logout</button>
-
+  <button id="logoutBtn">Logout</button>
 </div>
 
 <div class="page">
@@ -154,6 +153,20 @@ function goBack() {
     }
   });
 </script>
-<script src="planner.js"></script>
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const logoutBtn = document.getElementById("logoutBtn");
+
+    if (logoutBtn) {
+      logoutBtn.addEventListener("click", () => {
+        localStorage.clear();
+        window.location.href = "login.html";
+      });
+    }
+  });
+</script>
+</body>
+</html>
+
 </body>
 </html>
