@@ -4,18 +4,13 @@
   <meta charset="UTF-8" />
   <title>AscendTracker</title>
 
-  <!-- Viewport fixed, no zoom -->
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-
   <link rel="stylesheet" href="style.css" />
-
-  <!-- PWA Manifest -->
   <link rel="manifest" href="/manifest.json">
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="theme-color" content="#38bdf8">
 
   <style>
-    /* Top navigation */
     .top-nav {
       position: sticky;
       top: 0;
@@ -75,14 +70,12 @@
 
         <h2 id="formTitle">Login</h2>
 
-        <!-- LOGIN -->
         <div id="loginForm">
           <input id="loginUsername" placeholder="Username" />
           <input id="loginPassword" type="password" placeholder="Password" />
           <button onclick="login()">Login</button>
         </div>
 
-        <!-- SIGN UP -->
         <div id="signupForm" class="hidden">
           <input id="signupUsername" placeholder="Username" />
           <input id="signupPassword" type="password" placeholder="Password" />
@@ -102,7 +95,6 @@
   <script>
     let isLogin = true;
 
-    // Auto-redirect if already logged in
     window.addEventListener("DOMContentLoaded", () => {
       const currentUser = JSON.parse(localStorage.getItem("currentUser"));
       if (currentUser) {
@@ -132,17 +124,14 @@
       setTimeout(() => toast.classList.remove("show"), 2500);
     }
 
-    // Sign-up creates a persistent account
     function signup() {
       const username = document.getElementById("signupUsername").value.trim();
       const password = document.getElementById("signupPassword").value.trim();
       if (!username || !password) return showToast("Please fill out all fields");
 
-      // Get all users or empty array
       const users = JSON.parse(localStorage.getItem("users")) || [];
 
-      // Check if username already exists
-      if (users.find(u => u.username === username)) {
+      if (users.some(u => u.username === username)) {
         return showToast("Username already exists");
       }
 
@@ -169,7 +158,6 @@
       window.location.href = "index.html";
     }
 
-    // Disable touch scrolling
     document.addEventListener('touchmove', function(e) {
       e.preventDefault();
     }, { passive: false });
