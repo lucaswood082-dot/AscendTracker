@@ -416,7 +416,7 @@ input:checked + .slider::after {
 }
 /* Planner preview adjustments */
 .planner-preview {
-  min-height: 90px;          /* extends the box downward */
+  min-height: 85px;          /* extends the box downward */
   display: flex;             /* centers text */
   align-items: center;       /* vertical alignment */
   justify-content: center;   /* horizontal alignment */
