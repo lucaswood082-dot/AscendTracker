@@ -4,14 +4,18 @@
   <meta charset="UTF-8" />
   <title>AscendTracker</title>
 
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+  <!-- Viewport fixed, no zoom -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
   <link rel="stylesheet" href="style.css" />
 
   <!-- PWA Manifest -->
   <link rel="manifest" href="/manifest.json">
+  <meta name="mobile-web-app-capable" content="yes">
   <meta name="theme-color" content="#38bdf8">
 
   <style>
+    /* Top navigation */
     .top-nav {
       position: sticky;
       top: 0;
@@ -26,23 +30,15 @@
     }
 
     .page { padding-top: 1rem; }
-
-    .toggle-text {
-      text-align: center;
-      margin-top: 1rem;
-      font-size: 0.9rem;
-      color: #9ca3af;
-      cursor: pointer;
-    }
-
+    .toggle-text { text-align: center; margin-top: 1rem; font-size: 0.9rem; color: #9ca3af; cursor: pointer; }
     .hidden { display: none; }
 
     html, body {
+      overflow: hidden;
+      touch-action: none;
       height: 100%;
       margin: 0;
       padding: 0;
-      overflow: hidden;
-      touch-action: manipulation;
       font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
       background: #0f172a;
       color: #e5e7eb;
@@ -50,17 +46,17 @@
 
     .toast {
       position: fixed;
-      bottom: 100px;
+      bottom: 20px;
       left: 50%;
       transform: translateX(-50%);
-      background: #020617;
-      color: white;
-      padding: 0.75rem 1.25rem;
-      border-radius: 999px;
-      font-size: 0.9rem;
+      background: #38bdf8;
+      color: #020617;
+      padding: 12px 20px;
+      border-radius: 10px;
+      font-weight: 600;
       opacity: 0;
       transition: opacity 0.3s ease;
-      pointer-events: none;
+      z-index: 1000;
     }
 
     .toast.show {
@@ -83,17 +79,17 @@
         <div id="loginForm">
           <input id="loginUsername" placeholder="Username" />
           <input id="loginPassword" type="password" placeholder="Password" />
-          <button id="loginBtn">Login</button>
+          <button onclick="login()">Login</button>
         </div>
 
         <!-- SIGN UP -->
         <div id="signupForm" class="hidden">
           <input id="signupUsername" placeholder="Username" />
           <input id="signupPassword" type="password" placeholder="Password" />
-          <button id="signupBtn">Sign Up</button>
+          <button onclick="signup()">Sign Up</button>
         </div>
 
-        <div class="toggle-text" id="toggleText">
+        <div class="toggle-text" onclick="toggleForm()">
           Don’t have an account? Sign up
         </div>
 
@@ -106,24 +102,17 @@
   <script>
     let isLogin = true;
 
+    // Auto-redirect if already logged in
     window.addEventListener("DOMContentLoaded", () => {
       const currentUser = JSON.parse(localStorage.getItem("currentUser"));
       if (currentUser) {
-        window.location.href = "dashboard.html";
-        return;
+        setTimeout(() => window.location.href = "dashboard.html", 50);
       }
-
-      document.getElementById("loginBtn").addEventListener("click", login);
-      document.getElementById("signupBtn").addEventListener("click", signup);
-      document.getElementById("toggleText").addEventListener("click", toggleForm);
 
       if ('serviceWorker' in navigator) {
-        navigator.serviceWorker.register('/sw.js').catch(() => {});
-      }
-
-      // Ensure users array exists
-      if (!localStorage.getItem("users")) {
-        localStorage.setItem("users", JSON.stringify([]));
+        navigator.serviceWorker.register('/sw.js')
+          .then(() => console.log('Service Worker registered'))
+          .catch(err => console.error('Service Worker failed:', err));
       }
     });
 
@@ -132,7 +121,7 @@
       document.getElementById("loginForm").classList.toggle("hidden");
       document.getElementById("signupForm").classList.toggle("hidden");
       document.getElementById("formTitle").textContent = isLogin ? "Login" : "Sign Up";
-      document.getElementById("toggleText").textContent =
+      document.querySelector(".toggle-text").textContent =
         isLogin ? "Don’t have an account? Sign up" : "Already have an account? Login";
     }
 
@@ -143,47 +132,47 @@
       setTimeout(() => toast.classList.remove("show"), 2500);
     }
 
+    // Sign-up creates a persistent account
     function signup() {
-  const username = document.getElementById("signupUsername").value.trim();
-  const password = document.getElementById("signupPassword").value.trim();
-  if (!username || !password) return showToast("Please fill out all fields");
+      const username = document.getElementById("signupUsername").value.trim();
+      const password = document.getElementById("signupPassword").value.trim();
+      if (!username || !password) return showToast("Please fill out all fields");
 
-  // Get existing users or start new array
-  const users = JSON.parse(localStorage.getItem("users")) || [];
+      // Get all users or empty array
+      const users = JSON.parse(localStorage.getItem("users")) || [];
 
-  // Check if username already exists
-  if (users.some(u => u.username === username)) {
-    return showToast("Username already exists");
-  }
+      // Check if username already exists
+      if (users.find(u => u.username === username)) {
+        return showToast("Username already exists");
+      }
 
-  // Add new user
-  users.push({ username, password });
-  localStorage.setItem("users", JSON.stringify(users));
+      users.push({ username, password });
+      localStorage.setItem("users", JSON.stringify(users));
+      showToast("Account created! You can now log in");
+      toggleForm();
+    }
 
-  showToast("Account created! You can now log in");
-  toggleForm();
-}
+    function login() {
+      const username = document.getElementById("loginUsername").value.trim();
+      const password = document.getElementById("loginPassword").value.trim();
+      const users = JSON.parse(localStorage.getItem("users")) || [];
 
-function login() {
-  const username = document.getElementById("loginUsername").value.trim();
-  const password = document.getElementById("loginPassword").value.trim();
-  const users = JSON.parse(localStorage.getItem("users")) || [];
+      const matchedUser = users.find(u => u.username === username && u.password === password);
+      if (!matchedUser) return showToast("Incorrect username or password");
 
-  const user = users.find(u => u.username === username && u.password === password);
-  if (user) {
-    localStorage.setItem("currentUser", JSON.stringify(user));
-    window.location.href = "dashboard.html";
-  } else {
-    showToast("Incorrect username or password");
-  }
-}
+      localStorage.setItem("currentUser", JSON.stringify(matchedUser));
+      window.location.href = "dashboard.html";
+    }
 
-function logout() {
-  localStorage.removeItem("currentUser"); // only logs out, does NOT delete account
-  window.location.href = "index.html";
-}
+    function logout() {
+      localStorage.removeItem("currentUser");
+      window.location.href = "index.html";
+    }
 
+    // Disable touch scrolling
+    document.addEventListener('touchmove', function(e) {
+      e.preventDefault();
+    }, { passive: false });
   </script>
-
 </body>
 </html>
