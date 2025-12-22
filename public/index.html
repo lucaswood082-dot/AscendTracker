@@ -11,7 +11,6 @@
   <meta name="theme-color" content="#38bdf8">
 
   <style>
-    /* Top nav styling */
     .top-nav {
       position: sticky;
       top: 0;
@@ -25,16 +24,8 @@
       font-size: 1.2rem;
     }
 
-    /* Page layout */
     .page { padding-top: 1rem; }
-    .toggle-text {
-      text-align: center;
-      margin-top: 1rem;
-      font-size: 0.9rem;
-      color: #9ca3af;
-      cursor: pointer;
-      user-select: none;
-    }
+    .toggle-text { text-align: center; margin-top: 1rem; font-size: 0.9rem; color: #9ca3af; cursor: pointer; }
     .hidden { display: none; }
 
     html, body {
@@ -45,48 +36,6 @@
       padding: 0;
       font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
       background: #0f172a;
-      color: #e5e7eb;
-    }
-
-    input, button {
-      font-family: inherit;
-      font-size: 16px;
-      border-radius: 10px;
-      outline: none; /* remove default focus outline */
-    }
-
-    input {
-      width: 100%;
-      padding: 0.75rem;
-      border: 1px solid #1f2937;
-      background: #020617;
-      color: white;
-      margin-bottom: 0.75rem;
-    }
-
-    input:focus {
-      border-color: #38bdf8;
-      box-shadow: 0 0 0 2px rgba(56, 189, 248, 0.3); /* subtle focus effect */
-    }
-
-    button {
-      width: 100%;
-      padding: 0.75rem;
-      border: none;
-      background: #38bdf8;
-      color: #020617;
-      font-weight: 600;
-      cursor: pointer;
-      margin-top: 0.5rem;
-      transition: transform 0.1s ease;
-    }
-
-    button:active {
-      transform: scale(0.97); /* simple press effect */
-    }
-
-    button.secondary {
-      background: #1f2937;
       color: #e5e7eb;
     }
 
@@ -112,11 +61,13 @@
 </head>
 
 <body>
+
   <div class="top-nav">Ascend</div>
 
   <div class="page">
     <div class="container">
       <div class="card">
+
         <h2 id="formTitle">Login</h2>
 
         <div id="loginForm">
@@ -134,6 +85,7 @@
         <div class="toggle-text" onclick="toggleForm()">
           Don’t have an account? Sign up
         </div>
+
       </div>
     </div>
   </div>
@@ -143,10 +95,11 @@
   <script>
     let isLogin = true;
 
-    // Auto-redirect if logged in
     window.addEventListener("DOMContentLoaded", () => {
       const currentUser = JSON.parse(localStorage.getItem("currentUser"));
-      if (currentUser) window.location.href = "dashboard.html";
+      if (currentUser) {
+        setTimeout(() => window.location.href = "dashboard.html", 50);
+      }
 
       if ('serviceWorker' in navigator) {
         navigator.serviceWorker.register('/sw.js')
@@ -177,7 +130,10 @@
       if (!username || !password) return showToast("Please fill out all fields");
 
       const users = JSON.parse(localStorage.getItem("users")) || [];
-      if (users.some(u => u.username === username)) return showToast("Username already exists");
+
+      if (users.some(u => u.username === username)) {
+        return showToast("Username already exists");
+      }
 
       users.push({ username, password });
       localStorage.setItem("users", JSON.stringify(users));
@@ -202,7 +158,9 @@
       window.location.href = "index.html";
     }
 
-    document.addEventListener('touchmove', e => e.preventDefault(), { passive: false });
+    document.addEventListener('touchmove', function(e) {
+      e.preventDefault();
+    }, { passive: false });
   </script>
 </body>
 </html>
