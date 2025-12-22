@@ -418,4 +418,9 @@ input:checked + .slider::after {
   font-size: 0.95rem;        /* adjust text size if needed */
   color: #9ca3af;            /* subtle grey text */
 }
+.planner-preview p {
+  margin: 0;
+  font-size: 0.9rem;
+  color: #cbd5e1;
+}
 
