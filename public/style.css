@@ -379,7 +379,7 @@ input:checked + .slider::after {
   background: #0ea5e9;
 }
 /* ================================
-   Planner Card & Preview
+   Planner Card & Preview (Clean)
 ================================ */
 
 .planner-card {
@@ -392,7 +392,7 @@ input:checked + .slider::after {
 
 .planner-header {
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-start;  /* keep only title on the left */
   align-items: center;
   margin-bottom: 0.5rem;
 }
@@ -403,39 +403,37 @@ input:checked + .slider::after {
   color: #e5e7eb;
 }
 
-.planner-link {
-  background: none;
-  border: none;
-  color: #38bdf8;
-  font-weight: 600;
-  cursor: pointer;
-  font-size: 0.9rem;
-  padding: 0;
-}
+/* remove the old 'Show more' button completely */
 
-.planner-link:hover {
-  text-decoration: underline;
-}
-
+/* Planner preview box */
 .planner-preview {
-  min-height: 80px;            /* keeps box height reasonable */
+  min-height: 80px;            /* box height */
   display: flex;
-  align-items: flex-start;      /* align text towards top (not perfectly centered) */
-  justify-content: center;
-  padding-top: 20px;            /* moves text slightly down inside the box */
+  align-items: center;         /* vertically center text */
+  justify-content: center;     /* horizontally center text */
   text-align: center;
+  padding: 1rem;
   border-radius: 10px;
   background: #020617;
   border: 1px solid #1f2937;
 }
 
 .planner-preview .planner-empty {
-  margin-top: 10px;            /* optional small adjustment inside box */
+  margin-top: 10px;            /* moves text slightly down */
   font-size: 0.95rem;
   color: #9ca3af;
 }
 
-/* Optional: spacing at bottom of page to avoid bottom nav overlap */
+/* ================================
+   Bottom Nav Fix
+================================ */
+
+/* Reset any translateY on bottom nav buttons so they don't cover content */
+.bottom-nav button {
+  transform: none;
+}
+
+/* Ensure page content doesn't get hidden under bottom nav */
 .page {
-  padding-bottom: 110px;       /* makes sure planner is not hidden under bottom nav */
+  padding-bottom: 100px;
 }
