@@ -409,3 +409,8 @@ input:checked + .slider::after {
   height: 40px;
   object-fit: contain;  /* preserves aspect ratio */
 }
+.planner-preview p {
+  margin: 0;
+  font-size: 0.9rem;
+  color: #cbd5e1;
+}

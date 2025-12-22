@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Planner</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="top-nav">Planner</div>
+
+<div class="page">
+  <div class="container">
+    <div class="card">
+      <h2>Schedule Workouts</h2>
+      
+      <input type="date" id="plannerDate" />
+      <input type="text" id="plannerWorkout" placeholder="Workout Name" />
+      <button onclick="addWorkout()">Add Workout</button>
+
+      <ul id="plannerList"></ul>
+    </div>
+  </div>
+</div>
+
+<script>
+function loadPlannerList() {
+  const plannerData = JSON.parse(localStorage.getItem("planner")) || {};
+  const list = document.getElementById("plannerList");
+  list.innerHTML = "";
+  Object.keys(plannerData).sort().forEach(date => {
+    const li = document.createElement("li");
+    li.textContent = `${date}: ${plannerData[date].workout}`;
+    list.appendChild(li);
+  });
+}
+
+function addWorkout() {
+  const date = document.getElementById("plannerDate").value;
+  const workout = document.getElementById("plannerWorkout").value.trim();
+  if (!date || !workout) return alert("Please fill out both fields");
+
+  const plannerData = JSON.parse(localStorage.getItem("planner")) || {};
+  plannerData[date] = { workout };
+  localStorage.setItem("planner", JSON.stringify(plannerData));
+
+  loadPlannerList();
+  document.getElementById("plannerWorkout").value = "";
+}
+
+window.addEventListener("DOMContentLoaded", loadPlannerList);
+</script>
+
+</body>
+</html>
