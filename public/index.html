@@ -4,17 +4,16 @@
   <meta charset="UTF-8" />
   <title>AscendTracker</title>
 
-  <!-- Viewport fixed, no zoom -->
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <!-- Mobile-safe viewport -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 
   <link rel="stylesheet" href="style.css" />
 
-  <!-- PWA Manifest -->
+  <!-- PWA -->
   <link rel="manifest" href="/manifest.json">
   <meta name="theme-color" content="#38bdf8">
 
   <style>
-    /* Top navigation */
     .top-nav {
       position: sticky;
       top: 0;
@@ -29,17 +28,45 @@
     }
 
     .page { padding-top: 1rem; }
-    .toggle-text { text-align: center; margin-top: 1rem; font-size: 0.9rem; color: #9ca3af; cursor: pointer; }
+
+    .toggle-text {
+      text-align: center;
+      margin-top: 1rem;
+      font-size: 0.9rem;
+      color: #9ca3af;
+      cursor: pointer;
+    }
+
     .hidden { display: none; }
 
-    /* Prevent overscroll on mobile */
     html, body {
-      overflow: hidden;
-      touch-action: none;
-      -ms-touch-action: none;
       height: 100%;
       margin: 0;
       padding: 0;
+      overflow: hidden;
+      touch-action: manipulation; /* ✅ allow taps */
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+      background: #0f172a;
+      color: #e5e7eb;
+    }
+
+    .toast {
+      position: fixed;
+      bottom: 100px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #020617;
+      color: white;
+      padding: 0.75rem 1.25rem;
+      border-radius: 999px;
+      font-size: 0.9rem;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      pointer-events: none;
+    }
+
+    .toast.show {
+      opacity: 1;
     }
   </style>
 </head>
@@ -58,17 +85,17 @@
         <div id="loginForm">
           <input id="loginUsername" placeholder="Username" />
           <input id="loginPassword" type="password" placeholder="Password" />
-          <button onclick="login()">Login</button>
+          <button id="loginBtn">Login</button>
         </div>
 
         <!-- SIGN UP -->
         <div id="signupForm" class="hidden">
           <input id="signupUsername" placeholder="Username" />
           <input id="signupPassword" type="password" placeholder="Password" />
-          <button onclick="signup()">Sign Up</button>
+          <button id="signupBtn">Sign Up</button>
         </div>
 
-        <div class="toggle-text" onclick="toggleForm()">
+        <div class="toggle-text" id="toggleText">
           Don’t have an account? Sign up
         </div>
 
@@ -81,18 +108,20 @@
   <script>
     let isLogin = true;
 
-    // Auto-redirect if already logged in
     window.addEventListener("DOMContentLoaded", () => {
       const currentUser = JSON.parse(localStorage.getItem("currentUser"));
       if (currentUser) {
-        setTimeout(() => window.location.href = "dashboard.html", 50);
+        window.location.href = "dashboard.html";
+        return;
       }
 
-      // Register Service Worker for PWA
+      document.getElementById("loginBtn").addEventListener("click", login);
+      document.getElementById("signupBtn").addEventListener("click", signup);
+      document.getElementById("toggleText").addEventListener("click", toggleForm);
+
       if ('serviceWorker' in navigator) {
         navigator.serviceWorker.register('/sw.js')
-          .then(() => console.log('Service Worker registered'))
-          .catch(err => console.error('Service Worker failed:', err));
+          .catch(() => {});
       }
     });
 
@@ -101,7 +130,7 @@
       document.getElementById("loginForm").classList.toggle("hidden");
       document.getElementById("signupForm").classList.toggle("hidden");
       document.getElementById("formTitle").textContent = isLogin ? "Login" : "Sign Up";
-      document.querySelector(".toggle-text").textContent =
+      document.getElementById("toggleText").textContent =
         isLogin ? "Don’t have an account? Sign up" : "Already have an account? Login";
     }
 
@@ -115,10 +144,14 @@
     function signup() {
       const username = document.getElementById("signupUsername").value.trim();
       const password = document.getElementById("signupPassword").value.trim();
-      if (!username || !password) return showToast("Please fill out all fields");
+
+      if (!username || !password) {
+        showToast("Please fill out all fields");
+        return;
+      }
 
       localStorage.setItem("user", JSON.stringify({ username, password }));
-      showToast("Account created! You can now log in");
+      showToast("Account created — log in now");
       toggleForm();
     }
 
@@ -126,7 +159,11 @@
       const username = document.getElementById("loginUsername").value.trim();
       const password = document.getElementById("loginPassword").value.trim();
       const storedUser = JSON.parse(localStorage.getItem("user"));
-      if (!storedUser) return showToast("No account found. Please sign up");
+
+      if (!storedUser) {
+        showToast("No account found — sign up first");
+        return;
+      }
 
       if (username === storedUser.username && password === storedUser.password) {
         localStorage.setItem("currentUser", JSON.stringify(storedUser));
@@ -135,11 +172,7 @@
         showToast("Incorrect username or password");
       }
     }
-
-    // Prevent all touch scrolling / dragging
-    document.addEventListener('touchmove', function(e) {
-      e.preventDefault();
-    }, { passive: false });
   </script>
+
 </body>
 </html>
