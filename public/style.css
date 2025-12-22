@@ -211,3 +211,8 @@ button.danger {
 .page {
   padding-bottom: 100px;
 }
+/* ===== FIX: STOP BOTTOM NAV BUTTONS FROM BEING FULL WIDTH ===== */
+.bottom-nav button {
+  width: auto !important;
+  flex: 1;
+}
