@@ -402,21 +402,9 @@ input:checked + .slider::after {
 .page .icon:not(.create-btn .icon) {
   display: none !important;
 }
-
-/* Bottom nav icon sizing */
-.bottom-nav .nav-icon {
-  width: 40px;      /* adjust as needed */
-  height: 40px;
-  object-fit: contain;  /* preserves aspect ratio */
-}
-.planner-preview p {
-  margin: 0;
-  font-size: 0.9rem;
-  color: #cbd5e1;
-}
 /* Planner preview adjustments */
 .planner-preview {
-  min-height: 85px;          /* extends the box downward */
+  min-height: 80px;          /* extends the box downward */
   display: flex;             /* centers text */
   align-items: center;       /* vertical alignment */
   justify-content: center;   /* horizontal alignment */
@@ -430,3 +418,4 @@ input:checked + .slider::after {
   font-size: 0.95rem;        /* adjust text size if needed */
   color: #9ca3af;            /* subtle grey text */
 }
+
