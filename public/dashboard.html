@@ -117,33 +117,40 @@
 </nav>
 
 <script>
-  // Redirect if not logged in
-  window.addEventListener("DOMContentLoaded", () => {
-    const currentUser = JSON.parse(localStorage.getItem("currentUser"));
-    if (!currentUser) {
-      setTimeout(() => window.location.href = "index.html", 50);
-    } else {
-      document.getElementById("dashboardTitle").textContent =
-        `Welcome, ${currentUser.username}`;
-    }
+window.addEventListener("DOMContentLoaded", () => {
+  const currentUser = JSON.parse(localStorage.getItem("currentUser"));
+  if (!currentUser) {
+    setTimeout(() => window.location.href = "index.html", 50);
+    return;
+  }
 
-    const logoutBtn = document.getElementById("logoutBtn");
-    if (logoutBtn) {
-      logoutBtn.addEventListener("click", () => {
-        // Only log out user, do NOT delete accounts
-        localStorage.removeItem("currentUser");
-        window.location.href = "index.html";
-      });
-    }
+  document.getElementById("dashboardTitle").textContent = `Welcome, ${currentUser.username}`;
 
-    // Highlight active bottom nav button
-    const current = location.pathname.split("/").pop().replace(".html", "");
-    document.querySelectorAll(".bottom-nav button").forEach(btn => {
-      if (btn.dataset.page === current) {
-        btn.classList.add("active");
-      }
+  // Logout button
+  const logoutBtn = document.getElementById("logoutBtn");
+  if (logoutBtn) {
+    logoutBtn.addEventListener("click", () => {
+      localStorage.removeItem("currentUser"); // do NOT delete all accounts
+      window.location.href = "index.html";
     });
+  }
+
+  // Highlight active bottom nav button
+  const current = location.pathname.split("/").pop().replace(".html", "");
+  document.querySelectorAll(".bottom-nav button").forEach(btn => {
+    if (btn.dataset.page === current) btn.classList.add("active");
   });
+
+  // Planner Preview
+  const plannerData = JSON.parse(localStorage.getItem("planner")) || {};
+  const today = new Date().toISOString().split('T')[0]; // yyyy-mm-dd
+  const todayWorkout = plannerData[today];
+
+  const previewDiv = document.getElementById("plannerPreview");
+  previewDiv.innerHTML = todayWorkout
+    ? `<p>${todayWorkout.workout}</p>`
+    : `<p class="planner-empty">No workout planned for today</p>`;
+});
 </script>
 
 </body>
