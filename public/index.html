@@ -144,39 +144,45 @@
     }
 
     function signup() {
-      const username = document.getElementById("signupUsername").value.trim();
-      const password = document.getElementById("signupPassword").value.trim();
+  const username = document.getElementById("signupUsername").value.trim();
+  const password = document.getElementById("signupPassword").value.trim();
+  if (!username || !password) return showToast("Please fill out all fields");
 
-      if (!username || !password) {
-        showToast("Please fill out all fields");
-        return;
-      }
+  // Get existing users or start new array
+  const users = JSON.parse(localStorage.getItem("users")) || [];
 
-      let users = JSON.parse(localStorage.getItem("users"));
-      if (users.find(u => u.username === username)) {
-        showToast("Username already exists");
-        return;
-      }
+  // Check if username already exists
+  if (users.some(u => u.username === username)) {
+    return showToast("Username already exists");
+  }
 
-      users.push({ username, password });
-      localStorage.setItem("users", JSON.stringify(users));
-      showToast("Account created — log in now");
-      toggleForm();
-    }
+  // Add new user
+  users.push({ username, password });
+  localStorage.setItem("users", JSON.stringify(users));
 
-    function login() {
-      const username = document.getElementById("loginUsername").value.trim();
-      const password = document.getElementById("loginPassword").value.trim();
-      const users = JSON.parse(localStorage.getItem("users")) || [];
+  showToast("Account created! You can now log in");
+  toggleForm();
+}
 
-      const matchedUser = users.find(u => u.username === username && u.password === password);
-      if (matchedUser) {
-        localStorage.setItem("currentUser", JSON.stringify(matchedUser));
-        window.location.href = "dashboard.html";
-      } else {
-        showToast("Incorrect username or password");
-      }
-    }
+function login() {
+  const username = document.getElementById("loginUsername").value.trim();
+  const password = document.getElementById("loginPassword").value.trim();
+  const users = JSON.parse(localStorage.getItem("users")) || [];
+
+  const user = users.find(u => u.username === username && u.password === password);
+  if (user) {
+    localStorage.setItem("currentUser", JSON.stringify(user));
+    window.location.href = "dashboard.html";
+  } else {
+    showToast("Incorrect username or password");
+  }
+}
+
+function logout() {
+  localStorage.removeItem("currentUser"); // only logs out, does NOT delete account
+  window.location.href = "index.html";
+}
+
   </script>
 
 </body>
