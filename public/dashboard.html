@@ -71,6 +71,23 @@ window.addEventListener("DOMContentLoaded", () => {
     document.getElementById("dashboardTitle").textContent =
       `Welcome, ${currentUser.username}`;
   }
+  <!-- PLANNER PREVIEW CARD -->
+<div class="card planner-card">
+  <div class="planner-header">
+    <h3>Planner</h3>
+    <button
+      class="planner-link"
+      onclick="location.href='planner.html'"
+    >
+      Show more →
+    </button>
+  </div>
+
+  <div id="plannerPreview" class="planner-preview">
+    <p class="planner-empty">No workout planned for today</p>
+  </div>
+</div>
+
 });
 
 function logout() {
@@ -136,6 +153,7 @@ function goBack() {
     }
   });
 </script>
+<script src="planner.js"></script>
 
 </body>
 </html>
