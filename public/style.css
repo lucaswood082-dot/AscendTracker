@@ -403,14 +403,3 @@ input:checked + .slider::after {
   display: none !important;
 }
 
-/* Bottom nav icon sizing */
-.bottom-nav .nav-icon {
-  width: 40px;      /* adjust as needed */
-  height: 40px;
-  object-fit: contain;  /* preserves aspect ratio */
-}
-.planner-preview p {
-  margin: 0;
-  font-size: 0.9rem;
-  color: #cbd5e1;
-}
