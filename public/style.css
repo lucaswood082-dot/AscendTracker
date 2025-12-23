@@ -15,7 +15,7 @@ html, body {
   background: #0f172a;
   color: #e5e7eb;
   font-size: 16px;
-  font-weight: 400;
+  font-weight: 400; /* normal text */
 }
 
 /* ===== SCROLL ENABLE ===== */
@@ -31,7 +31,7 @@ html, body {
   justify-content: center;
   align-items: flex-start;
   padding-top: 1rem;
-  padding-bottom: 200px;
+  padding-bottom: 200px; /* extra space for bottom nav */
 }
 
 .container {
@@ -140,7 +140,7 @@ ul, ol, li {
 .exercise-header .arrow {
   position: absolute;
   right: 12px;
-  top: 50%;
+  top: 50%; /* adjust vertical position here */
   transform: translateY(-50%);
   display: flex;
   align-items: center;
@@ -156,10 +156,10 @@ ul, ol, li {
   transform: translateY(-50%) rotate(180deg);
 }
 
-/* ===== SET ROWS & UNIFORM HEIGHT ===== */
+/* ===== SET ROWS WITH PROPER GAP ===== */
 .set-row {
   display: flex;
-  gap: 0.75rem; /* spacing between all boxes/buttons */
+  gap: 0.75rem; /* gap between Reps, Weight, Add, Remove */
   margin-bottom: 0.75rem;
 }
 
@@ -175,11 +175,6 @@ ul, ol, li {
   display: flex;
   align-items: center;
   justify-content: center;
-}
-
-/* ===== FIX GAP BETWEEN REPS AND ADD/REMOVE BUTTONS ===== */
-.set-row .reps-box {
-  margin-right: 0.75rem; /* visible gap between Reps input and Add Set button */
 }
 
 /* ===== PLANNER ===== */
