@@ -232,7 +232,7 @@ button.danger {
 
   /* restore essentials */
   font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
-  font-size: 1rem;
+  font-size: 0.8.5rem;
   color: #9ca3af;
 }
 
@@ -242,8 +242,8 @@ button.danger {
 
 /* IMAGE ICONS */
 .bottom-nav img.nav-icon {
-  width: 22px;
-  height: 22px;
+  width: 25px;
+  height: 25px;
   display: block;
 }
 
