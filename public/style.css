@@ -10,7 +10,7 @@ html, body {
   padding: 0;
   width: 100%;
   height: 100%;
-  overflow: hidden;               
+  overflow: hidden;               /* 🔒 LOCKED BY DEFAULT */
   font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
   background: #0f172a;
   color: #e5e7eb;
@@ -29,7 +29,7 @@ html, body {
   justify-content: center;
   align-items: flex-start;
   padding-top: 1rem;
-  padding-bottom: 2rem; /* extra for bottom nav */
+  padding-bottom: 2rem;
 }
 
 .container {
@@ -63,7 +63,7 @@ select {
   background: #020617;
   color: white;
   margin-bottom: 0.75rem;
-  font-size: 16px;        
+  font-size: 16px;        /* ✅ PREVENTS iOS ZOOM */
 }
 
 input:focus {
@@ -94,31 +94,58 @@ button.danger {
   color: white;
 }
 
-/* ===== PLANNER CARD & PREVIEW ===== */
-.planner-card {
-  margin-top: 20px;             
-  background: #111827;          
-  border-radius: 14px;
-  padding: 1.25rem;
+/* ===== EXERCISES ===== */
+.exercise,
+.exercise-card {
   border: 1px solid #1f2937;
-}
-
-.planner-preview {
-  min-height: 80px;             
-  display: flex;
-  align-items: center;          
-  justify-content: center;      
-  text-align: center;
+  border-radius: 12px;
   padding: 1rem;
-  border-radius: 10px;
-  background: transparent;       
-  border: 1px solid #1f2937;
+  margin-top: 1rem;
+  background: #111827;
 }
 
-.planner-preview .planner-empty {
-  margin: 0;                     
-  font-size: 0.95rem;
-  color: #9ca3af;
+.exercise-item,
+.set-item,
+.sets-list li {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+/* ===== SET ROWS ===== */
+.set-row {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.set-row input {
+  flex: 1;
+  margin-bottom: 0;
+}
+
+/* ===== VIEW WORKOUTS ===== */
+details {
+  background: #020617;
+  border: 1px solid #1f2937;
+  border-radius: 12px;
+  padding: 1rem;
+  margin-bottom: 1rem;
+}
+
+summary {
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.summary-arrow {
+  display: inline-block;
+  margin-right: 8px;
+  transition: transform 0.3s ease;
+}
+
+details[open] .summary-arrow {
+  transform: rotate(90deg);
 }
 
 /* ===== STICKY NAV ===== */
@@ -152,50 +179,195 @@ button.danger {
   text-decoration: underline;
 }
 
-/* ===== BOTTOM NAV ===== */
+/* ===== POPUP ===== */
+.popup {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background-color: #4caf50;
+  color: white;
+  padding: 15px 25px;
+  border-radius: 10px;
+  font-weight: bold;
+  font-size: 16px;
+  opacity: 0;
+  transform: translateY(-20px);
+  transition: opacity 0.4s ease, transform 0.4s ease;
+  z-index: 1000;
+}
+
+.popup.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.popup.hidden {
+  display: none;
+}
+/* ===== UNILATERAL TOGGLE SWITCH ===== */
+.toggle-switch {
+  position: relative;
+  display: inline-block;
+  width: 60px;
+  height: 28px;
+}
+
+.toggle-switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  inset: 0;
+  background-color: #1f2937; /* OFF background */
+  border-radius: 8px;
+  border: 1px solid #38bdf8;
+  transition: 0.3s;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 4px;
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: #cbd5e1;
+  user-select: none;
+}
+
+.slider::before {
+  content: "";
+  position: absolute;
+  height: 20px;
+  width: 26px;
+  left: 2px;
+  bottom: 3px;
+  background-color: #38bdf8;
+  border-radius: 6px;
+  transition: 0.3s;
+}
+
+input:checked + .slider::before {
+  transform: translateX(28px);
+}
+
+.slider::after {
+  content: "OFF";
+  position: absolute;
+  right: 6px;
+}
+
+input:checked + .slider::after {
+  content: "ON";
+  left: 6px;
+  right: auto;
+}
+/* ===== EXERCISE COLLAPSE ARROW ===== */
+.exercise-header {
+  position: relative;
+  width: 100%;
+}
+
+.exercise-name {
+  padding-right: 2.5rem; /* space for arrow */
+}
+
+.exercise-header .arrow {
+  position: absolute;
+  top: 40%;
+  right: 12px;
+  transform: translateY(-50%) rotate(0deg);
+  cursor: pointer;
+  color: #38bdf8;
+  font-size: 1rem;
+  transition: transform 0.25s ease, opacity 0.25s ease;
+  user-select: none;
+  opacity: 0.7;
+}
+
+.exercise-header .arrow.open {
+  transform: translateY(-50%) rotate(180deg);
+}
+
+.exercise-header:hover .arrow {
+  opacity: 1;
+}
+/* ================================
+   Bottom Navigation (App Style)
+================================ */
+
+.bottom-nav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+
+  height: 70px;
+  background: #111827;
+  border-top: 1px solid #1f2937;
+
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+
+  z-index: 500;
+}
+
+/* Normal tab buttons */
+.bottom-nav button {
+  background: none;
+  border: none;
+  color: #9ca3af;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0px;
+
+  font-size: 0.7rem;
+  cursor: pointer;
+}
+
 .bottom-nav {
   position: fixed;
   bottom: env(safe-area-inset-bottom);
   left: 0;
   width: 100%;
   height: 94px;
+
   padding-bottom: env(safe-area-inset-bottom);
   padding-top: 6px;
+
   display: flex;
   justify-content: space-around;
   align-items: center;
-  background: #0b1f3a;
+
+  background: #0b1f3a; /* your existing blue */
   z-index: 100;
 }
 
-.bottom-nav button {
-  background: none;
-  border: none;
-  color: #9ca3af;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 0px;
-  font-size: 0.7rem;
-  cursor: pointer;
-  transform: none; /* reset any previous movement */
-}
-
+/* ACTIVE TAB */
 .bottom-nav button.active {
   color: #38bdf8;
 }
 
-/* ===== CENTER CREATE BUTTON ===== */
+/* ================================
+   CENTER CREATE BUTTON
+================================ */
+
 .create-btn {
   width: 50px;
   height: 50px;
+
   border-radius: 50%;
   background: #1e90ff;
+
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-top: 2px;
+
+  margin-top: 2px; /* lifts it slightly but keeps it IN the bar */
+
   box-shadow: 0 6px 14px rgba(0, 0, 0, 0.35);
 }
 
@@ -206,8 +378,59 @@ button.danger {
 .create-btn.active {
   background: #0ea5e9;
 }
+/* ================================
+   Planner Card & Preview (Clean)
+================================ */
 
-/* ===== PREVENT PAGE CONTENT UNDER NAV ===== */
+.planner-card {
+  margin-top: 20px;             /* moves card lower on the page */
+  background: #111827;          /* matches other cards */
+  border-radius: 14px;
+  padding: 1.25rem;
+  border: 1px solid #1f2937;
+}
+
+.planner-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+
+.planner-header h3 {
+  margin: 0;
+  font-size: 1rem;
+  color: #e5e7eb;
+}
+
+/* Planner preview box */
+.planner-preview {
+  min-height: 80px;             /* fixed box height */
+  display: flex;
+  align-items: center;          /* vertical center */
+  justify-content: center;      /* horizontal center */
+  text-align: center;
+  padding: 1rem;
+  border-radius: 10px;
+  background: transparent;       /* no extra color */
+  border: 1px solid #1f2937;
+}
+
+.planner-preview .planner-empty {
+  margin: 0;                     /* remove weird spacing */
+  font-size: 0.95rem;
+  color: #9ca3af;
+}
+
+/* ================================
+   Bottom Nav Fix
+================================ */
+
+/* Reset all bottom nav buttons to not interfere */
+.bottom-nav button {
+  transform: none;               /* remove translateY */
+}
+
+/* Make sure page content doesn’t go under nav */
 .page {
   padding-bottom: 100px;
 }
