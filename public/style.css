@@ -14,6 +14,8 @@ html, body {
   font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
   background: #0f172a;
   color: #e5e7eb;
+  font-size: 16px;
+  font-weight: 400; /* 🔑 NORMAL TEXT WEIGHT */
 }
 
 /* ===== SCROLL ENABLE ===== */
@@ -50,9 +52,10 @@ html, body {
 /* ===== HEADINGS ===== */
 h1, h2, h3 {
   margin: 0 0 1rem;
+  font-weight: 600;
 }
 
-/* ===== INPUTS (WORKOUT NAME BASE) ===== */
+/* ===== INPUTS (GLOBAL) ===== */
 input,
 textarea,
 select {
@@ -61,12 +64,12 @@ select {
   border-radius: 10px;
   border: 1px solid #1f2937;
   background: #020617;
-  color: white;
+  color: #e5e7eb;
   margin-bottom: 0.75rem;
 
-  /* 🔑 workout name baseline */
+  /* 🔑 MATCH NORMAL TEXT */
   font-size: 16px;
-  font-weight: 500;
+  font-weight: 400;
   line-height: 1.4;
 }
 
@@ -98,10 +101,8 @@ button.danger {
   color: white;
 }
 
-/* ===== REMOVE DOT POINTS ===== */
-ul,
-ol,
-li {
+/* ===== REMOVE LIST DOTS ===== */
+ul, ol, li {
   list-style: none;
   padding: 0;
   margin: 0;
@@ -123,8 +124,9 @@ li {
   width: 100%;
 }
 
-/* ===== EXERCISE NAME (MATCHES WORKOUT NAME EXACTLY) ===== */
-.exercise-name {
+/* ===== WORKOUT NAME + EXERCISE NAME (NORMAL TEXT) ===== */
+.exercise-name,
+.workout-name {
   width: 100%;
   padding: 0.75rem 2.75rem 0.75rem 0.75rem;
   border-radius: 10px;
@@ -132,20 +134,21 @@ li {
   background: #020617;
   color: #e5e7eb;
 
-  /* EXACT MATCH */
+  /* 🔑 SAME AS BODY TEXT */
   font-size: 16px;
-  font-weight: 500;
+  font-weight: 400;
   line-height: 1.4;
 }
 
-/* ===== COLLAPSE ARROW (VERTICALLY PERFECT) ===== */
+/* ===== COLLAPSE ARROW ===== */
 .exercise-header .arrow {
   position: absolute;
   right: 12px;
+
+  /* 🔧 YOU ADJUST THIS */
   top: 50%;
   transform: translateY(-50%);
-  
-  height: 100%;
+
   display: flex;
   align-items: center;
 
@@ -159,10 +162,6 @@ li {
 
 .exercise-header .arrow.open {
   transform: translateY(-50%) rotate(180deg);
-}
-
-.exercise-header:hover .arrow {
-  opacity: 1;
 }
 
 /* ===== PLANNER ===== */
@@ -208,43 +207,6 @@ li {
 .nav-title {
   font-size: 1rem;
   font-weight: 600;
-}
-
-/* ===== TOGGLE (UNCHANGED) ===== */
-.toggle-switch {
-  position: relative;
-  display: inline-block;
-  width: 60px;
-  height: 28px;
-}
-
-.toggle-switch input {
-  opacity: 0;
-}
-
-.slider {
-  position: absolute;
-  inset: 0;
-  background-color: #1f2937;
-  border-radius: 8px;
-  border: 1px solid #38bdf8;
-  transition: 0.3s;
-}
-
-.slider::before {
-  content: "";
-  position: absolute;
-  height: 20px;
-  width: 26px;
-  left: 2px;
-  bottom: 3px;
-  background-color: #38bdf8;
-  border-radius: 6px;
-  transition: 0.3s;
-}
-
-input:checked + .slider::before {
-  transform: translateX(28px);
 }
 
 /* ===== BOTTOM NAV ===== */
