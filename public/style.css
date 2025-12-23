@@ -159,7 +159,7 @@ ul, ol, li {
 /* ===== SET ROWS & BUTTON HEIGHT UNIFORM ===== */
 .set-row {
   display: flex;
-  gap: 0.75rem; /* horizontal spacing between inputs and buttons */
+  gap: 0.75rem; /* uniform horizontal spacing */
   margin-bottom: 0.75rem; /* vertical spacing between rows */
 }
 
@@ -172,11 +172,16 @@ ul, ol, li {
 .set-row button {
   flex: 0 0 auto;
   margin: 0;
-  height: 44px; /* same height as inputs */
+  height: 44px; /* same height as input boxes */
   padding: 0 12px; /* horizontal padding inside buttons */
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+/* 🔹 ENSURE SAME GAP BETWEEN REPS AND ADD/REMOVE BUTTONS */
+.set-row input + button {
+  margin-left: 0.75rem;
 }
 
 /* ===== PLANNER ===== */
