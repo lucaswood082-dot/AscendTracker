@@ -15,7 +15,7 @@ html, body {
   background: #0f172a;
   color: #e5e7eb;
   font-size: 16px;
-  font-weight: 400; /* normal text */
+  font-weight: 400;
 }
 
 /* ===== SCROLL ENABLE ===== */
@@ -31,7 +31,7 @@ html, body {
   justify-content: center;
   align-items: flex-start;
   padding-top: 1rem;
-  padding-bottom: 200px; /* extra space for bottom nav */
+  padding-bottom: 200px; /* for bottom nav */
 }
 
 .container {
@@ -55,7 +55,7 @@ h1, h2, h3 {
   font-weight: 600;
 }
 
-/* ===== INPUTS (GLOBAL) ===== */
+/* ===== INPUTS ===== */
 input,
 textarea,
 select {
@@ -140,7 +140,7 @@ ul, ol, li {
 .exercise-header .arrow {
   position: absolute;
   right: 12px;
-  top: 50%; /* adjust vertical position here */
+  top: 50%; /* adjust vertical positioning here */
   transform: translateY(-50%);
   display: flex;
   align-items: center;
@@ -156,25 +156,27 @@ ul, ol, li {
   transform: translateY(-50%) rotate(180deg);
 }
 
-/* ===== SET ROWS WITH PROPER GAP ===== */
+/* ===== EXERCISE SET ROWS ===== */
 .set-row {
   display: flex;
-  gap: 0.75rem; /* gap between Reps, Weight, Add, Remove */
-  margin-bottom: 0.75rem;
+  gap: 0.5rem; /* default gap between inputs */
+  margin-bottom: 0.5rem;
 }
 
 .set-row input {
-  height: 44px;
   flex: 1;
+  margin-bottom: 0;
 }
 
-.set-row button {
-  height: 44px;
+/* ===== FIX: ADD GAP BETWEEN REPS AND ADD/REMOVE BUTTONS ===== */
+.set-row .reps-box {
+  margin-right: 0.5rem; /* space between reps and add/remove buttons */
+}
+
+.set-row button.add-set,
+.set-row button.remove-set {
   flex: 0 0 auto;
-  padding: 0 12px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  margin-left: 0.5rem; /* space between buttons and reps box */
 }
 
 /* ===== PLANNER ===== */
@@ -222,55 +224,7 @@ ul, ol, li {
   font-weight: 600;
 }
 
-/* ===== BOTTOM NAV ===== */
-.bottom-nav {
-  position: fixed;
-  bottom: env(safe-area-inset-bottom);
-  left: 0;
-  width: 100%;
-  height: 94px;
-  padding-top: 14px;
-  background: #0b1f3a;
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-  z-index: 100;
-}
-
-.bottom-nav > button {
-  all: unset;
-  flex: 1;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 4px;
-  font-size: 0.8rem;
-  color: #9ca3af;
-}
-
-.bottom-nav > button.active {
-  color: #38bdf8;
-}
-
-.bottom-nav img.nav-icon {
-  width: 32px;
-  height: 32px;
-}
-
-/* CENTER CREATE */
-.create-btn {
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
-  background: #1e90ff;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-/* ===== UNILATERAL TOGGLE SWITCH ===== */
+/* ===== UNILATERAL TOGGLE SLIDER ===== */
 .toggle-switch {
   position: relative;
   display: inline-block;
@@ -287,10 +241,9 @@ ul, ol, li {
 .slider {
   position: absolute;
   inset: 0;
-  background-color: #1f2937;
+  background-color: #1f2937; 
   border-radius: 8px;
   border: 1px solid #38bdf8;
-  transition: 0.3s;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -327,4 +280,58 @@ input:checked + .slider::after {
   content: "ON";
   left: 6px;
   right: auto;
+}
+
+/* ===== BOTTOM NAV ===== */
+.bottom-nav {
+  position: fixed;
+  bottom: env(safe-area-inset-bottom);
+  left: 0;
+  width: 100%;
+  height: 94px;
+  padding-top: 14px;
+  background: #0b1f3a;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  z-index: 100;
+}
+
+.bottom-nav > button {
+  all: unset;
+  flex: 1;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  font-size: 0.8rem;
+  color: #9ca3af;
+  cursor: pointer;
+}
+
+.bottom-nav > button.active {
+  color: #38bdf8;
+}
+
+.bottom-nav img.nav-icon {
+  width: 32px;
+  height: 32px;
+}
+
+/* CENTER CREATE BUTTON */
+.create-btn {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background: #1e90ff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.create-btn .icon {
+  font-size: 26px;
+  color: white;
 }
