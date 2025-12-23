@@ -217,11 +217,9 @@ button.danger {
   flex: 1;
 }
 /* ================================
-   HARD RESET BOTTOM NAV
-   (Stops icons taking over screen)
+   FIXED BOTTOM NAV (SAFE RESET)
 ================================ */
 
-/* Reset button styles ONLY in bottom nav */
 .bottom-nav button {
   all: unset;
   flex: 1;
@@ -231,27 +229,32 @@ button.danger {
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  color: #9ca3af;
+
+  /* restore essentials */
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
   font-size: 0.7rem;
+  color: #9ca3af;
 }
 
-/* Active tab */
 .bottom-nav button.active {
   color: #38bdf8;
 }
 
-/* Lock icon size */
-.bottom-nav .icon,
-.bottom-nav svg,
-.bottom-nav i {
+/* IMAGE ICONS */
+.bottom-nav img.nav-icon {
   width: 22px;
   height: 22px;
+  display: block;
+}
+
+/* TEXT / EMOJI ICONS */
+.bottom-nav .icon {
   font-size: 22px;
   line-height: 1;
   display: block;
 }
 
-/* Center create button stays circular */
+/* CENTER CREATE BUTTON */
 .create-btn {
   all: unset;
   width: 50px;
@@ -261,4 +264,9 @@ button.danger {
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+.create-btn .icon {
+  font-size: 26px;
+  color: white;
 }
