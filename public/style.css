@@ -209,7 +209,7 @@ button.danger {
 
 /* ===== PREVENT PAGE CONTENT UNDER NAV ===== */
 .page {
-  padding-bottom: 130px;
+  padding-bottom: 200px;
 }
 /* ===== FIX: STOP BOTTOM NAV BUTTONS FROM BEING FULL WIDTH ===== */
 .bottom-nav button {
