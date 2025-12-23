@@ -232,7 +232,7 @@ button.danger {
 
   /* restore essentials */
   font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
-  font-size: 0.7rem;
+  font-size: 1rem;
   color: #9ca3af;
 }
 
