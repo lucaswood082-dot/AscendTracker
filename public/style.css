@@ -156,32 +156,30 @@ ul, ol, li {
   transform: translateY(-50%) rotate(180deg);
 }
 
-/* ===== SET ROWS & BUTTON HEIGHT UNIFORM ===== */
+/* ===== SET ROWS & UNIFORM HEIGHT ===== */
 .set-row {
   display: flex;
-  gap: 0.75rem; /* uniform horizontal spacing */
-  margin-bottom: 0.75rem; /* vertical spacing between rows */
+  gap: 0.75rem; /* spacing between all boxes/buttons */
+  margin-bottom: 0.75rem;
 }
 
 .set-row input {
+  height: 44px;
   flex: 1;
-  margin-bottom: 0;
-  height: 44px; /* uniform height for input boxes */
 }
 
 .set-row button {
+  height: 44px;
   flex: 0 0 auto;
-  margin: 0;
-  height: 44px; /* same height as input boxes */
-  padding: 0 12px; /* horizontal padding inside buttons */
+  padding: 0 12px;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
-/* 🔹 ENSURE SAME GAP BETWEEN REPS AND ADD/REMOVE BUTTONS */
-.set-row input + button {
-  margin-left: 0.75rem;
+/* ===== FIX GAP BETWEEN REPS AND ADD/REMOVE BUTTONS ===== */
+.set-row .reps-box {
+  margin-right: 0.75rem; /* visible gap between Reps input and Add Set button */
 }
 
 /* ===== PLANNER ===== */
