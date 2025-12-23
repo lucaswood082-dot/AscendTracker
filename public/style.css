@@ -264,3 +264,21 @@ ul, ol, li {
   align-items: center;
   justify-content: center;
 }
+/* ===== SET ROW LAYOUT (SPACING FIX) ===== */
+.set-row {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;          /* 🔑 CONTROLS SPACE BETWEEN reps & buttons */
+  margin-bottom: 0.6rem;
+}
+
+.set-row input {
+  flex: 1;
+  margin-bottom: 0;    /* prevent stacking spacing issues */
+}
+
+.set-row button {
+  width: auto;         /* stops button stretching */
+  padding: 0.55rem 0.7rem;
+  margin-top: 0;       /* prevent vertical push */
+}
