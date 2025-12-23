@@ -156,6 +156,23 @@ ul, ol, li {
   transform: translateY(-50%) rotate(180deg);
 }
 
+/* ===== SET ROWS & BUTTON SPACING ===== */
+.set-row {
+  display: flex;
+  gap: 0.75rem; /* adds space between reps, weight, add/remove buttons */
+  margin-bottom: 0.75rem; /* extra vertical space between rows */
+}
+
+.set-row input {
+  flex: 1;
+  margin-bottom: 0;
+}
+
+.set-row button {
+  flex: 0 0 auto;
+  margin: 0; /* remove extra margin */
+}
+
 /* ===== PLANNER ===== */
 .planner-card {
   margin-top: 20px;
