@@ -93,6 +93,7 @@ input, select {
   color: #e5e7eb;
 }
 
+/* ===== MINIMAL REMOVE BUTTON ===== */
 .remove-btn {
   background: transparent;
   color: #ef4444;
@@ -103,46 +104,16 @@ input, select {
   margin-left: 0.5rem;
 }
 
-/* ===== WEEKLY CALENDAR ===== */
-.weekly-calendar {
-  display: grid;
-  grid-template-columns: repeat(7, 1fr);
-  gap: 6px;
-  margin-top: 1rem;
-}
-
-.day-box {
-  background: #020617;
-  border: 1px solid #1f2937;
+/* ===== TAG SELECTOR ===== */
+.tag-select {
+  width: 100%;
+  padding: 0.6rem;
   border-radius: 10px;
-  height: 70px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  font-size: 0.8rem;
-  color: #9ca3af;
-  position: relative;
-  cursor: default;
-}
-
-.day-box.has-workout {
-  background: #1f2937;
-  color: #38bdf8;
-  font-weight: 600;
-}
-
-/* minimal remove button on day */
-.day-box .remove-day-btn {
-  position: absolute;
-  top: 2px;
-  right: 4px;
-  font-size: 0.8rem;
-  background: transparent;
-  border: none;
-  color: #ef4444;
-  cursor: pointer;
-  font-weight: 600;
+  border: 1px solid #1f2937;
+  background: #020617;
+  color: #e5e7eb;
+  font-size: 14px;
+  margin-bottom: 0.75rem;
 }
 
 /* ===== HEADER ===== */
@@ -150,14 +121,13 @@ input, select {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 1rem;
+  margin-bottom: 0.75rem;
 }
 
 .planner-header h3 {
   margin: 0;
   color: #e5e7eb;
 }
-
 </style>
 </head>
 <body>
@@ -172,6 +142,12 @@ input, select {
       <h3>Add Workout</h3>
       <input type="text" id="plannerWorkoutName" placeholder="Workout Name" />
       <input type="date" id="plannerWorkoutDate" />
+      <select id="plannerWorkoutTag" class="tag-select">
+        <option value="">Select Type (Optional)</option>
+        <option value="Strength">Strength</option>
+        <option value="Cardio">Cardio</option>
+        <option value="Flexibility">Flexibility</option>
+      </select>
       <button id="addPlannerWorkoutBtn">Add Workout</button>
     </div>
 
@@ -181,14 +157,8 @@ input, select {
         <h3>Scheduled Workouts</h3>
       </div>
       <div id="workoutList">
-        <p class="planner-empty">No workouts planned this week</p>
+        <p class="planner-empty">No workouts scheduled yet</p>
       </div>
-    </div>
-
-    <!-- WEEKLY CALENDAR -->
-    <div class="card">
-      <h3>This Week</h3>
-      <div class="weekly-calendar" id="weeklyCalendar"></div>
     </div>
 
   </div>
@@ -219,86 +189,61 @@ input, select {
 
 <script>
 const workoutListEl = document.getElementById('workoutList');
-const weeklyCalendarEl = document.getElementById('weeklyCalendar');
 
 let plannerData = JSON.parse(localStorage.getItem('planner')) || {};
 
 // ===== Render Workouts =====
 function renderWorkouts() {
   workoutListEl.innerHTML = '';
-  const today = new Date();
-  const thisWeek = [];
-  for(let i=0;i<7;i++){
-    const day = new Date();
-    day.setDate(today.getDate()+i);
-    thisWeek.push(day.toISOString().split('T')[0]);
-  }
-
-  const weekWorkouts = thisWeek.map(date => ({ date, workout: plannerData[date] })).filter(d => d.workout);
-
-  if(weekWorkouts.length === 0){
-    workoutListEl.innerHTML = '<p class="planner-empty">No workouts planned this week</p>';
+  const dates = Object.keys(plannerData).sort();
+  if(dates.length === 0){
+    workoutListEl.innerHTML = '<p class="planner-empty">No workouts scheduled yet</p>';
     return;
   }
 
-  weekWorkouts.forEach(item => {
+  dates.forEach(date => {
+    const workout = plannerData[date];
     const div = document.createElement('div');
     div.className = 'workout-item';
-    div.textContent = `${item.workout.name} (${item.date})`;
+
+    const textSpan = document.createElement('span');
+    textSpan.textContent = `${workout.name} ${workout.tag ? `(${workout.tag})` : ''} - ${date}`;
+    div.appendChild(textSpan);
+
+    const removeBtn = document.createElement('button');
+    removeBtn.className = 'remove-btn';
+    removeBtn.textContent = '×';
+    removeBtn.addEventListener('click', () => {
+      delete plannerData[date];
+      localStorage.setItem('planner', JSON.stringify(plannerData));
+      renderWorkouts();
+    });
+    div.appendChild(removeBtn);
+
     workoutListEl.appendChild(div);
   });
 }
 
-// ===== Render Weekly Calendar =====
-function renderCalendar() {
-  weeklyCalendarEl.innerHTML = '';
-  const today = new Date();
-  for(let i=0;i<7;i++){
-    const day = new Date();
-    day.setDate(today.getDate()+i);
-    const dayISO = day.toISOString().split('T')[0];
-
-    const div = document.createElement('div');
-    div.className = 'day-box';
-    div.textContent = day.getDate();
-
-    if(plannerData[dayISO]){
-      div.classList.add('has-workout');
-      const removeBtn = document.createElement('button');
-      removeBtn.textContent = '×';
-      removeBtn.className = 'remove-day-btn';
-      removeBtn.addEventListener('click', () => {
-        delete plannerData[dayISO];
-        localStorage.setItem('planner', JSON.stringify(plannerData));
-        renderWorkouts();
-        renderCalendar();
-      });
-      div.appendChild(removeBtn);
-    }
-
-    weeklyCalendarEl.appendChild(div);
-  }
-}
-
 // ===== Add Workout =====
 document.getElementById('addPlannerWorkoutBtn').addEventListener('click', () => {
-  const name = document.getElementById('plannerWorkoutName').value;
+  const name = document.getElementById('plannerWorkoutName').value.trim();
   const date = document.getElementById('plannerWorkoutDate').value;
+  const tag = document.getElementById('plannerWorkoutTag').value;
+
   if(!name || !date) return alert('Enter workout name and date');
 
-  plannerData[date] = { name };
+  plannerData[date] = { name, tag };
   localStorage.setItem('planner', JSON.stringify(plannerData));
 
   document.getElementById('plannerWorkoutName').value = '';
   document.getElementById('plannerWorkoutDate').value = '';
+  document.getElementById('plannerWorkoutTag').value = '';
 
   renderWorkouts();
-  renderCalendar();
 });
 
 // ===== Initial render =====
 renderWorkouts();
-renderCalendar();
 </script>
 
 </body>
