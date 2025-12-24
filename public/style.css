@@ -407,3 +407,12 @@ input:checked + .slider::after {
 .planner-preview + button {
   margin-top: 0 !important;
 }
+/* ===============================
+   PLANNER STACK — HARD GAP
+================================ */
+
+.planner-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 14px; /* 🔧 THIS IS THE GAP */
+}
