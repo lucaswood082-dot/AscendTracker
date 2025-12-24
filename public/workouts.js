@@ -25,16 +25,30 @@ function createSetElement(isUnilateral, weightValue = "") {
 
   if (isUnilateral) {
     setLi.innerHTML = `
-      <input type="number" placeholder="Left Reps" class="set-left" />
-      <input type="number" placeholder="Right Reps" class="set-right" />
-      <input type="number" placeholder="Weight" class="set-weight" value="${weightValue}" />
-      <button class="remove-set">Remove</button>
+      <div class="set-row">
+        <div class="set-inputs">
+          <input type="number" placeholder="Left Reps" class="set-left" />
+          <input type="number" placeholder="Right Reps" class="set-right" />
+          <input type="number" placeholder="Weight" class="set-weight" value="${weightValue}" />
+        </div>
+
+        <div class="set-actions">
+          <button class="remove-set">Remove</button>
+        </div>
+      </div>
     `;
   } else {
     setLi.innerHTML = `
-      <input type="number" placeholder="Reps" class="set-reps" />
-      <input type="number" placeholder="Weight" class="set-weight" value="${weightValue}" />
-      <button class="remove-set">Remove</button>
+      <div class="set-row">
+        <div class="set-inputs">
+          <input type="number" placeholder="Reps" class="set-reps" />
+          <input type="number" placeholder="Weight" class="set-weight" value="${weightValue}" />
+        </div>
+
+        <div class="set-actions">
+          <button class="remove-set">Remove</button>
+        </div>
+      </div>
     `;
   }
 
@@ -52,14 +66,23 @@ function createExerciseElement(exercise) {
 
   li.innerHTML = `
     <div class="exercise-header">
-      <input type="text" placeholder="Exercise Name" class="exercise-name" value="${exercise.name}" />
+      <input
+        type="text"
+        placeholder="Exercise Name"
+        class="exercise-name"
+        value="${exercise.name}"
+      />
       <span class="arrow">▼</span>
     </div>
 
     <div class="exercise-body">
-      <div style="display:flex; align-items:center; gap:8px; margin-bottom:0.5rem;">
+      <div style="display:flex; align-items:center; gap:8px; margin-bottom:0.75rem;">
         <label class="toggle-switch">
-          <input type="checkbox" class="unilateral-toggle" ${exercise.unilateral ? "checked" : ""}>
+          <input
+            type="checkbox"
+            class="unilateral-toggle"
+            ${exercise.unilateral ? "checked" : ""}
+          >
           <span class="slider"></span>
         </label>
         <span style="font-weight:600; font-size:0.9rem;">Unilateral</span>
@@ -70,31 +93,25 @@ function createExerciseElement(exercise) {
     </div>
   `;
 
-  const header = li.querySelector(".exercise-header");
   const body = li.querySelector(".exercise-body");
   const arrow = li.querySelector(".arrow");
   const addSetBtn = li.querySelector(".add-set");
   const setsList = li.querySelector(".sets-list");
   const unilateralToggle = li.querySelector(".unilateral-toggle");
-  const nameInput = li.querySelector(".exercise-name");
 
-  // Initialize body as visible
   body.style.display = "block";
 
-  // Arrow click toggles collapse only
   arrow.addEventListener("click", () => {
     const isCollapsed = body.style.display === "none";
     body.style.display = isCollapsed ? "block" : "none";
     arrow.classList.toggle("open");
   });
 
-  // Add set
   addSetBtn.addEventListener("click", () => {
     const setLi = createSetElement(unilateralToggle.checked);
     setsList.appendChild(setLi);
   });
 
-  // Toggle unilateral
   unilateralToggle.addEventListener("change", () => {
     const setLis = Array.from(setsList.children);
     setLis.forEach((setLi) => {
@@ -112,8 +129,7 @@ function createExerciseElement(exercise) {
 function renderExercises() {
   exerciseList.innerHTML = "";
   exercises.forEach(ex => {
-    const li = createExerciseElement(ex);
-    exerciseList.appendChild(li);
+    exerciseList.appendChild(createExerciseElement(ex));
   });
 }
 
@@ -157,8 +173,6 @@ saveWorkoutBtn.addEventListener("click", () => {
     exercises.push(exercise);
   });
 
-  console.log("Workout saved:", exercises);
-
   showPopup("Workout Saved!");
 
   const savedWorkouts = JSON.parse(localStorage.getItem("workouts") || "[]");
@@ -167,5 +181,6 @@ saveWorkoutBtn.addEventListener("click", () => {
     exercises,
     date: new Date()
   });
+
   localStorage.setItem("workouts", JSON.stringify(savedWorkouts));
 });
