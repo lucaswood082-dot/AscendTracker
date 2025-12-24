@@ -380,10 +380,10 @@ input:checked + .slider::after {
 
 /* space below "No workout planned" box */
 .planner-preview {
-  margin-bottom: 0.6rem;   /* 🔧 adjust this */
+  margin-bottom: 1rem;   /* 🔧 adjust this */
 }
 
 /* space above Show More button */
 .planner-card button {
-  margin-top: 0.4rem;      /* 🔧 adjust this */
+  margin-top: 0.8rem;      /* 🔧 adjust this */
 }
