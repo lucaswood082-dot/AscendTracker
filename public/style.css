@@ -282,19 +282,20 @@ input:checked + .slider::after {
   right: auto;
 }
 
-/* ===== BOTTOM NAV ===== */
+/* ===== BOTTOM NAV FIX ===== */
 .bottom-nav {
   position: fixed;
-  bottom: env(safe-area-inset-bottom);
+  bottom: 0; /* stick to bottom */
   left: 0;
   width: 100%;
-  height: 94px;
-  padding-top: 7px;
+  height: 94px; /* total nav height */
+  padding-bottom: env(safe-area-inset-bottom); /* iPhone notch safe area */
   background: #0b1f3a;
   display: flex;
   justify-content: space-around;
   align-items: center;
   z-index: 100;
+  box-shadow: 0 -2px 10px rgba(0,0,0,0.4); /* subtle shadow for visibility */
 }
 
 .bottom-nav > button {
@@ -305,8 +306,8 @@ input:checked + .slider::after {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 2px;
-  font-size: 0.10rem;
+  gap: 4px;
+  font-size: 0.75rem;
   color: #9ca3af;
   cursor: pointer;
 }
@@ -316,8 +317,8 @@ input:checked + .slider::after {
 }
 
 .bottom-nav img.nav-icon {
-  width: 34px;
-  height: 34px;
+  width: 32px;
+  height: 32px;
 }
 
 /* CENTER CREATE BUTTON */
@@ -329,43 +330,16 @@ input:checked + .slider::after {
   display: flex;
   align-items: center;
   justify-content: center;
+  margin-top: -10px; /* lifts it above the nav bar */
+  box-shadow: 0 2px 8px rgba(0,0,0,0.3);
 }
 
 .create-btn .icon {
   font-size: 26px;
   color: white;
 }
-/* ===============================
-   HARD OVERRIDE: FORCE GAP
-   BETWEEN REPS INPUT & BUTTONS
-================================ */
 
-/* ensure row is flex */
-.set-row {
-  display: flex !important;
-  align-items: center;
-}
-
-/* reps input -> space to the right */
-.set-row input[type="number"],
-.set-row input.reps-box {
-  margin-right: 12px !important;
-}
-
-/* add / remove buttons -> space from input */
-.set-row button.add-set,
-.set-row button.remove-set {
-  margin-left: 12px !important;
-}
+/* ensure page content does not overlap nav */
 .page {
-  padding-bottom: 140px; /* ensures nav is visible */
-}
-
-.bottom-nav {
-  height: 94px;
-  bottom: env(safe-area-inset-bottom);
-}
-
-.create-btn {
-  margin-top: -6px; /* lift create button so it’s fully visible */
+  padding-bottom: calc(94px + 16px); /* nav height + buffer */
 }
