@@ -347,8 +347,8 @@ input:checked + .slider::after {
 /* ===== CENTER CREATE WORKOUT BUTTON ===== */
 .bottom-nav .create-btn {
   all: unset;
-  width: 52px;                     /* 🔧 smaller size */
-  height: 52px;
+  width: 50px;                     /* 🔧 smaller size */
+  height: 50px;
   border-radius: 50%;
   background: #0b1f3a;             /* 🔵 SAME as bottom nav */
   display: flex;
@@ -375,4 +375,15 @@ input:checked + .slider::after {
 
 .bottom-nav .create-btn.active .icon {
   color: #020617;
+}
+/* ===== PLANNER SPACING CONTROLS ===== */
+
+/* space below "No workout planned" box */
+.planner-preview {
+  margin-bottom: 0.6rem;   /* 🔧 adjust this */
+}
+
+/* space above Show More button */
+.planner-card button {
+  margin-top: 0.4rem;      /* 🔧 adjust this */
 }
