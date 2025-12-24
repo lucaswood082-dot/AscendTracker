@@ -6,13 +6,6 @@ const saveWorkoutBtn = document.getElementById("saveWorkout");
 
 let exercises = [];
 
-/* FORCE MAIN BUTTONS FULL WIDTH */
-addExerciseBtn.style.width = "100%";
-addExerciseBtn.style.marginTop = "12px";
-
-saveWorkoutBtn.style.width = "100%";
-saveWorkoutBtn.style.marginTop = "12px";
-
 /* ---------------- POPUP ---------------- */
 function showPopup(message) {
   const popup = document.getElementById("popup");
@@ -26,27 +19,28 @@ function showPopup(message) {
   }, 2000);
 }
 
-/* ---------------- SET ELEMENT ---------------- */
+/* ---------------- CREATE SET ELEMENT ---------------- */
 function createSetElement(isUnilateral, weightValue = "") {
   const setLi = document.createElement("li");
 
-  // FORCE horizontal layout + spacing
+  // VERTICAL STACK
   setLi.style.display = "flex";
-  setLi.style.gap = "12px";
-  setLi.style.marginBottom = "10px";
+  setLi.style.flexDirection = "column";
+  setLi.style.gap = "10px";
+  setLi.style.marginBottom = "16px";
 
   if (isUnilateral) {
     setLi.innerHTML = `
-      <input type="number" placeholder="Left Reps" class="set-left" />
-      <input type="number" placeholder="Right Reps" class="set-right" />
-      <input type="number" placeholder="Weight" class="set-weight" value="${weightValue}" />
-      <button class="remove-set">Remove</button>
+      <input type="number" placeholder="Left Reps" class="set-left" style="width:100%;" />
+      <input type="number" placeholder="Right Reps" class="set-right" style="width:100%;" />
+      <input type="number" placeholder="Weight" class="set-weight" value="${weightValue}" style="width:100%;" />
+      <button class="remove-set" style="width:100%;">Remove</button>
     `;
   } else {
     setLi.innerHTML = `
-      <input type="number" placeholder="Reps" class="set-reps" />
-      <input type="number" placeholder="Weight" class="set-weight" />
-      <button class="remove-set">Remove</button>
+      <input type="number" placeholder="Reps" class="set-reps" style="width:100%;" />
+      <input type="number" placeholder="Weight" class="set-weight" value="${weightValue}" style="width:100%;" />
+      <button class="remove-set" style="width:100%;">Remove</button>
     `;
   }
 
@@ -57,14 +51,19 @@ function createSetElement(isUnilateral, weightValue = "") {
   return setLi;
 }
 
-/* ---------------- EXERCISE ELEMENT ---------------- */
+/* ---------------- CREATE EXERCISE ---------------- */
 function createExerciseElement(exercise) {
   const li = document.createElement("li");
   li.classList.add("exercise-item");
 
   li.innerHTML = `
     <div class="exercise-header">
-      <input type="text" placeholder="Exercise Name" class="exercise-name" value="${exercise.name}" />
+      <input
+        type="text"
+        placeholder="Exercise Name"
+        class="exercise-name"
+        value="${exercise.name}"
+      />
       <span class="arrow">▼</span>
     </div>
 
@@ -74,12 +73,10 @@ function createExerciseElement(exercise) {
           <input type="checkbox" class="unilateral-toggle" ${exercise.unilateral ? "checked" : ""}>
           <span class="slider"></span>
         </label>
-        <span style="font-weight:600; font-size:0.9rem;">Unilateral</span>
+        <span style="font-size:0.9rem;">Unilateral</span>
       </div>
 
-      <!-- FULL WIDTH BUTTON + GAP -->
-      <button class="add-set"
-        style="width:100%; margin:16px 0 18px 0;">
+      <button class="add-set" style="width:100%; margin-bottom:14px;">
         Add Set
       </button>
 
@@ -96,8 +93,7 @@ function createExerciseElement(exercise) {
   body.style.display = "block";
 
   arrow.addEventListener("click", () => {
-    const collapsed = body.style.display === "none";
-    body.style.display = collapsed ? "block" : "none";
+    body.style.display = body.style.display === "none" ? "block" : "none";
     arrow.classList.toggle("open");
   });
 
