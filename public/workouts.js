@@ -43,7 +43,7 @@ function createSetElement(isUnilateral, weightValue = "") {
 
   // 🔧 INDIVIDUAL SPACING CONTROL
   setLi.querySelectorAll(".reps-input").forEach(el => {
-    el.style.marginBottom = "0.6rem";   // reps → next input
+    el.style.marginBottom = "0.3rem";   // reps → next input
   });
 
   setLi.querySelector(".weight-input").style.marginBottom = "0.4rem"; // weight → remove
