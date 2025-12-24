@@ -140,7 +140,7 @@ ul, ol, li {
 .exercise-header .arrow {
   position: absolute;
   right: 12px;
-  top: 50%; /* adjust vertical positioning here */
+  top: 46%; /* adjust vertical positioning here */
   transform: translateY(-50%);
   display: flex;
   align-items: center;
