@@ -19,30 +19,35 @@ function showPopup(message) {
   }, 2000);
 }
 
-/* ---------------- CREATE SET ELEMENT ---------------- */
 function createSetElement(isUnilateral, weightValue = "") {
   const setLi = document.createElement("li");
 
-  // MATCH INPUT SPACING (same as workout/exercise name)
   setLi.style.display = "flex";
   setLi.style.flexDirection = "column";
-  setLi.style.gap = "0.75rem";
   setLi.style.marginBottom = "1rem";
 
   if (isUnilateral) {
     setLi.innerHTML = `
-      <input type="number" placeholder="Left Reps" class="set-left" />
-      <input type="number" placeholder="Right Reps" class="set-right" />
-      <input type="number" placeholder="Weight" class="set-weight" value="${weightValue}" />
-      <button class="remove-set">Remove</button>
+      <input type="number" placeholder="Left Reps" class="set-left reps-input" />
+      <input type="number" placeholder="Right Reps" class="set-right reps-input" />
+      <input type="number" placeholder="Weight" class="set-weight weight-input" value="${weightValue}" />
+      <button class="remove-set remove-btn">Remove</button>
     `;
   } else {
     setLi.innerHTML = `
-      <input type="number" placeholder="Reps" class="set-reps" />
-      <input type="number" placeholder="Weight" class="set-weight" value="${weightValue}" />
-      <button class="remove-set">Remove</button>
+      <input type="number" placeholder="Reps" class="set-reps reps-input" />
+      <input type="number" placeholder="Weight" class="set-weight weight-input" value="${weightValue}" />
+      <button class="remove-set remove-btn">Remove</button>
     `;
   }
+
+  // 🔧 INDIVIDUAL SPACING CONTROL
+  setLi.querySelectorAll(".reps-input").forEach(el => {
+    el.style.marginBottom = "0.5rem";   // reps → next input
+  });
+
+  setLi.querySelector(".weight-input").style.marginBottom = "0.5rem"; // weight → remove
+  setLi.querySelector(".remove-btn").style.marginBottom = "0.25rem";  // after remove
 
   setLi.querySelector(".remove-set").addEventListener("click", () => {
     setLi.remove();
