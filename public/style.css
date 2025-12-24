@@ -357,3 +357,15 @@ input:checked + .slider::after {
 .set-row button.remove-set {
   margin-left: 12px !important;
 }
+.page {
+  padding-bottom: 140px; /* ensures nav is visible */
+}
+
+.bottom-nav {
+  height: 94px;
+  bottom: env(safe-area-inset-bottom);
+}
+
+.create-btn {
+  margin-top: -6px; /* lift create button so it’s fully visible */
+}
