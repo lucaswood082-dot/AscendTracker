@@ -317,8 +317,8 @@ input:checked + .slider::after {
 }
 
 .bottom-nav img.nav-icon {
-  width: 32px;
-  height: 32px;
+  width: 34px;
+  height: 34px;
 }
 
 /* CENTER CREATE BUTTON */
