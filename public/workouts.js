@@ -6,7 +6,14 @@ const saveWorkoutBtn = document.getElementById("saveWorkout");
 
 let exercises = [];
 
-/* ---------------- SHOW POPUP FUNCTION ---------------- */
+/* FORCE MAIN BUTTONS FULL WIDTH */
+addExerciseBtn.style.width = "100%";
+addExerciseBtn.style.marginTop = "12px";
+
+saveWorkoutBtn.style.width = "100%";
+saveWorkoutBtn.style.marginTop = "12px";
+
+/* ---------------- POPUP ---------------- */
 function showPopup(message) {
   const popup = document.getElementById("popup");
   popup.textContent = message;
@@ -19,7 +26,7 @@ function showPopup(message) {
   }, 2000);
 }
 
-/* ---------------- CREATE SET ELEMENT ---------------- */
+/* ---------------- SET ELEMENT ---------------- */
 function createSetElement(isUnilateral, weightValue = "") {
   const setLi = document.createElement("li");
 
@@ -38,7 +45,7 @@ function createSetElement(isUnilateral, weightValue = "") {
   } else {
     setLi.innerHTML = `
       <input type="number" placeholder="Reps" class="set-reps" />
-      <input type="number" placeholder="Weight" class="set-weight" value="${weightValue}" />
+      <input type="number" placeholder="Weight" class="set-weight" />
       <button class="remove-set">Remove</button>
     `;
   }
@@ -50,7 +57,7 @@ function createSetElement(isUnilateral, weightValue = "") {
   return setLi;
 }
 
-/* ---------------- CREATE EXERCISE ELEMENT ---------------- */
+/* ---------------- EXERCISE ELEMENT ---------------- */
 function createExerciseElement(exercise) {
   const li = document.createElement("li");
   li.classList.add("exercise-item");
@@ -70,8 +77,9 @@ function createExerciseElement(exercise) {
         <span style="font-weight:600; font-size:0.9rem;">Unilateral</span>
       </div>
 
-      <!-- GAP IS FORCED BELOW -->
-      <button class="add-set" style="margin-bottom:16px;">
+      <!-- FULL WIDTH BUTTON + GAP -->
+      <button class="add-set"
+        style="width:100%; margin:16px 0 18px 0;">
         Add Set
       </button>
 
@@ -94,8 +102,7 @@ function createExerciseElement(exercise) {
   });
 
   addSetBtn.addEventListener("click", () => {
-    const setLi = createSetElement(unilateralToggle.checked);
-    setsList.appendChild(setLi);
+    setsList.appendChild(createSetElement(unilateralToggle.checked));
   });
 
   unilateralToggle.addEventListener("change", () => {
@@ -123,7 +130,7 @@ addExerciseBtn.addEventListener("click", () => {
   renderExercises();
 });
 
-/* ---------------- SAVE WORKOUT ---------------- */
+/* ---------------- SAVE ---------------- */
 saveWorkoutBtn.addEventListener("click", () => {
   exercises = [];
 
