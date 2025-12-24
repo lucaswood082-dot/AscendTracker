@@ -1,55 +1,220 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
+  <!-- Status bar / browser UI colour -->
+  <meta name="theme-color" content="#111827">
+
+  <!-- iOS PWA -->
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+
+  <meta charset="UTF-8" />
   <title>Planner</title>
-  <link rel="stylesheet" href="style.css">
+
+  <!-- 🔑 CRITICAL: SAME VIEWPORT AS OTHER PAGES -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <link rel="stylesheet" href="style.css" />
+
+  <style>
+    /* ===== PAGE-SPECIFIC FIXES ONLY ===== */
+
+    /* Ensure identical zoom & spacing */
+    body {
+      font-size: 16px;
+    }
+
+    .planner-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 0.75rem;
+    }
+
+    .planner-header h2 {
+      margin: 0;
+      font-size: 1.1rem;
+      font-weight: 600;
+    }
+
+    .planner-date {
+      font-size: 0.85rem;
+      color: #9ca3af;
+      margin-bottom: 1rem;
+    }
+
+    .planner-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+
+    .planner-item {
+      padding: 0.75rem;
+      border-radius: 10px;
+      border: 1px solid #1f2937;
+      background: #020617;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .planner-item span {
+      font-size: 0.95rem;
+    }
+
+    .planner-item button {
+      width: auto;
+      padding: 0.4rem 0.75rem;
+      font-size: 0.8rem;
+    }
+
+    .planner-empty {
+      text-align: center;
+      color: #9ca3af;
+      font-size: 0.95rem;
+      padding: 1.25rem 0;
+    }
+
+    .planner-actions {
+      margin-top: 1rem;
+      display: flex;
+      gap: 0.5rem;
+    }
+  </style>
 </head>
+
 <body>
 
-<div class="top-nav">Planner</div>
+  <!-- TOP NAV -->
+  <div class="top-nav">Ascend</div>
 
-<div class="page">
-  <div class="container">
-    <div class="card">
-      <h2>Schedule Workouts</h2>
-      
-      <input type="date" id="plannerDate" />
-      <input type="text" id="plannerWorkout" placeholder="Workout Name" />
-      <button onclick="addWorkout()">Add Workout</button>
+  <!-- MAIN PAGE -->
+  <div class="page">
+    <div class="container">
 
-      <ul id="plannerList"></ul>
+      <div class="card">
+
+        <div class="planner-header">
+          <h2>Workout Planner</h2>
+        </div>
+
+        <div class="planner-date" id="plannerDate"></div>
+
+        <!-- PLANNER CONTENT -->
+        <div id="plannerList" class="planner-list"></div>
+
+        <!-- ACTIONS -->
+        <div class="planner-actions">
+          <button id="addTodayWorkout">Add Workout</button>
+          <button class="secondary" onclick="location.href='dashboard.html'">
+            Back to Dashboard
+          </button>
+        </div>
+
+      </div>
+
     </div>
   </div>
-</div>
 
-<script>
-function loadPlannerList() {
-  const plannerData = JSON.parse(localStorage.getItem("planner")) || {};
-  const list = document.getElementById("plannerList");
-  list.innerHTML = "";
-  Object.keys(plannerData).sort().forEach(date => {
-    const li = document.createElement("li");
-    li.textContent = `${date}: ${plannerData[date].workout}`;
-    list.appendChild(li);
-  });
-}
+  <!-- BOTTOM NAV -->
+  <nav class="bottom-nav">
+    <button data-page="dashboard" onclick="location.href='dashboard.html'">
+      <img src="/icons/home.png" class="nav-icon">
+      <span class="label">Home</span>
+    </button>
 
-function addWorkout() {
-  const date = document.getElementById("plannerDate").value;
-  const workout = document.getElementById("plannerWorkout").value.trim();
-  if (!date || !workout) return alert("Please fill out both fields");
+    <button data-page="view" onclick="location.href='view.html'">
+      <img src="/icons/workout.png" class="nav-icon">
+      <span class="label">Workouts</span>
+    </button>
 
-  const plannerData = JSON.parse(localStorage.getItem("planner")) || {};
-  plannerData[date] = { workout };
-  localStorage.setItem("planner", JSON.stringify(plannerData));
+    <button data-page="workout" class="create-btn" onclick="location.href='workout.html'">
+      <span class="icon">＋</span>
+    </button>
 
-  loadPlannerList();
-  document.getElementById("plannerWorkout").value = "";
-}
+    <button disabled>
+      <img src="/icons/analytics.png" class="nav-icon">
+      <span class="label">Analytics</span>
+    </button>
 
-window.addEventListener("DOMContentLoaded", loadPlannerList);
-</script>
+    <button disabled>
+      <img src="/icons/profile.png" class="nav-icon">
+      <span class="label">Profile</span>
+    </button>
+  </nav>
+
+  <!-- SCRIPT -->
+  <script>
+    const plannerList = document.getElementById("plannerList");
+    const plannerDate = document.getElementById("plannerDate");
+    const addBtn = document.getElementById("addTodayWorkout");
+
+    const today = new Date();
+    const dateKey = today.toISOString().split("T")[0];
+
+    plannerDate.textContent = today.toLocaleDateString(undefined, {
+      weekday: "long",
+      month: "short",
+      day: "numeric"
+    });
+
+    const planner = JSON.parse(localStorage.getItem("planner") || "{}");
+
+    function renderPlanner() {
+      plannerList.innerHTML = "";
+
+      if (!planner[dateKey] || planner[dateKey].length === 0) {
+        plannerList.innerHTML = `
+          <div class="planner-empty">
+            No workout planned for today
+          </div>
+        `;
+        return;
+      }
+
+      planner[dateKey].forEach((item, index) => {
+        const div = document.createElement("div");
+        div.className = "planner-item";
+
+        div.innerHTML = `
+          <span>${item}</span>
+          <button class="danger">Remove</button>
+        `;
+
+        div.querySelector("button").onclick = () => {
+          planner[dateKey].splice(index, 1);
+          localStorage.setItem("planner", JSON.stringify(planner));
+          renderPlanner();
+        };
+
+        plannerList.appendChild(div);
+      });
+    }
+
+    addBtn.onclick = () => {
+      const workouts = JSON.parse(localStorage.getItem("workouts") || "[]");
+      if (workouts.length === 0) {
+        alert("No workouts saved yet");
+        return;
+      }
+
+      const workoutName = workouts[workouts.length - 1].name || "Workout";
+      planner[dateKey] = planner[dateKey] || [];
+      planner[dateKey].push(workoutName);
+
+      localStorage.setItem("planner", JSON.stringify(planner));
+      renderPlanner();
+    };
+
+    renderPlanner();
+
+    /* Highlight active nav */
+    const current = "planner";
+    document.querySelectorAll(".bottom-nav button").forEach(btn => {
+      if (btn.dataset.page === current) btn.classList.add("active");
+    });
+  </script>
 
 </body>
 </html>
