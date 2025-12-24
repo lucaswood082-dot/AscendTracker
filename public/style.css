@@ -387,3 +387,23 @@ input:checked + .slider::after {
 .planner-card button {
   margin-top: 0.8rem;      /* 🔧 adjust this */
 }
+/* ===============================
+   PLANNER: FORCE VISIBLE GAP
+================================ */
+
+/* force planner content to stack */
+.planner-card {
+  display: flex !important;
+  flex-direction: column !important;
+}
+
+/* hard gap AFTER the preview box */
+.planner-preview {
+  padding-bottom: 0 !important;
+  margin-bottom: 12px !important; /* 🔧 ADJUST THIS */
+}
+
+/* ensure button does not collapse upward */
+.planner-preview + button {
+  margin-top: 0 !important;
+}
