@@ -31,7 +31,7 @@ html, body {
   justify-content: center;
   align-items: flex-start;
   padding-top: 1rem;
-  padding-bottom: 200px; /* for bottom nav */
+  padding-bottom: 120px; /* for bottom nav */
 }
 
 .container {
