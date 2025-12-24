@@ -1,23 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <div class="planner-preview" id="plannerPreview">
-  <p class="planner-empty">No workout planned for today</p>
-</div>
-
-  <meta name="theme-color" content="#111827">
-  <meta name="apple-mobile-web-app-capable" content="yes">
   <meta charset="UTF-8" />
   <title>Planner</title>
 
-  <!-- SAME VIEWPORT AS OTHER PAGES -->
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#111827">
 
   <link rel="stylesheet" href="style.css" />
 
   <style>
-    /* ===== PLANNER ONLY ===== */
-
     body { font-size: 16px; }
 
     .planner-header {
@@ -27,23 +19,18 @@
       margin-bottom: 0.75rem;
     }
 
-    .planner-date {
-      font-size: 0.85rem;
-      color: #9ca3af;
-      margin-bottom: 1rem;
-    }
-
     .planner-list {
       display: flex;
       flex-direction: column;
-      gap: 0.75rem;
+      gap: 0.6rem;
+      margin-bottom: 1rem;
     }
 
     .planner-item {
-      padding: 0.75rem;
-      border-radius: 10px;
-      border: 1px solid #1f2937;
       background: #020617;
+      border: 1px solid #1f2937;
+      border-radius: 10px;
+      padding: 0.7rem;
       display: flex;
       justify-content: space-between;
       align-items: center;
@@ -52,13 +39,7 @@
     .planner-empty {
       text-align: center;
       color: #9ca3af;
-      padding: 1.25rem 0;
-    }
-
-    .planner-actions {
-      margin-top: 1rem;
-      display: flex;
-      gap: 0.5rem;
+      padding: 1rem 0;
     }
 
     /* ===== MODAL ===== */
@@ -68,68 +49,91 @@
       inset: 0;
       background: rgba(0,0,0,0.6);
       display: none;
-      justify-content: center;
       align-items: center;
+      justify-content: center;
       z-index: 50;
     }
 
     .modal {
       background: #020617;
-      border-radius: 14px;
-      width: 90%;
-      max-width: 380px;
-      padding: 1rem;
       border: 1px solid #1f2937;
+      border-radius: 14px;
+      padding: 1rem;
+      width: 90%;
+      max-width: 360px;
     }
 
     .modal h3 {
-      margin: 0 0 0.75rem;
-      font-size: 1.05rem;
+      margin-bottom: 0.75rem;
     }
 
     .modal label {
       font-size: 0.8rem;
       color: #9ca3af;
-      margin-top: 0.75rem;
+      margin-top: 0.6rem;
       display: block;
     }
 
-    .modal select,
     .modal input {
       width: 100%;
       margin-top: 0.25rem;
     }
 
     .modal-actions {
-      margin-top: 1rem;
       display: flex;
       gap: 0.5rem;
+      margin-top: 1rem;
+    }
+
+    /* ===== CALENDAR ===== */
+
+    .calendar {
+      margin-top: 1rem;
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 0.35rem;
+    }
+
+    .calendar-day {
+      aspect-ratio: 1;
+      border-radius: 8px;
+      border: 1px solid #1f2937;
+      background: #020617;
+      font-size: 0.75rem;
+      padding: 0.25rem;
+      position: relative;
+    }
+
+    .calendar-day.has-workout {
+      border-color: #38bdf8;
+    }
+
+    .calendar-day span {
+      position: absolute;
+      bottom: 4px;
+      right: 4px;
+      font-size: 0.6rem;
+      color: #38bdf8;
     }
   </style>
 </head>
 
 <body>
 
-<div class="top-nav">Ascend</div>
+<div class="top-nav">Planner</div>
 
 <div class="page">
   <div class="container">
     <div class="card">
 
       <div class="planner-header">
-        <h2>Workout Planner</h2>
+        <h2>This Month</h2>
+        <button id="openModal">Add Workout</button>
       </div>
-
-      <div class="planner-date" id="plannerDate"></div>
 
       <div id="plannerList" class="planner-list"></div>
 
-      <div class="planner-actions">
-        <button id="openModal">Add Workout</button>
-        <button class="secondary" onclick="location.href='dashboard.html'">
-          Back
-        </button>
-      </div>
+      <div id="calendar" class="calendar"></div>
 
     </div>
   </div>
@@ -140,107 +144,93 @@
   <div class="modal">
     <h3>Schedule Workout</h3>
 
-    <label>Workout</label>
-    <select id="workoutSelect"></select>
+    <label>Workout name</label>
+    <input type="text" id="workoutName" placeholder="Leg Day">
 
     <label>Date</label>
     <input type="date" id="workoutDate">
 
     <div class="modal-actions">
-      <button id="scheduleBtn">Schedule</button>
+      <button id="saveWorkout">Save</button>
       <button class="secondary" id="closeModal">Cancel</button>
     </div>
   </div>
 </div>
 
-<!-- BOTTOM NAV -->
-<nav class="bottom-nav">
-  <button onclick="location.href='dashboard.html'">
-    <img src="/icons/home.png" class="nav-icon">
-    <span class="label">Home</span>
-  </button>
-
-  <button onclick="location.href='view.html'">
-    <img src="/icons/workout.png" class="nav-icon">
-    <span class="label">Workouts</span>
-  </button>
-
-  <button class="create-btn" onclick="location.href='workout.html'">
-    <span class="icon">＋</span>
-  </button>
-
-  <button disabled>
-    <img src="/icons/analytics.png" class="nav-icon">
-    <span class="label">Analytics</span>
-  </button>
-
-  <button disabled>
-    <img src="/icons/profile.png" class="nav-icon">
-    <span class="label">Profile</span>
-  </button>
-</nav>
-
 <script>
+  const planner = JSON.parse(localStorage.getItem("planner") || "{}");
+
   const plannerList = document.getElementById("plannerList");
-  const plannerDate = document.getElementById("plannerDate");
+  const calendar = document.getElementById("calendar");
+
   const modal = document.getElementById("modal");
-  const workoutSelect = document.getElementById("workoutSelect");
+  const workoutName = document.getElementById("workoutName");
   const workoutDate = document.getElementById("workoutDate");
 
   const today = new Date();
-  const todayKey = today.toISOString().split("T")[0];
+  workoutDate.value = today.toISOString().split("T")[0];
 
-  plannerDate.textContent = today.toLocaleDateString(undefined, {
-    weekday: "long",
-    month: "short",
-    day: "numeric"
-  });
-
-  workoutDate.value = todayKey;
-
-  const planner = JSON.parse(localStorage.getItem("planner") || "{}");
-  const workouts = JSON.parse(localStorage.getItem("workouts") || "[]");
-
-  function render(dateKey = todayKey) {
+  function renderList() {
     plannerList.innerHTML = "";
 
-    if (!planner[dateKey] || planner[dateKey].length === 0) {
-      plannerList.innerHTML = `
-        <div class="planner-empty">
-          No workout planned for this day
-        </div>`;
+    const todayKey = workoutDate.value;
+    const items = planner[todayKey];
+
+    if (!items || items.length === 0) {
+      plannerList.innerHTML =
+        `<div class="planner-empty">No workout planned for this day</div>`;
       return;
     }
 
-    planner[dateKey].forEach((name, i) => {
+    items.forEach((w, i) => {
       const div = document.createElement("div");
       div.className = "planner-item";
       div.innerHTML = `
-        <span>${name}</span>
+        <span>${w}</span>
         <button class="danger">Remove</button>
       `;
       div.querySelector("button").onclick = () => {
-        planner[dateKey].splice(i, 1);
+        planner[todayKey].splice(i, 1);
         localStorage.setItem("planner", JSON.stringify(planner));
-        render(dateKey);
+        renderAll();
       };
       plannerList.appendChild(div);
     });
   }
 
-  // Populate workout dropdown
-  workouts.forEach(w => {
-    const opt = document.createElement("option");
-    opt.value = w.name;
-    opt.textContent = w.name;
-    workoutSelect.appendChild(opt);
-  });
+  function renderCalendar() {
+    calendar.innerHTML = "";
+
+    const year = today.getFullYear();
+    const month = today.getMonth();
+    const daysInMonth = new Date(year, month + 1, 0).getDate();
+
+    for (let d = 1; d <= daysInMonth; d++) {
+      const dateKey = `${year}-${String(month + 1).padStart(2,"0")}-${String(d).padStart(2,"0")}`;
+      const day = document.createElement("div");
+      day.className = "calendar-day";
+      day.textContent = d;
+
+      if (planner[dateKey]) {
+        day.classList.add("has-workout");
+        day.innerHTML += `<span>${planner[dateKey].length}</span>`;
+      }
+
+      day.onclick = () => {
+        workoutDate.value = dateKey;
+        renderList();
+      };
+
+      calendar.appendChild(day);
+    }
+  }
+
+  function renderAll() {
+    renderList();
+    renderCalendar();
+  }
 
   document.getElementById("openModal").onclick = () => {
-    if (workouts.length === 0) {
-      alert("No workouts saved yet");
-      return;
-    }
     modal.style.display = "flex";
   };
 
@@ -248,19 +238,21 @@
     modal.style.display = "none";
   };
 
-  document.getElementById("scheduleBtn").onclick = () => {
-    const date = workoutDate.value;
-    const name = workoutSelect.value;
+  document.getElementById("saveWorkout").onclick = () => {
+    if (!workoutName.value) return;
 
+    const date = workoutDate.value;
     planner[date] = planner[date] || [];
-    planner[date].push(name);
+    planner[date].push(workoutName.value);
 
     localStorage.setItem("planner", JSON.stringify(planner));
+
+    workoutName.value = "";
     modal.style.display = "none";
-    render(date);
+    renderAll();
   };
 
-  render();
+  renderAll();
 </script>
 
 </body>
