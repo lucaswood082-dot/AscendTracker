@@ -305,8 +305,8 @@ input:checked + .slider::after {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 4px;
-  font-size: 0.8rem;
+  gap: 2px;
+  font-size: 0.10rem;
   color: #9ca3af;
   cursor: pointer;
 }
@@ -316,8 +316,8 @@ input:checked + .slider::after {
 }
 
 .bottom-nav img.nav-icon {
-  width: 32px;
-  height: 32px;
+  width: 34px;
+  height: 34px;
 }
 
 /* CENTER CREATE BUTTON */
