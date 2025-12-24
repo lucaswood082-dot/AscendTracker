@@ -344,3 +344,32 @@ input:checked + .slider::after {
 .page {
   padding-bottom: calc(94px + 16px); /* nav height + buffer */
 }
+/* ===== FIX CREATE (CENTER) BUTTON ===== */
+.bottom-nav .create-btn {
+  all: unset;                 /* reset inherited button styles */
+  position: relative;
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: #38bdf8;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: -28px;          /* lifts it above nav */
+  box-shadow: 0 10px 25px rgba(56,189,248,0.35);
+  cursor: pointer;
+  z-index: 300;
+}
+
+/* PLUS ICON */
+.bottom-nav .create-btn .icon {
+  font-size: 32px;
+  color: #020617;
+  line-height: 1;
+}
+
+/* ACTIVE STATE (when on workout.html) */
+.bottom-nav .create-btn.active {
+  background: #38bdf8;
+  box-shadow: 0 0 0 4px rgba(56,189,248,0.35);
+}
