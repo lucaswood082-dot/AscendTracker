@@ -48,7 +48,10 @@ function createSetElement(isUnilateral, weightValue = "") {
 
   setLi.querySelector(".weight-input").style.marginBottom = "0.4rem"; // weight → remove
   setLi.querySelector(".remove-btn").style.marginBottom = "0.25rem";  // after remove
+  setLi.querySelector(".reps-input").style.marginBottom = "0.4rem"; // reps → remove
 
+
+  
   setLi.querySelector(".remove-set").addEventListener("click", () => {
     setLi.remove();
   });
