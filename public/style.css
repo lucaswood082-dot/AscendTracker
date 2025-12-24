@@ -344,32 +344,35 @@ input:checked + .slider::after {
 .page {
   padding-bottom: calc(94px + 16px); /* nav height + buffer */
 }
-/* ===== FIX CREATE (CENTER) BUTTON ===== */
+/* ===== CENTER CREATE WORKOUT BUTTON ===== */
 .bottom-nav .create-btn {
-  all: unset;                 /* reset inherited button styles */
-  position: relative;
-  width: 64px;
-  height: 64px;
+  all: unset;                      /* prevents normal tab styling */
+  width: 60px;                     /* 🔧 SIZE: button width */
+  height: 60px;                    /* 🔧 SIZE: button height */
   border-radius: 50%;
-  background: #38bdf8;
+  background: #1f2937;             /* 🔵 NORMAL dark blue (default) */
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-top: -28px;          /* lifts it above nav */
-  box-shadow: 0 10px 25px rgba(56,189,248,0.35);
+  margin-top: -22px;               /* 🔧 POSITION: move UP / DOWN */
+  box-shadow: 0 6px 16px rgba(0,0,0,0.35);
   cursor: pointer;
   z-index: 300;
 }
 
-/* PLUS ICON */
+/* plus icon */
 .bottom-nav .create-btn .icon {
-  font-size: 32px;
-  color: #020617;
+  font-size: 28px;                 /* 🔧 ICON SIZE */
+  color: #e5e7eb;
   line-height: 1;
 }
 
-/* ACTIVE STATE (when on workout.html) */
+/* ===== ACTIVE (when on workout.html) ===== */
 .bottom-nav .create-btn.active {
-  background: #38bdf8;
+  background: #38bdf8;             /* 🔵 highlighted blue */
   box-shadow: 0 0 0 4px rgba(56,189,248,0.35);
+}
+
+.bottom-nav .create-btn.active .icon {
+  color: #020617;
 }
