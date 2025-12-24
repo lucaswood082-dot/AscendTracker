@@ -23,24 +23,24 @@ function showPopup(message) {
 function createSetElement(isUnilateral, weightValue = "") {
   const setLi = document.createElement("li");
 
-  // VERTICAL STACK
+  // MATCH INPUT SPACING (same as workout/exercise name)
   setLi.style.display = "flex";
   setLi.style.flexDirection = "column";
-  setLi.style.gap = "10px";
-  setLi.style.marginBottom = "16px";
+  setLi.style.gap = "0.75rem";
+  setLi.style.marginBottom = "1rem";
 
   if (isUnilateral) {
     setLi.innerHTML = `
-      <input type="number" placeholder="Left Reps" class="set-left" style="width:100%;" />
-      <input type="number" placeholder="Right Reps" class="set-right" style="width:100%;" />
-      <input type="number" placeholder="Weight" class="set-weight" value="${weightValue}" style="width:100%;" />
-      <button class="remove-set" style="width:100%;">Remove</button>
+      <input type="number" placeholder="Left Reps" class="set-left" />
+      <input type="number" placeholder="Right Reps" class="set-right" />
+      <input type="number" placeholder="Weight" class="set-weight" value="${weightValue}" />
+      <button class="remove-set">Remove</button>
     `;
   } else {
     setLi.innerHTML = `
-      <input type="number" placeholder="Reps" class="set-reps" style="width:100%;" />
-      <input type="number" placeholder="Weight" class="set-weight" value="${weightValue}" style="width:100%;" />
-      <button class="remove-set" style="width:100%;">Remove</button>
+      <input type="number" placeholder="Reps" class="set-reps" />
+      <input type="number" placeholder="Weight" class="set-weight" value="${weightValue}" />
+      <button class="remove-set">Remove</button>
     `;
   }
 
@@ -68,7 +68,7 @@ function createExerciseElement(exercise) {
     </div>
 
     <div class="exercise-body">
-      <div style="display:flex; align-items:center; gap:8px; margin-bottom:12px;">
+      <div style="display:flex; align-items:center; gap:8px; margin-bottom:0.75rem;">
         <label class="toggle-switch">
           <input type="checkbox" class="unilateral-toggle" ${exercise.unilateral ? "checked" : ""}>
           <span class="slider"></span>
@@ -76,7 +76,7 @@ function createExerciseElement(exercise) {
         <span style="font-size:0.9rem;">Unilateral</span>
       </div>
 
-      <button class="add-set" style="width:100%; margin-bottom:14px;">
+      <button class="add-set" style="margin-bottom:0.75rem;">
         Add Set
       </button>
 
