@@ -387,19 +387,3 @@ input:checked + .slider::after {
 .planner-card button {
   margin-top: 0.8rem;      /* 🔧 adjust this */
 }
-/* ===== LOCK SCROLL — PLANNER PAGE ONLY ===== */
-body.planner-page {
-  height: 100vh;
-  overflow: hidden;
-  overscroll-behavior: none;
-}
-
-body.planner-page .page {
-  height: 100vh;
-  overflow: hidden;
-}
-
-body.planner-page .container {
-  height: 100%;
-  overflow: hidden;
-}
