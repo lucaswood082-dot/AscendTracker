@@ -1,173 +1,180 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta name="theme-color" content="#111827">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-capable" content="yes">
+  <!-- Status bar / browser UI colour -->
+  <meta name="theme-color" content="#111827">
 
-<meta charset="UTF-8">
-<title>My Workouts</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link rel="stylesheet" href="style.css">
-<style>
-.top-nav {
-  position: sticky;
-  top: 0;
-  z-index: 100;
-  background: #111827;
-  border-bottom: 1px solid #1f2937;
-  padding: 1rem;
-  text-align: center;
-  font-weight: 600;
-  color: #38bdf8;
-  font-size: 1.2rem;
-}
+  <!-- iOS PWA status bar -->
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-capable" content="yes">
 
-.back-btn {
-  display: inline-block;
-  margin: 0.5rem auto 1rem auto;
-  padding: 0.5rem 1rem;
-  border-radius: 10px;
-  border: none;
-  background: #38bdf8;
-  color: #020617;
-  font-weight: 600;
-  cursor: pointer;
-  font-size: 0.9rem;
-  text-align: center;
-}
+  <meta charset="UTF-8">
+  <title>My Workouts</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="style.css">
+  <style>
+    /* Sticky Top Navigation */
+    .top-nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: #111827;
+      border-bottom: 1px solid #1f2937;
+      padding: 1rem;
+      text-align: center;
+      font-weight: 600;
+      color: #38bdf8;
+      font-size: 1.2rem;
+    }
 
-.back-btn:hover { opacity: 0.85; }
+    .back-btn {
+      display: inline-block;
+      margin: 0.5rem auto 1rem auto;
+      padding: 0.5rem 1rem;
+      border-radius: 10px;
+      border: none;
+      background: #38bdf8;
+      color: #020617;
+      font-weight: 600;
+      cursor: pointer;
+      font-size: 0.9rem;
+      text-align: center;
+    }
 
-.page {
-  display: flex;
-  flex-direction: column;
-  padding-top: 1rem;
-  max-height: calc(100vh - 60px);
-}
+    .back-btn:hover {
+      opacity: 0.85;
+    }
 
-.container {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
-}
+    /* PAGE LAYOUT */
+    .page {
+      display: flex;
+      flex-direction: column;
+      padding-top: 1rem;
+      max-height: calc(100vh - 60px); /* adjust based on nav height */
+    }
 
-.card {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
-}
+    .container {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden; /* prevents double scroll */
+    }
 
-#workoutsList {
-  flex: 1;
-  margin-top: 0.5rem;
-  overflow-y: auto;
-  -webkit-overflow-scrolling: touch;
-}
+    .card {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden; /* scroll inside workouts list only */
+    }
 
-.workouts-title {
-  color: #38bdf8;
-  font-weight: 600;
-  font-size: 1.5rem;
-  margin-bottom: 1rem;
-  text-align: left;
-  margin-left: 0.5rem;
-}
+    /* SCROLLABLE WORKOUTS AREA */
+    #workoutsList {
+      flex: 1;
+      margin-top: 0.5rem;
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch; /* smooth mobile scrolling */
+    }
 
-details.exercise {
-  background: #020617;
-  border: 1px solid #1f2937;
-  border-radius: 12px;
-  padding: 0.75rem;
-  margin-bottom: 0.75rem;
-}
+    details.exercise {
+      background: #020617;
+      border: 1px solid #1f2937;
+      border-radius: 12px;
+      padding: 0.75rem;
+      margin-bottom: 0.75rem;
+    }
 
-summary {
-  cursor: pointer;
-  font-weight: 600;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 0.25rem 0;
-}
+    summary {
+      cursor: pointer;
+      font-weight: 600;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
 
-.exercise-details {
-  margin-top: 0.5rem;
-  padding-left: 0.5rem;
-}
+    .exercise-details {
+      margin-top: 0.5rem;
+      padding-left: 0.5rem;
+    }
 
-.exercise-name {
-  font-weight: 600;
-  margin-top: 0.5rem;
-  margin-bottom: 0.4rem; /* spacing between exercise name and sets */
-}
+    .exercise-name {
+      font-weight: 600;
+      margin-top: 0.5rem; /* space between name and sets */
+    }
 
-.set-item {
-  margin-left: 10px;
-  font-size: 0.9rem;
-  display: flex;
-  gap: 12px;
-}
+    .set-item {
+      margin-left: 10px;
+      font-size: 0.9rem;
+      display: flex;
+      gap: 12px;
+    }
 
-.set-item span {
-  display: inline-block;
-  min-width: 50px;
-}
+    .set-item span {
+      display: inline-block;
+      min-width: 50px;
+    }
 
-button.danger {
-  width: auto;
-  padding: 0.25rem 0.5rem;
-  font-size: 0.8rem;
-  margin-left: 0.5rem;
-}
+    button.danger {
+      width: auto;
+      padding: 0.25rem 0.5rem;
+      font-size: 0.8rem;
+      margin-left: 0.5rem;
+    }
 
-.summary-left {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-}
+    .summary-left {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
 
-.summary-arrow {
-  transition: transform 0.3s ease;
-}
+    .summary-arrow {
+      transition: transform 0.3s ease;
+    }
 
-details[open] .summary-arrow {
-  transform: rotate(90deg);
-}
-</style>
+    details[open] .summary-arrow {
+      transform: rotate(90deg);
+    }
+  </style>
 </head>
 <body>
 
-<div class="top-nav">Ascend</div>
+<!-- NAV BAR -->
+<div class="top-nav">
+  Ascend
+</div>
 
+<!-- Back Button -->
 <div style="text-align:center;">
   <button class="back-btn" onclick="window.location.href='workout.html'">← Back to Create Workout</button>
 </div>
 
 <div class="page">
   <div class="container">
+    <div class="card">
 
-    <!-- Title moved to left -->
-    <div class="workouts-title">My Workouts</div>
+      <h2 style="color:#38bdf8;">My Workouts</h2>
+      <div id="workoutsList"></div>
 
-    <div id="workoutsList"></div>
+      <button
+        type="button"
+        class="secondary"
+        onclick="location.href='workout.html'"
+        style="margin-top:0.5rem; align-self:flex-start;"
+      >
+        Create New Workout
+      </button>
 
-    <button type="button" class="secondary" onclick="location.href='workout.html'">
-      Create New Workout
-    </button>
+    </div>
   </div>
 </div>
 
 <script>
-console.log("view.js loaded");
-
 const workoutsList = document.getElementById("workoutsList");
-const users = JSON.parse(localStorage.getItem("users")) || [];
-const currentUser = users[0];
 
 function loadWorkouts() {
+  const users = JSON.parse(localStorage.getItem("users")) || [];
+  const username = "Lucas"; // replace with dynamic current user if needed
+  const currentUser = users.find(u => u.username === username);
+
   workoutsList.innerHTML = "";
 
   if (!currentUser || !currentUser.workouts || currentUser.workouts.length === 0) {
@@ -175,7 +182,7 @@ function loadWorkouts() {
     return;
   }
 
-  currentUser.workouts.forEach((workout, idx) => {
+  currentUser.workouts.forEach((workout, index) => {
     const details = document.createElement("details");
     details.classList.add("exercise");
 
@@ -198,8 +205,7 @@ function loadWorkouts() {
     deleteBtn.classList.add("danger");
     deleteBtn.addEventListener("click", (e) => {
       e.stopPropagation();
-      currentUser.workouts.splice(idx, 1);
-      users[0] = currentUser;
+      currentUser.workouts.splice(index, 1);
       localStorage.setItem("users", JSON.stringify(users));
       loadWorkouts();
     });
@@ -213,7 +219,7 @@ function loadWorkouts() {
 
     workout.exercises.forEach(ex => {
       const exName = document.createElement("div");
-      exName.textContent = `${ex.name}:`;
+      exName.textContent = `${ex.name}:`; // Just text, no box
       exName.classList.add("exercise-name");
       detailsDiv.appendChild(exName);
 
@@ -239,37 +245,51 @@ function loadWorkouts() {
 loadWorkouts();
 </script>
 
+<!-- BOTTOM NAVIGATION -->
 <nav class="bottom-nav">
+  <!-- Home -->
   <button data-page="dashboard" onclick="location.href='dashboard.html'">
-    <span class="icon"><img src="/icons/home.png" alt="Home" class="nav-icon"></span>
+    <span class="icon">
+      <img src="/icons/home.png" alt="Home" class="nav-icon">
+    </span>
     <span class="label">Home</span>
   </button>
 
+  <!-- Workouts -->
   <button data-page="view" onclick="location.href='view.html'">
-    <span class="icon"><img src="/icons/workout.png" alt="Workouts" class="nav-icon"></span>
+    <span class="icon">
+      <img src="/icons/workout.png" alt="Workouts" class="nav-icon">
+    </span>
     <span class="label">Workouts</span>
   </button>
 
+  <!-- CENTER CREATE BUTTON -->
   <button data-page="workout" class="create-btn" onclick="location.href='workout.html'">
     <span class="icon">＋</span>
   </button>
 
+  <!-- Analytics -->
   <button data-page="stats" disabled>
-    <span class="icon"><img src="/icons/analytics.png" alt="Analytics" class="nav-icon"></span>
+    <span class="icon">
+      <img src="/icons/analytics.png" alt="Analytics" class="nav-icon">
+    </span>
     <span class="label">Analytics</span>
   </button>
 
+  <!-- Profile -->
   <button data-page="profile" disabled>
-    <span class="icon"><img src="/icons/profile.png" alt="Profile" class="nav-icon"></span>
+    <span class="icon">
+      <img src="/icons/profile.png" alt="Profile" class="nav-icon">
+    </span>
     <span class="label">Profile</span>
   </button>
 </nav>
 
 <script>
-const current = location.pathname.split("/").pop().replace(".html", "");
-document.querySelectorAll(".bottom-nav button").forEach(btn => {
-  if (btn.dataset.page === current) btn.classList.add("active");
-});
+  const current = location.pathname.split("/").pop().replace(".html", "");
+  document.querySelectorAll(".bottom-nav button").forEach(btn => {
+    if (btn.dataset.page === current) btn.classList.add("active");
+  });
 </script>
 
 </body>
