@@ -416,3 +416,20 @@ input:checked + .slider::after {
   flex-direction: column;
   gap: 12px; /* 🔧 THIS IS THE GAP */
 }
+/* ===== PLANNER CARD COMPACT OVERRIDE ===== */
+.planner-card {
+  max-height: 180px !important;   /* slightly smaller height */
+  overflow: hidden !important;    /* hide overflow content */
+  padding: 1rem !important;       /* slightly smaller inner padding */
+}
+
+.planner-preview {
+  min-height: 60px !important;    /* shorter preview box */
+  padding: 0.75rem !important;    /* smaller inner spacing */
+  font-size: 14px !important;     /* slightly smaller text */
+}
+
+.planner-card button {
+  padding: 0.5rem 1rem !important; /* smaller button padding */
+  font-size: 14px !important;      /* smaller button text */
+}
