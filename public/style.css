@@ -425,3 +425,18 @@ body.planner-page .container {
   opacity: 1;
   transform: translateX(-50%) translateY(0);
 }
+/* ===============================
+   PLANNER PAGE — SCROLL LOCK
+================================ */
+
+body.planner-page {
+  height: 100vh;
+  overflow: hidden;
+}
+
+/* ensure main wrapper doesn't scroll */
+body.planner-page .page,
+body.planner-page .scroll-page {
+  height: 100%;
+  overflow: hidden;
+}
