@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
 <title>Planner</title>
 
 <meta name="theme-color" content="#111827">
@@ -13,140 +13,31 @@
 
 <style>
 /* ===== TOP NAV ===== */
-.top-nav {
-  position: sticky;
-  top: 0;
-  z-index: 100;
-  background: #111827;
-  border-bottom: 1px solid #1f2937;
-  padding: 1rem;
-  font-weight: 600;
-  color: #38bdf8;
-  font-size: 1.2rem;
-  text-align: center;
-}
-
+.top-nav { position: sticky; top: 0; z-index: 100; background: #111827; border-bottom: 1px solid #1f2937; padding: 1rem; font-weight: 600; color: #38bdf8; font-size: 1.2rem; text-align: center; }
 /* ===== PAGE ===== */
-.page {
-  padding: 1rem;
-  min-height: 100vh;
-  padding-bottom: 140px;
-}
-.container {
-  max-width: 480px;
-  margin: 0 auto;
-}
-
+.page { padding: 1rem; min-height: 100vh; padding-bottom: 140px; }
+.container { max-width: 480px; margin: 0 auto; }
 /* ===== CARD ===== */
-.card {
-  background: #111827;
-  border-radius: 14px;
-  padding: 1.25rem;
-  margin-bottom: 1rem;
-  border: 1px solid #1f2937;
-}
-
+.card { background: #111827; border-radius: 14px; padding: 1.25rem; margin-bottom: 1rem; border: 1px solid #1f2937; }
 /* ===== INPUTS ===== */
-input {
-  width: 100%;
-  padding: 0.75rem;
-  border-radius: 10px;
-  border: 1px solid #1f2937;
-  background: #020617;
-  color: #e5e7eb;
-  font-size: 16px;
-  margin-bottom: 0.75rem;
-}
-
+input { width: 100%; padding: 0.75rem; border-radius: 10px; border: 1px solid #1f2937; background: #020617; color: #e5e7eb; font-size: 16px; margin-bottom: 0.75rem; }
 /* ===== BUTTONS ===== */
-button {
-  width: 100%;
-  padding: 0.75rem;
-  border-radius: 10px;
-  border: none;
-  background: #38bdf8;
-  color: #020617;
-  font-weight: 600;
-  cursor: pointer;
-  margin-top: 0.5rem;
-}
-
-button.secondary {
-  background: #1f2937;
-  color: #e5e7eb;
-}
-
+button { width: 100%; padding: 0.75rem; border-radius: 10px; border: none; background: #38bdf8; color: #020617; font-weight: 600; cursor: pointer; margin-top: 0.5rem; }
+button.secondary { background: #1f2937; color: #e5e7eb; }
 /* ===== DATE PICKER ===== */
-.date-wrapper {
-  position: relative;
-  margin-bottom: 0.75rem;
-}
-.date-display {
-  width: 100%;
-  padding: 0.75rem;
-  border-radius: 10px;
-  border: 1px solid #1f2937;
-  background: #020617;
-  color: #e5e7eb;
-  font-size: 16px;
-  cursor: pointer;
-}
-.date-hidden {
-  position: absolute;
-  inset: 0;
-  opacity: 0;
-}
-
+.date-wrapper { position: relative; margin-bottom: 0.75rem; }
+.date-display { width: 100%; padding: 0.75rem; border-radius: 10px; border: 1px solid #1f2937; background: #020617; color: #e5e7eb; font-size: 16px; cursor: pointer; }
+.date-hidden { position: absolute; inset: 0; opacity: 0; }
 /* ===== DAY VIEW ===== */
-.days-card {
-  overflow: hidden;
-}
-
-.day-box {
-  border: 1px solid #1f2937;
-  border-radius: 12px;
-  padding: 0.9rem;
-  background: #020617;
-  position: relative;
-  transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1);
-  user-select: none;
-  
-}
-.day-title {
-  font-weight: 600;
-  margin-bottom: 0.4rem;
-  color: #38bdf8;
-}
-.day-workout {
-  font-size: 0.95rem;
-  color: #e5e7eb;
-}
-.empty {
-  color: #9ca3af;
-  font-size: 0.9rem;
-}
-
-/* ===== DELETE PROGRESS BAR ===== */
-.delete-progress {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  height: 4px;
-  background: #ef4444;
-  width: 0%;
-  transition: width 0.1s linear;
-}
-
+.days-card { overflow: hidden; }
+.day-box { border: 1px solid #1f2937; border-radius: 12px; padding: 0.9rem; background: #020617; position: relative; transition: transform 0.3s cubic-bezier(0.22,1,0.36,1); user-select: none; -webkit-user-select:none; -ms-user-select:none; -webkit-touch-callout:none; touch-action: manipulation; }
+.day-title { font-weight: 600; margin-bottom: 0.4rem; color: #38bdf8; }
+.day-workout { font-size: 0.95rem; color: #e5e7eb; }
+.empty { color: #9ca3af; font-size: 0.9rem; }
 /* ===== SWIPE CLASSES ===== */
-.day-box.swipe-left {
-  transform: translateX(-100%);
-}
-.day-box.swipe-right {
-  transform: translateX(100%);
-}
-.day-box.swipe-reset {
-  transform: translateX(0);
-}
+.day-box.swipe-left { transform: translateX(-100%); }
+.day-box.swipe-right { transform: translateX(100%); }
+.day-box.swipe-reset { transform: translateX(0); }
 </style>
 </head>
 
@@ -161,31 +52,15 @@ button.secondary {
     <div class="card">
       <h3>Add Workout</h3>
 
-      <input
-        type="text"
-        id="workoutName"
-        placeholder="Workout Name"
-      />
+      <input type="text" id="workoutName" placeholder="Workout Name" />
 
       <div class="date-wrapper">
-        <input
-          type="text"
-          id="dateDisplay"
-          class="date-display"
-          placeholder="Select date"
-          readonly
-        />
-        <input
-          type="date"
-          id="dateInput"
-          class="date-hidden"
-        />
+        <input type="text" id="dateDisplay" class="date-display" placeholder="Select date" readonly />
+        <input type="date" id="dateInput" class="date-hidden" />
       </div>
 
       <button id="addBtn">Add Workout</button>
-      <button id="backBtn" class="secondary">
-         Back
-      </button>
+      <button id="backBtn" class="secondary">Back</button>
     </div>
 
     <!-- DAY VIEW -->
@@ -199,25 +74,11 @@ button.secondary {
 
 <!-- BOTTOM NAV -->
 <nav class="bottom-nav">
-  <button onclick="location.href='dashboard.html'">
-    <span class="icon"><img src="/icons/home.png" class="nav-icon"></span>
-    <span class="label">Home</span>
-  </button>
-  <button onclick="location.href='view.html'">
-    <span class="icon"><img src="/icons/workout.png" class="nav-icon"></span>
-    <span class="label">Workouts</span>
-  </button>
-  <button class="create-btn" onclick="location.href='workout.html'">
-    <span class="icon">＋</span>
-  </button>
-  <button disabled>
-    <span class="icon"><img src="/icons/analytics.png" class="nav-icon"></span>
-    <span class="label">Analytics</span>
-  </button>
-  <button disabled>
-    <span class="icon"><img src="/icons/profile.png" class="nav-icon"></span>
-    <span class="label">Profile</span>
-  </button>
+  <button onclick="location.href='dashboard.html'"><span class="icon"><img src="/icons/home.png" class="nav-icon"></span><span class="label">Home</span></button>
+  <button onclick="location.href='view.html'"><span class="icon"><img src="/icons/workout.png" class="nav-icon"></span><span class="label">Workouts</span></button>
+  <button class="create-btn" onclick="location.href='workout.html'"><span class="icon">＋</span></button>
+  <button disabled><span class="icon"><img src="/icons/analytics.png" class="nav-icon"></span><span class="label">Analytics</span></button>
+  <button disabled><span class="icon"><img src="/icons/profile.png" class="nav-icon"></span><span class="label">Profile</span></button>
 </nav>
 
 <script>
@@ -230,9 +91,7 @@ const addBtn = document.getElementById('addBtn');
 const backBtn = document.getElementById('backBtn');
 
 let offset = 0;
-let startX = 0;
-let holdTimer;
-let progressInterval;
+let lastTap = 0;
 
 /* DATE PICKER SYNC */
 dateDisplay.addEventListener('click', () => dateInput.showPicker?.());
@@ -264,53 +123,34 @@ function renderDay() {
       <div class="day-workout">
         ${planner[key] || '<span class="empty">No workout</span>'}
       </div>
-      <div class="delete-progress"></div>
     </div>
   `;
 
   const box = dayView.querySelector('.day-box');
-  const progress = box.querySelector('.delete-progress');
 
-  /* LONG PRESS DELETE: 3s delay */
-  box.addEventListener('touchstart', () => {
-    holdTimer = setTimeout(() => {
-      // Start showing progress bar only after 3s hold
-      let width = 0;
-      progress.style.width = '0%';
-      progressInterval = setInterval(() => {
-        width += 1;
-        progress.style.width = width + '%';
-        if (width >= 100) {
-          clearInterval(progressInterval);
-          if (planner[key]) {
-            delete planner[key];
-            localStorage.setItem('planner', JSON.stringify(planner));
-            if (navigator.vibrate) navigator.vibrate(50);
-            renderDay();
-          }
-        }
-      }, 30);
-    }, 2000); // 3 seconds before progress appears
+  // DOUBLE TAP TO DELETE
+  box.addEventListener('touchend', e => {
+    const currentTime = new Date().getTime();
+    const tapLength = currentTime - lastTap;
+    if (tapLength < 300 && tapLength > 0) { // double tap detected
+      e.preventDefault(); // prevent zoom
+      if (planner[key]) {
+        delete planner[key];
+        localStorage.setItem('planner', JSON.stringify(planner));
+        renderDay();
+        if (navigator.vibrate) navigator.vibrate(50);
+      }
+    }
+    lastTap = currentTime;
   });
 
-  box.addEventListener('touchend', () => {
-    clearTimeout(holdTimer);
-    clearInterval(progressInterval);
-    progress.style.width = '0%';
-  });
-
-  /* SWIPE ANIMATION */
+  // SWIPE LEFT/RIGHT
+  let startX = 0;
   box.addEventListener('touchstart', e => startX = e.touches[0].clientX);
   box.addEventListener('touchend', e => {
     const dx = e.changedTouches[0].clientX - startX;
-    if (dx < -50) {
-      box.classList.add('swipe-left');
-      setTimeout(() => { offset += 1; renderDay(); }, 300);
-    }
-    if (dx > 50) {
-      box.classList.add('swipe-right');
-      setTimeout(() => { offset -= 1; renderDay(); }, 300);
-    }
+    if (dx < -50) { box.classList.add('swipe-left'); setTimeout(()=>{ offset +=1; renderDay(); },300);}
+    if (dx > 50) { box.classList.add('swipe-right'); setTimeout(()=>{ offset -=1; renderDay(); },300);}
   });
 }
 
