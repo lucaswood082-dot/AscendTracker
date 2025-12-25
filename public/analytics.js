@@ -1,29 +1,39 @@
-console.log("Analytics loaded");
+console.log("analytics.js loaded");
 
-const tonnageEl = document.getElementById("tonnageValue");
+// Get users and current user
+const users = JSON.parse(localStorage.getItem("users")) || [];
+const currentUser = users[0]; // Adjust if you have multi-user support
 
-// STEP 1: Get workouts
-const workouts = JSON.parse(localStorage.getItem("workouts")) || [];
+// Initialize totals
+let totalTonnage = 0;
+let totalSets = 0;
+let totalReps = 0;
 
-console.log("Workouts:", workouts);
-
-// STEP 2: Calculate tonnage
-function calculateTotalTonnage(workouts) {
-  let total = 0;
-
-  workouts.forEach(workout => {
-    workout.exercises?.forEach(exercise => {
-      exercise.sets?.forEach(set => {
-        const reps = Number(set.reps) || 0;
-        const weight = Number(set.weight) || 0;
-        total += reps * weight;
+// Check if user has workouts
+if (currentUser && Array.isArray(currentUser.workouts)) {
+  currentUser.workouts.forEach(workout => {
+    workout.exercises.forEach(ex => {
+      ex.sets.forEach(set => {
+        if (ex.unilateral) {
+          const left = parseInt(set.leftReps) || 0;
+          const right = parseInt(set.rightReps) || 0;
+          const weight = parseFloat(set.weight) || 0;
+          totalTonnage += weight * (left + right);
+          totalSets += 1;
+          totalReps += left + right;
+        } else {
+          const reps = parseInt(set.reps) || 0;
+          const weight = parseFloat(set.weight) || 0;
+          totalTonnage += weight * reps;
+          totalSets += 1;
+          totalReps += reps;
+        }
       });
     });
   });
-
-  return total;
 }
 
-// STEP 3: Display
-const totalTonnage = calculateTotalTonnage(workouts);
-tonnageEl.textContent = totalTonnage + " kg";
+// Display totals in HTML
+document.getElementById("totalTonnage").textContent = totalTonnage + " kg";
+document.getElementById("totalSets").textContent = totalSets;
+document.getElementById("totalReps").textContent = totalReps;
