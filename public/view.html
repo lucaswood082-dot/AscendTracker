@@ -99,6 +99,7 @@
     .exercise-name {
       font-weight: 600;
       margin-top: 0.5rem; /* space between name and sets */
+      /* NO background, no border, no box around name */
     }
 
     .set-item {
@@ -219,7 +220,7 @@ function loadWorkouts() {
 
     workout.exercises.forEach(ex => {
       const exName = document.createElement("div");
-      exName.textContent = `${ex.name}:`; // Just text, no box
+      exName.textContent = `${ex.name}:`; // just text, no box
       exName.classList.add("exercise-name");
       detailsDiv.appendChild(exName);
 
