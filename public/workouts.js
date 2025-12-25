@@ -106,8 +106,11 @@ function renderExercises() {
 
 /* ---------------- ADD EXERCISE ---------------- */
 addExerciseBtn.addEventListener("click", () => {
-  exercises.push({ name: "", sets: [], unilateral: false });
-  renderExercises();
+  const newExercise = { name: "", sets: [], unilateral: false };
+  exercises.push(newExercise);
+
+  // Instead of re-rendering all exercises, just append the new one
+  exerciseList.appendChild(createExerciseElement(newExercise));
 });
 
 /* ---------------- SAVE WORKOUT ---------------- */
