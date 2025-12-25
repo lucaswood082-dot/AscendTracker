@@ -1,15 +1,10 @@
-console.log("analytics.js loaded");
-
-// Get users and current user
 const users = JSON.parse(localStorage.getItem("users")) || [];
-const currentUser = users[0]; // Adjust if you have multi-user support
+const currentUser = users[0];
 
-// Initialize totals
 let totalTonnage = 0;
 let totalSets = 0;
 let totalReps = 0;
 
-// Check if user has workouts
 if (currentUser && Array.isArray(currentUser.workouts)) {
   currentUser.workouts.forEach(workout => {
     workout.exercises.forEach(ex => {
@@ -33,7 +28,6 @@ if (currentUser && Array.isArray(currentUser.workouts)) {
   });
 }
 
-// Display totals in HTML
-document.getElementById("totalTonnage").textContent = totalTonnage + " kg";
-document.getElementById("totalSets").textContent = totalSets;
-document.getElementById("totalReps").textContent = totalReps;
+document.getElementById("totalTonnage").textContent = totalTonnage ? totalTonnage + " kg" : "0 kg";
+document.getElementById("totalSets").textContent = totalSets || 0;
+document.getElementById("totalReps").textContent = totalReps || 0;
