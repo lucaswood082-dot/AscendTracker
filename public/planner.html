@@ -1,121 +1,142 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Ascend Planner</title>
-<link rel="stylesheet" href="style.css" />
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Planner</title>
+
+<meta name="theme-color" content="#111827">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-capable" content="yes">
+
+<link rel="stylesheet" href="style.css">
 
 <style>
-/* ---------- BASE ---------- */
-body {
-  margin: 0;
-  background: #020617;
-  color: #e5e7eb;
-  font-family: system-ui, -apple-system, BlinkMacSystemFont;
-}
-
-/* ---------- TOP NAV ---------- */
+/* ===== TOP NAV ===== */
 .top-nav {
-  padding: 1rem;
-  text-align: center;
-  font-weight: 600;
-  font-size: 1.2rem;
-  color: #38bdf8;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: #111827;
   border-bottom: 1px solid #1f2937;
-  background: #020617;
+  padding: 1rem;
+  font-weight: 600;
+  color: #38bdf8;
+  font-size: 1.2rem;
+  text-align: center;
 }
 
-/* ---------- PAGE ---------- */
+/* ===== PAGE ===== */
 .page {
   padding: 1rem;
+  min-height: 100vh;
   padding-bottom: 140px;
 }
-
 .container {
   max-width: 480px;
   margin: 0 auto;
 }
 
-/* ---------- CARDS ---------- */
+/* ===== CARDS ===== */
 .card {
   background: #111827;
-  border: 1px solid #1f2937;
-  border-radius: 16px;
+  border-radius: 14px;
   padding: 1.25rem;
   margin-bottom: 1rem;
+  border: 1px solid #1f2937;
 }
 
-/* ---------- INPUTS (NO ZOOM FIX) ---------- */
+/* ===== INPUTS ===== */
 input,
 textarea {
   width: 100%;
-  box-sizing: border-box;
-  background: #020617;
+  padding: 0.75rem;
+  border-radius: 10px;
   border: 1px solid #1f2937;
-  border-radius: 12px;
-  padding: 0.75rem 0.9rem;
-  margin-bottom: 0.75rem;
+  background: #020617;
   color: #e5e7eb;
-  font-size: 16px; /* CRITICAL: prevents mobile zoom */
+  font-size: 16px;
+  margin-bottom: 0.75rem;
 }
 
-textarea {
-  min-height: 70px;
-  resize: vertical;
-}
-
-/* ---------- BUTTON ---------- */
+/* ===== BUTTONS ===== */
 button {
   width: 100%;
-  padding: 0.8rem;
-  border-radius: 12px;
+  padding: 0.75rem;
+  border-radius: 10px;
   border: none;
   background: #38bdf8;
   color: #020617;
   font-weight: 600;
-  font-size: 1rem;
+  cursor: pointer;
+  margin-top: 0.5rem;
+}
+
+button.secondary {
+  background: #1f2937;
+  color: #e5e7eb;
+}
+
+/* ===== CUSTOM DATE PICKER ===== */
+.date-wrapper {
+  position: relative;
+  width: 100%;
+  margin-bottom: 0.75rem;
+}
+
+#plannerWorkoutDateDisplay {
+  width: 100%;
+  padding: 0.75rem;
+  border-radius: 10px;
+  border: 1px solid #1f2937;
+  background: #020617;
+  color: #e5e7eb;
+  font-size: 16px;
   cursor: pointer;
 }
 
-/* ---------- SCHEDULED WORKOUTS ---------- */
-.schedule-box {
-  margin-top: 0.5rem;
-  max-height: 260px;        /* BIGGER */
-  overflow-y: auto;         /* SCROLLABLE */
-  padding-right: 0.25rem;
+.hidden-date {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+
+/* ===== NOTES ===== */
+#plannerWorkoutNotes {
+  min-height: 60px;
+  resize: vertical;
+}
+
+/* ===== WORKOUT LIST ===== */
+#workoutList {
+  max-height: 260px;
+  overflow-y: auto;
+  padding-right: 4px;
 }
 
 .workout-item {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background: #020617;
+  background: #111827;
   border: 1px solid #1f2937;
   border-radius: 12px;
-  padding: 0.65rem 0.75rem;
+  padding: 0.75rem;
   margin-bottom: 0.5rem;
 }
 
-.workout-text {
-  font-size: 0.95rem;
-  line-height: 1.3;
+.workout-item span {
+  color: #e5e7eb;
 }
 
-/* ---------- REMOVE BUTTON ---------- */
+/* ===== REMOVE BUTTON ===== */
 .remove-btn {
   background: transparent;
   border: none;
   color: #ef4444;
-  font-size: 1.2rem;
+  font-size: 1.1rem;
   cursor: pointer;
-}
-
-/* ---------- EMPTY STATE ---------- */
-.empty {
-  text-align: center;
-  opacity: 0.6;
-  font-size: 0.95rem;
 }
 </style>
 </head>
@@ -134,94 +155,146 @@ button {
       <input
         type="text"
         id="plannerWorkoutName"
-        placeholder="Workout name"
+        placeholder="Workout Name"
       />
 
-      <!-- REDESIGNED DATE PICKER -->
-      <input
-        type="date"
-        id="plannerWorkoutDate"
-      />
+      <!-- Custom Date Picker -->
+      <div class="date-wrapper">
+        <input
+          type="text"
+          id="plannerWorkoutDateDisplay"
+          placeholder="Select date"
+          readonly
+        />
+        <input
+          type="date"
+          id="plannerWorkoutDate"
+          class="hidden-date"
+        />
+      </div>
 
       <textarea
         id="plannerWorkoutNotes"
-        placeholder="Notes (optional)"
+        placeholder="Add notes (optional)"
       ></textarea>
 
       <button id="addPlannerWorkoutBtn">Add Workout</button>
+
+      <button
+        class="secondary"
+        onclick="location.href='dashboard.html'"
+      >
+        ← Back to Dashboard
+      </button>
     </div>
 
     <!-- SCHEDULED WORKOUTS -->
     <div class="card">
       <h3>Scheduled Workouts</h3>
-
-      <div id="workoutList" class="schedule-box">
-        <p class="empty">No workouts scheduled</p>
+      <div id="workoutList">
+        <p class="planner-empty">No workouts scheduled yet</p>
       </div>
     </div>
 
   </div>
 </div>
 
+<!-- BOTTOM NAV -->
+<nav class="bottom-nav">
+  <button data-page="dashboard" onclick="location.href='dashboard.html'">
+    <span class="icon"><img src="/icons/home.png" class="nav-icon"></span>
+    <span class="label">Home</span>
+  </button>
+
+  <button data-page="view" onclick="location.href='view.html'">
+    <span class="icon"><img src="/icons/workout.png" class="nav-icon"></span>
+    <span class="label">Workouts</span>
+  </button>
+
+  <button data-page="workout" class="create-btn" onclick="location.href='workout.html'">
+    <span class="icon">＋</span>
+  </button>
+
+  <button disabled>
+    <span class="icon"><img src="/icons/analytics.png" class="nav-icon"></span>
+    <span class="label">Analytics</span>
+  </button>
+
+  <button disabled>
+    <span class="icon"><img src="/icons/profile.png" class="nav-icon"></span>
+    <span class="label">Profile</span>
+  </button>
+</nav>
+
 <script>
-const workoutListEl = document.getElementById("workoutList");
-let plannerData = JSON.parse(localStorage.getItem("planner")) || {};
+const workoutListEl = document.getElementById('workoutList');
+const dateInput = document.getElementById('plannerWorkoutDate');
+const dateDisplay = document.getElementById('plannerWorkoutDateDisplay');
 
-/* ---------- RENDER ---------- */
+let plannerData = JSON.parse(localStorage.getItem('planner')) || {};
+
+/* ===== DATE DISPLAY SYNC ===== */
+dateInput.addEventListener('change', () => {
+  dateDisplay.value = dateInput.value;
+});
+
+/* ===== RENDER WORKOUTS ===== */
 function renderWorkouts() {
-  workoutListEl.innerHTML = "";
-
+  workoutListEl.innerHTML = '';
   const dates = Object.keys(plannerData).sort();
 
   if (dates.length === 0) {
-    workoutListEl.innerHTML =
-      '<p class="empty">No workouts scheduled</p>';
+    workoutListEl.innerHTML = '<p class="planner-empty">No workouts scheduled yet</p>';
     return;
   }
 
   dates.forEach(date => {
-    const w = plannerData[date];
+    const workout = plannerData[date];
 
-    const item = document.createElement("div");
-    item.className = "workout-item";
+    const div = document.createElement('div');
+    div.className = 'workout-item';
 
-    const text = document.createElement("div");
-    text.className = "workout-text";
-    text.innerHTML = `<strong>${w.name}</strong><br>${date}${w.notes ? " • " + w.notes : ""}`;
+    const text = document.createElement('span');
+    text.textContent = `${workout.name} – ${date}${workout.notes ? ' | ' + workout.notes : ''}`;
 
-    const remove = document.createElement("button");
-    remove.className = "remove-btn";
-    remove.textContent = "×";
+    const remove = document.createElement('button');
+    remove.className = 'remove-btn';
+    remove.textContent = '×';
     remove.onclick = () => {
       delete plannerData[date];
-      localStorage.setItem("planner", JSON.stringify(plannerData));
+      localStorage.setItem('planner', JSON.stringify(plannerData));
       renderWorkouts();
     };
 
-    item.appendChild(text);
-    item.appendChild(remove);
-    workoutListEl.appendChild(item);
+    div.appendChild(text);
+    div.appendChild(remove);
+    workoutListEl.appendChild(div);
   });
 }
 
-/* ---------- ADD ---------- */
-document.getElementById("addPlannerWorkoutBtn").onclick = () => {
+/* ===== ADD WORKOUT ===== */
+document.getElementById('addPlannerWorkoutBtn').addEventListener('click', () => {
   const name = plannerWorkoutName.value.trim();
   const date = plannerWorkoutDate.value;
   const notes = plannerWorkoutNotes.value.trim();
 
-  if (!name || !date) return alert("Enter name and date");
+  if (!name || !date) {
+    alert('Enter workout name and date');
+    return;
+  }
 
   plannerData[date] = { name, notes };
-  localStorage.setItem("planner", JSON.stringify(plannerData));
+  localStorage.setItem('planner', JSON.stringify(plannerData));
 
-  plannerWorkoutName.value = "";
-  plannerWorkoutDate.value = "";
-  plannerWorkoutNotes.value = "";
+  plannerWorkoutName.value = '';
+  plannerWorkoutDate.value = '';
+  plannerWorkoutDateDisplay.value = '';
+  plannerWorkoutNotes.value = '';
 
   renderWorkouts();
-};
+});
 
+/* ===== INIT ===== */
 renderWorkouts();
 </script>
 
