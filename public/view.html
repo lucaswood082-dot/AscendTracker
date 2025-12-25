@@ -1,18 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <!-- Status bar / browser UI colour -->
 <meta name="theme-color" content="#111827">
-
-<!-- iOS PWA status bar -->
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-capable" content="yes">
 
-  <meta charset="UTF-8">
-  <title>My Workouts</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="style.css">
-  <style>
+<meta charset="UTF-8">
+<title>My Workouts</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="style.css">
+<style>
     /* Sticky Top Navigation */
     .top-nav {
       position: sticky;
@@ -41,66 +38,66 @@
       text-align: center;
     }
 
-    .back-btn:hover {
-      opacity: 0.85;
-    }
+    .back-btn:hover { opacity: 0.85; }
 
-    /* PAGE LAYOUT */
     .page {
       display: flex;
       flex-direction: column;
       padding-top: 1rem;
-      max-height: calc(100vh - 60px); /* adjust based on nav height */
+      max-height: calc(100vh - 60px);
     }
 
     .container {
       flex: 1;
       display: flex;
       flex-direction: column;
-      overflow: hidden; /* prevents double scroll */
+      overflow: hidden;
     }
 
     .card {
       flex: 1;
       display: flex;
       flex-direction: column;
-      overflow: hidden; /* scroll inside workouts list only */
-      margin-bottom: 1rem;
-      padding: 1rem;
-      border-radius: 12px;
-      background: #020617;
-      border: 1px solid #1f2937;
+      overflow: hidden;
     }
 
-    /* SCROLLABLE WORKOUTS AREA */
     #workoutsList {
       flex: 1;
       margin-top: 0.5rem;
       overflow-y: auto;
-      -webkit-overflow-scrolling: touch; /* smooth mobile scrolling */
+      -webkit-overflow-scrolling: touch;
     }
 
-    .exercise-name {
+    details.exercise {
+      background: #020617;
+      border: 1px solid #1f2937;
+      border-radius: 12px;
+      padding: 0.75rem;
+      margin-bottom: 0.75rem;
+    }
+
+    summary {
+      cursor: pointer;
       font-weight: 600;
-      margin-top: 0.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
     }
 
-    .set-item {
-      margin-left: 10px;
-      font-size: 0.9rem;
-      display: flex;
-      gap: 12px;
-    }
-  </style>
+    .exercise-details { margin-top: 0.5rem; padding-left: 0.5rem; }
+    .exercise-name { font-weight: 600; margin-top: 0.5rem; }
+    .set-item { margin-left: 10px; font-size: 0.9rem; display: flex; gap: 12px; }
+    .set-item span { display: inline-block; min-width: 50px; }
+    button.danger { width: auto; padding: 0.25rem 0.5rem; font-size: 0.8rem; margin-left: 0.5rem; }
+    .summary-left { display: flex; align-items: center; gap: 6px; }
+    .summary-arrow { transition: transform 0.3s ease; }
+    details[open] .summary-arrow { transform: rotate(90deg); }
+</style>
 </head>
 <body>
 
-<!-- NAV BAR -->
-<div class="top-nav">
-  Ascend
-</div>
+<div class="top-nav">Ascend</div>
 
-<!-- Back Button -->
 <div style="text-align:center;">
   <button class="back-btn" onclick="window.location.href='workout.html'">← Back to Create Workout</button>
 </div>
@@ -108,11 +105,7 @@
 <div class="page">
   <div class="container">
     <div id="workoutsList"></div>
-    <button
-      type="button"
-      class="secondary"
-      onclick="location.href='workout.html'"
-    >
+    <button type="button" class="secondary" onclick="location.href='workout.html'">
       Create New Workout
     </button>
   </div>
@@ -121,7 +114,7 @@
 <script>
 console.log("view.js loaded");
 
-// Get the container
+// Get container
 const workoutsList = document.getElementById("workoutsList");
 
 // Load users from localStorage
@@ -130,101 +123,104 @@ const currentUser = users[0]; // assuming single user
 
 workoutsList.innerHTML = "";
 
-// No workouts message
+// No workouts
 if (!currentUser || !currentUser.workouts || currentUser.workouts.length === 0) {
   workoutsList.innerHTML = `<p style="text-align:center; color:#9ca3af;">No workouts saved yet.</p>`;
 } else {
-  // Render workouts
-  currentUser.workouts.forEach((w, i) => {
-    const card = document.createElement("div");
-    card.className = "card";
+  currentUser.workouts.forEach((workout, idx) => {
+    const details = document.createElement("details");
+    details.classList.add("exercise");
 
-    card.innerHTML = `
-      <h3>${w.name} (${w.date})</h3>
-      <ul>
-        ${w.exercises.map(ex => `
-          <li>
-            <strong>${ex.name}</strong>
-            <ul>
-              ${ex.sets.map(s => {
-                if (ex.unilateral) {
-                  return `<li>Left: ${s.leftReps} | Right: ${s.rightReps} | Weight: ${s.weight}kg</li>`;
-                } else {
-                  return `<li>Reps: ${s.reps} | Weight: ${s.weight}kg</li>`;
-                }
-              }).join("")}
-            </ul>
-          </li>
-        `).join("")}
-      </ul>
-      <button class="danger">Delete</button>
-    `;
+    const summary = document.createElement("summary");
+    const leftDiv = document.createElement("div");
+    leftDiv.classList.add("summary-left");
 
-    // Delete button
-    card.querySelector(".danger").addEventListener("click", () => {
-      currentUser.workouts.splice(i, 1);
+    const arrow = document.createElement("span");
+    arrow.classList.add("summary-arrow");
+    arrow.textContent = "▶";
+
+    const title = document.createElement("span");
+    title.textContent = `${workout.name} (${workout.date})`;
+
+    leftDiv.appendChild(arrow);
+    leftDiv.appendChild(title);
+
+    const deleteBtn = document.createElement("button");
+    deleteBtn.textContent = "Delete";
+    deleteBtn.classList.add("danger");
+    deleteBtn.addEventListener("click", (e) => {
+      e.stopPropagation();
+      currentUser.workouts.splice(idx, 1);
       users[0] = currentUser;
       localStorage.setItem("users", JSON.stringify(users));
-      card.remove();
+      details.remove();
     });
 
-    workoutsList.appendChild(card);
+    summary.appendChild(leftDiv);
+    summary.appendChild(deleteBtn);
+    details.appendChild(summary);
+
+    const detailsDiv = document.createElement("div");
+    detailsDiv.classList.add("exercise-details");
+
+    workout.exercises.forEach(ex => {
+      const exName = document.createElement("div");
+      exName.classList.add("exercise-name");
+      exName.textContent = ex.name;
+      detailsDiv.appendChild(exName);
+
+      ex.sets.forEach(s => {
+        const setDiv = document.createElement("div");
+        setDiv.classList.add("set-item");
+
+        if (ex.unilateral) {
+          setDiv.innerHTML = `<span>Left: ${s.leftReps}</span> <span>Right: ${s.rightReps}</span> <span>Weight: ${s.weight}kg</span>`;
+        } else {
+          setDiv.innerHTML = `<span>Reps: ${s.reps}</span> <span>Weight: ${s.weight}kg</span>`;
+        }
+
+        detailsDiv.appendChild(setDiv);
+      });
+    });
+
+    details.appendChild(detailsDiv);
+    workoutsList.appendChild(details);
   });
 }
 </script>
 
 <!-- BOTTOM NAVIGATION -->
 <nav class="bottom-nav">
-  <!-- Home -->
   <button data-page="dashboard" onclick="location.href='dashboard.html'">
-    <span class="icon">
-      <img src="/icons/home.png" alt="Home" class="nav-icon">
-    </span>
+    <span class="icon"><img src="/icons/home.png" alt="Home" class="nav-icon"></span>
     <span class="label">Home</span>
   </button>
 
-  <!-- Workouts -->
   <button data-page="view" onclick="location.href='view.html'">
-    <span class="icon">
-      <img src="/icons/workout.png" alt="Workouts" class="nav-icon">
-    </span>
+    <span class="icon"><img src="/icons/workout.png" alt="Workouts" class="nav-icon"></span>
     <span class="label">Workouts</span>
   </button>
 
-  <!-- CENTER CREATE BUTTON -->
-  <button
-    data-page="workout"
-    class="create-btn"
-    onclick="location.href='workout.html'"
-  >
+  <button data-page="workout" class="create-btn" onclick="location.href='workout.html'">
     <span class="icon">＋</span>
   </button>
 
-  <!-- Analytics -->
   <button data-page="stats" disabled>
-    <span class="icon">
-      <img src="/icons/analytics.png" alt="Analytics" class="nav-icon">
-    </span>
+    <span class="icon"><img src="/icons/analytics.png" alt="Analytics" class="nav-icon"></span>
     <span class="label">Analytics</span>
   </button>
 
-  <!-- Profile -->
   <button data-page="profile" disabled>
-    <span class="icon">
-      <img src="/icons/profile.png" alt="Profile" class="nav-icon">
-    </span>
+    <span class="icon"><img src="/icons/profile.png" alt="Profile" class="nav-icon"></span>
     <span class="label">Profile</span>
   </button>
 </nav>
 
 <script>
-  const current = location.pathname.split("/").pop().replace(".html", "");
-
-  document.querySelectorAll(".bottom-nav button").forEach(btn => {
-    if (btn.dataset.page === current) {
-      btn.classList.add("active");
-    }
-  });
+const current = location.pathname.split("/").pop().replace(".html", "");
+document.querySelectorAll(".bottom-nav button").forEach(btn => {
+  if (btn.dataset.page === current) btn.classList.add("active");
+});
 </script>
 
 </body>
