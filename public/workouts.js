@@ -147,9 +147,7 @@ saveWorkoutBtn.addEventListener("click", () => {
   const workoutObj = {
     name: document.getElementById("workoutName").value || "Unnamed Workout",
     exercises,
-  date: getLocalDateString()
-  
-
+    date: new Date().toISOString().split("T")[0]
     
   
   };
