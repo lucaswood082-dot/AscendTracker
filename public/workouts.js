@@ -51,7 +51,7 @@ function createSetElement(isUnilateral, weightValue = "") {
   setLi.querySelector(".reps-input").style.marginBottom = "0.4rem"; // reps → remove
 
 
-  
+
   setLi.querySelector(".remove-set").addEventListener("click", () => {
     setLi.remove();
   });
@@ -136,6 +136,17 @@ addExerciseBtn.addEventListener("click", () => {
 
 /* ---------------- SAVE ---------------- */
 saveWorkoutBtn.addEventListener("click", () => {
+  const toast = document.getElementById("saveToast");
+
+toast.classList.add("show");
+
+setTimeout(() => {
+  toast.classList.remove("show");
+}, 2000);
+if (navigator.vibrate) {
+  navigator.vibrate(30);
+}
+
   exercises = [];
 
   document.querySelectorAll(".exercise-item").forEach(li => {
