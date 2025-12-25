@@ -22,7 +22,6 @@ function showPopup(message) {
 /* ---------------- CREATE SET ELEMENT ---------------- */
 function createSetElement(isUnilateral, weightValue = "") {
   const setLi = document.createElement("li");
-
   setLi.style.display = "flex";
   setLi.style.flexDirection = "column";
   setLi.style.marginBottom = "1rem";
@@ -53,15 +52,9 @@ function createExerciseElement(exercise) {
 
   li.innerHTML = `
     <div class="exercise-header">
-      <input
-        type="text"
-        placeholder="Exercise Name"
-        class="exercise-name"
-        value="${exercise.name}"
-      />
+      <input type="text" placeholder="Exercise Name" class="exercise-name" value="${exercise.name}" />
       <span class="arrow">▼</span>
     </div>
-
     <div class="exercise-body">
       <div style="display:flex; align-items:center; gap:8px; margin-bottom:0.75rem;">
         <label class="toggle-switch">
@@ -70,11 +63,7 @@ function createExerciseElement(exercise) {
         </label>
         <span style="font-size:0.9rem;">Unilateral</span>
       </div>
-
-      <button class="add-set" style="margin-bottom:0.75rem;">
-        Add Set
-      </button>
-
+      <button class="add-set" style="margin-bottom:0.75rem;">Add Set</button>
       <ul class="sets-list"></ul>
     </div>
   `;
@@ -123,7 +112,6 @@ addExerciseBtn.addEventListener("click", () => {
 
 /* ---------------- SAVE WORKOUT ---------------- */
 saveWorkoutBtn.addEventListener("click", () => {
-  // Build exercises array from DOM
   exercises = [];
   document.querySelectorAll(".exercise-item").forEach(li => {
     const name = li.querySelector(".exercise-name").value;
@@ -148,7 +136,7 @@ saveWorkoutBtn.addEventListener("click", () => {
     exercises.push({ name, unilateral, sets });
   });
 
-  // ✅ Properly save per user
+  // Save per user
   let users = JSON.parse(localStorage.getItem("users")) || [];
   let currentUser = users[0] || { username: "Lucas", workouts: [] };
   if (!currentUser.workouts) currentUser.workouts = [];
@@ -171,4 +159,3 @@ saveWorkoutBtn.addEventListener("click", () => {
   exerciseList.innerHTML = "";
   exercises = [];
 });
-
