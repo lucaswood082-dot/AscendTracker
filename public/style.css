@@ -425,7 +425,7 @@ input:checked + .slider::after {
 
 .planner-preview {
   min-height: 60px !important;    /* shorter preview box */
-  padding: 0.75rem !important;    /* smaller inner spacing */
+  padding: 1rem !important;    /* smaller inner spacing */
   font-size: 14px !important;     /* slightly smaller text */
 }
 
