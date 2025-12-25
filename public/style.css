@@ -440,5 +440,5 @@ input:checked + .slider::after {
 
 /* optional: add extra bottom space inside planner-preview if needed */
 .planner-preview {
-  margin-bottom: 20px !important; /* increases space between preview and bottom of planner card */
+  margin-bottom: 30px !important; /* increases space between preview and bottom of planner card */
 }
