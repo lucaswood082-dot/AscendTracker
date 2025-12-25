@@ -110,6 +110,20 @@ button.secondary {
   position: relative;
   transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1);
   user-select: none;
+  .day-box {
+  border: 1px solid #1f2937;
+  border-radius: 12px;
+  padding: 0.9rem;
+  background: #020617;
+  position: relative;
+  transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+  user-select: none;           /* Prevent text selection */
+  -webkit-user-select: none;   /* Safari/iOS */
+  -ms-user-select: none;       /* IE10+ */
+  -webkit-touch-callout: none; /* Disable callout menu on long press */
+  touch-action: pan-y;         /* Allow vertical scrolling, block horizontal selection */
+}
+
 }
 .day-title {
   font-weight: 600;
@@ -289,7 +303,7 @@ function renderDay() {
           }
         }
       }, 30);
-    }, 3000); // 3 seconds before progress appears
+    }, 2000); // 3 seconds before progress appears
   });
 
   box.addEventListener('touchend', () => {
