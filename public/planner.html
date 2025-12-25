@@ -108,14 +108,10 @@ button.secondary {
   padding: 0.9rem;
   background: #020617;
   position: relative;
-  transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.3s;
-  user-select: none;           
-  -webkit-user-select: none;   
-  -ms-user-select: none;       
-  -webkit-touch-callout: none; 
-  touch-action: pan-y;         
+  transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+  user-select: none;
+  
 }
-
 .day-title {
   font-weight: 600;
   margin-bottom: 0.4rem;
@@ -130,25 +126,18 @@ button.secondary {
   font-size: 0.9rem;
 }
 
-/* ===== DELETE SWIPE UP BAR ===== */
-.delete-bar {
+/* ===== DELETE PROGRESS BAR ===== */
+.delete-progress {
   position: absolute;
-  top: 0;
+  bottom: 0;
   left: 0;
-  height: 100%;
-  width: 100%;
-  background: rgba(239, 68, 68, 0.15);
-  border-radius: 12px;
-  transform: translateY(100%);
-  transition: transform 0.3s ease;
-  z-index: 1;
+  height: 4px;
+  background: #ef4444;
+  width: 0%;
+  transition: width 0.1s linear;
 }
 
-.day-box.deleting .delete-bar {
-  transform: translateY(0);
-}
-
-/* ===== SWIPE LEFT/RIGHT FOR NEXT/PREV DAY ===== */
+/* ===== SWIPE CLASSES ===== */
 .day-box.swipe-left {
   transform: translateX(-100%);
 }
@@ -172,15 +161,31 @@ button.secondary {
     <div class="card">
       <h3>Add Workout</h3>
 
-      <input type="text" id="workoutName" placeholder="Workout Name" />
+      <input
+        type="text"
+        id="workoutName"
+        placeholder="Workout Name"
+      />
 
       <div class="date-wrapper">
-        <input type="text" id="dateDisplay" class="date-display" placeholder="Select date" readonly />
-        <input type="date" id="dateInput" class="date-hidden" />
+        <input
+          type="text"
+          id="dateDisplay"
+          class="date-display"
+          placeholder="Select date"
+          readonly
+        />
+        <input
+          type="date"
+          id="dateInput"
+          class="date-hidden"
+        />
       </div>
 
       <button id="addBtn">Add Workout</button>
-      <button id="backBtn" class="secondary">Back</button>
+      <button id="backBtn" class="secondary">
+         Back
+      </button>
     </div>
 
     <!-- DAY VIEW -->
@@ -226,7 +231,8 @@ const backBtn = document.getElementById('backBtn');
 
 let offset = 0;
 let startX = 0;
-let startY = 0;
+let holdTimer;
+let progressInterval;
 
 /* DATE PICKER SYNC */
 dateDisplay.addEventListener('click', () => dateInput.showPicker?.());
@@ -254,41 +260,54 @@ function renderDay() {
 
   dayView.innerHTML = `
     <div class="day-box swipe-reset" data-date="${key}">
-      <div class="delete-bar"></div>
       <div class="day-title">${d.toDateString()}</div>
       <div class="day-workout">
         ${planner[key] || '<span class="empty">No workout</span>'}
       </div>
+      <div class="delete-progress"></div>
     </div>
   `;
 
   const box = dayView.querySelector('.day-box');
-  const deleteBar = box.querySelector('.delete-bar');
+  const progress = box.querySelector('.delete-progress');
 
-  /* SWIPE UP TO DELETE */
-  box.addEventListener('touchstart', e => {
-    startX = e.touches[0].clientX;
-    startY = e.touches[0].clientY;
+  /* LONG PRESS DELETE: 3s delay */
+  box.addEventListener('touchstart', () => {
+    holdTimer = setTimeout(() => {
+      // Start showing progress bar only after 3s hold
+      let width = 0;
+      progress.style.width = '0%';
+      progressInterval = setInterval(() => {
+        width += 1;
+        progress.style.width = width + '%';
+        if (width >= 100) {
+          clearInterval(progressInterval);
+          if (planner[key]) {
+            delete planner[key];
+            localStorage.setItem('planner', JSON.stringify(planner));
+            if (navigator.vibrate) navigator.vibrate(50);
+            renderDay();
+          }
+        }
+      }, 30);
+    }, 2000); // 3 seconds before progress appears
   });
 
+  box.addEventListener('touchend', () => {
+    clearTimeout(holdTimer);
+    clearInterval(progressInterval);
+    progress.style.width = '0%';
+  });
+
+  /* SWIPE ANIMATION */
+  box.addEventListener('touchstart', e => startX = e.touches[0].clientX);
   box.addEventListener('touchend', e => {
     const dx = e.changedTouches[0].clientX - startX;
-    const dy = e.changedTouches[0].clientY - startY;
-
-    if (dy < -50) { // swipe up
-      box.classList.add('deleting');
-      setTimeout(() => {
-        if (planner[key]) {
-          delete planner[key];
-          localStorage.setItem('planner', JSON.stringify(planner));
-          if (navigator.vibrate) navigator.vibrate(50);
-          renderDay();
-        }
-      }, 300); // animation time
-    } else if (dx < -50) {
+    if (dx < -50) {
       box.classList.add('swipe-left');
       setTimeout(() => { offset += 1; renderDay(); }, 300);
-    } else if (dx > 50) {
+    }
+    if (dx > 50) {
       box.classList.add('swipe-right');
       setTimeout(() => { offset -= 1; renderDay(); }, 300);
     }
