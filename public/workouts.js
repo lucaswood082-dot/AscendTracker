@@ -171,3 +171,4 @@ saveWorkoutBtn.addEventListener("click", () => {
   exerciseList.innerHTML = "";
   exercises = [];
 });
+
