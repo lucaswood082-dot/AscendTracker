@@ -289,6 +289,53 @@ loadWorkouts();
     }
   });
 </script>
+<script>
+console.log("view.js loaded");
+
+// Get workout container
+const workoutList = document.getElementById("workoutList");
+
+// Load users from localStorage
+const users = JSON.parse(localStorage.getItem("users")) || [];
+const username = "Lucas"; // Or dynamically get current user
+const currentUser = users.find(u => u.username === username);
+
+// Clear container
+workoutList.innerHTML = "";
+
+// If no workouts
+if (!currentUser || !currentUser.workouts || currentUser.workouts.length === 0) {
+  workoutList.innerHTML = `<p style="text-align:center; color:#9ca3af;">No workouts saved yet.</p>`;
+} else {
+  // Render workouts
+  currentUser.workouts.forEach((w, i) => {
+    const card = document.createElement("div");
+    card.className = "card";
+
+    card.innerHTML = `
+      <h3>${w.name} (${w.date})</h3>
+      <ul style="margin-top:0.5rem; padding-left:1rem;">
+        ${w.exercises.map(ex => `
+          <li>
+            <strong>${ex.name}</strong>
+            <ul>
+              ${ex.sets.map(s => {
+                if (ex.unilateral) {
+                  return `<li>Left: ${s.leftReps} | Right: ${s.rightReps} | Weight: ${s.weight}kg</li>`;
+                } else {
+                  return `<li>Reps: ${s.reps} | Weight: ${s.weight}kg</li>`;
+                }
+              }).join("")}
+            </ul>
+          </li>
+        `).join("")}
+      </ul>
+    `;
+
+    workoutList.appendChild(card);
+  });
+}
+</script>
 
 </body>
 </html>
