@@ -89,6 +89,7 @@ button.secondary {
   background: #020617;
   color: #e5e7eb;
   font-size: 16px;
+  cursor: pointer;
 }
 .date-hidden {
   position: absolute;
@@ -106,22 +107,44 @@ button.secondary {
   border-radius: 12px;
   padding: 0.9rem;
   background: #020617;
+  position: relative;
+  transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+  user-select: none;
 }
-
 .day-title {
   font-weight: 600;
   margin-bottom: 0.4rem;
   color: #38bdf8;
 }
-
 .day-workout {
   font-size: 0.95rem;
   color: #e5e7eb;
 }
-
 .empty {
   color: #9ca3af;
   font-size: 0.9rem;
+}
+
+/* ===== DELETE PROGRESS BAR ===== */
+.delete-progress {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  height: 4px;
+  background: #ef4444;
+  width: 0%;
+  transition: width 0.1s linear;
+}
+
+/* ===== SWIPE CLASSES ===== */
+.day-box.swipe-left {
+  transform: translateX(-100%);
+}
+.day-box.swipe-right {
+  transform: translateX(100%);
+}
+.day-box.swipe-reset {
+  transform: translateX(0);
 }
 </style>
 </head>
@@ -159,8 +182,8 @@ button.secondary {
       </div>
 
       <button id="addBtn">Add Workout</button>
-      <button class="secondary" onclick="location.href='dashboard.html'">
-        ← Back to Dashboard
+      <button id="backBtn" class="secondary">
+         Back
       </button>
     </div>
 
@@ -199,15 +222,22 @@ button.secondary {
 <script>
 const planner = JSON.parse(localStorage.getItem('planner')) || {};
 const dayView = document.getElementById('dayView');
+const workoutName = document.getElementById('workoutName');
+const dateInput = document.getElementById('dateInput');
+const dateDisplay = document.getElementById('dateDisplay');
+const addBtn = document.getElementById('addBtn');
+const backBtn = document.getElementById('backBtn');
 
 let offset = 0;
 let startX = 0;
 let pressTimer;
 
 /* DATE PICKER SYNC */
-dateInput.addEventListener('change', () => {
-  dateDisplay.value = dateInput.value;
-});
+dateDisplay.addEventListener('click', () => dateInput.showPicker?.());
+dateInput.addEventListener('change', () => dateDisplay.value = dateInput.value);
+
+/* BACK BUTTON */
+backBtn.addEventListener('click', () => location.href='dashboard.html');
 
 /* ADD WORKOUT */
 addBtn.onclick = () => {
@@ -227,45 +257,56 @@ function renderDay() {
   const key = d.toISOString().split('T')[0];
 
   dayView.innerHTML = `
-    <div class="day-box" data-date="${key}">
+    <div class="day-box swipe-reset" data-date="${key}">
       <div class="day-title">${d.toDateString()}</div>
       <div class="day-workout">
         ${planner[key] || '<span class="empty">No workout</span>'}
       </div>
+      <div class="delete-progress"></div>
     </div>
   `;
 
   const box = dayView.querySelector('.day-box');
+  const progress = box.querySelector('.delete-progress');
 
-  // LONG PRESS TO DELETE
+  /* LONG PRESS DELETE */
   box.addEventListener('touchstart', () => {
-    pressTimer = setTimeout(() => {
-      if (planner[key]) {
-        delete planner[key];
-        localStorage.setItem('planner', JSON.stringify(planner));
-        renderDay();
+    let progressWidth = 0;
+    pressTimer = setInterval(() => {
+      progressWidth += 2;
+      progress.style.width = progressWidth + '%';
+      if (progressWidth >= 100) {
+        clearInterval(pressTimer);
+        if (planner[key]) {
+          delete planner[key];
+          localStorage.setItem('planner', JSON.stringify(planner));
+          if (navigator.vibrate) navigator.vibrate(50);
+          renderDay();
+        }
       }
-    }, 600);
+    }, 10);
   });
 
-  box.addEventListener('touchend', () => clearTimeout(pressTimer));
+  box.addEventListener('touchend', () => clearInterval(pressTimer));
+
+  /* SWIPE ANIMATION */
+  box.addEventListener('touchstart', e => startX = e.touches[0].clientX);
+  box.addEventListener('touchend', e => {
+    const dx = e.changedTouches[0].clientX - startX;
+    if (dx < -50) {
+      box.classList.add('swipe-left');
+      setTimeout(() => { offset += 1; renderDay(); }, 300);
+    }
+    if (dx > 50) {
+      box.classList.add('swipe-right');
+      setTimeout(() => { offset -= 1; renderDay(); }, 300);
+    }
+  });
 }
 
-/* SWIPE DAY BY DAY */
-dayView.addEventListener('touchstart', e => {
-  startX = e.touches[0].clientX;
-});
-
-dayView.addEventListener('touchend', e => {
-  const dx = e.changedTouches[0].clientX - startX;
-  if (dx < -50) offset += 1;
-  if (dx > 50) offset -= 1;
-  renderDay();
-});
-
+/* INITIAL RENDER */
 renderDay();
 </script>
 
 </body>
 </html>
-
