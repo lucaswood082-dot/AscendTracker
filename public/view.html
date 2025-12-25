@@ -68,10 +68,11 @@
 }
 
 details.exercise {
-  margin-bottom: 0.5rem;
-  border: none;
-  background: none;
-  padding: 0;
+  background: #020617;
+  border: 1px solid #1f2937;
+  border-radius: 12px;
+  padding: 0.75rem;
+  margin-bottom: 0.75rem;
 }
 
 summary {
@@ -86,11 +87,6 @@ summary {
 .exercise-details {
   margin-top: 0.5rem;
   padding-left: 0.5rem;
-}
-
-.exercise-name {
-  font-weight: 600;
-  margin-top: 0.25rem;
 }
 
 .set-item {
@@ -151,75 +147,9 @@ const workoutsList = document.getElementById("workoutsList");
 const users = JSON.parse(localStorage.getItem("users")) || [];
 const currentUser = users[0];
 
-workoutsList.innerHTML = "";
-
-if (!currentUser || !currentUser.workouts || currentUser.workouts.length === 0) {
-  workoutsList.innerHTML = `<p style="text-align:center; color:#9ca3af;">No workouts saved yet.</p>`;
-} else {
-  currentUser.workouts.forEach((workout, idx) => {
-    const details = document.createElement("details");
-    details.classList.add("exercise");
-
-    const summary = document.createElement("summary");
-    const leftDiv = document.createElement("div");
-    leftDiv.classList.add("summary-left");
-
-    const arrow = document.createElement("span");
-    arrow.classList.add("summary-arrow");
-    arrow.textContent = "▶";
-
-    const title = document.createElement("span");
-    title.textContent = `${workout.name} (${workout.date})`;
-
-    leftDiv.appendChild(arrow);
-    leftDiv.appendChild(title);
-
-    const deleteBtn = document.createElement("button");
-    deleteBtn.textContent = "Delete";
-    deleteBtn.classList.add("danger");
-    deleteBtn.addEventListener("click", (e) => {
-      e.stopPropagation();
-      currentUser.workouts.splice(idx, 1);
-      users[0] = currentUser;
-      localStorage.setItem("users", JSON.stringify(users));
-      loadWorkouts();
-    });
-
-    summary.appendChild(leftDiv);
-    summary.appendChild(deleteBtn);
-    details.appendChild(summary);
-
-    const detailsDiv = document.createElement("div");
-    detailsDiv.classList.add("exercise-details");
-
-    workout.exercises.forEach(ex => {
-      const exName = document.createElement("div");
-      exName.classList.add("exercise-name");
-      exName.textContent = `${ex.name}:`; // just like Bench:
-      detailsDiv.appendChild(exName);
-
-      ex.sets.forEach(s => {
-        const setDiv = document.createElement("div");
-        setDiv.classList.add("set-item");
-
-        if (ex.unilateral) {
-          setDiv.innerHTML = `<span>Left: ${s.leftReps}</span> <span>Right: ${s.rightReps}</span> <span>Weight: ${s.weight}kg</span>`;
-        } else {
-          setDiv.innerHTML = `<span>Reps: ${s.reps}</span> <span>Weight: ${s.weight}kg</span>`;
-        }
-
-        detailsDiv.appendChild(setDiv);
-      });
-    });
-
-    details.appendChild(detailsDiv);
-    workoutsList.appendChild(details);
-  });
-}
-
-// Helper to reload after delete
 function loadWorkouts() {
   workoutsList.innerHTML = "";
+
   if (!currentUser || !currentUser.workouts || currentUser.workouts.length === 0) {
     workoutsList.innerHTML = `<p style="text-align:center; color:#9ca3af;">No workouts saved yet.</p>`;
     return;
@@ -262,8 +192,8 @@ function loadWorkouts() {
     detailsDiv.classList.add("exercise-details");
 
     workout.exercises.forEach(ex => {
+      // Exercise name as plain text, no box
       const exName = document.createElement("div");
-      exName.classList.add("exercise-name");
       exName.textContent = `${ex.name}:`;
       detailsDiv.appendChild(exName);
 
@@ -285,6 +215,8 @@ function loadWorkouts() {
     workoutsList.appendChild(details);
   });
 }
+
+loadWorkouts();
 </script>
 
 <nav class="bottom-nav">
