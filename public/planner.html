@@ -41,7 +41,6 @@ button.secondary { background: #1f2937; color: #e5e7eb; }
 </style>
 </head>
 
-<body>
 <body class="planner-page">
 
 <div class="top-nav">Ascend</div>
@@ -90,16 +89,17 @@ const dateInput = document.getElementById('dateInput');
 const dateDisplay = document.getElementById('dateDisplay');
 const addBtn = document.getElementById('addBtn');
 const backBtn = document.getElementById('backBtn');
-function getLocalDateString(date = new Date()) {
-  const year = date.getFullYear();
-  const month = String(date.getMonth() + 1).padStart(2, "0");
-  const day = String(date.getDate()).padStart(2, "0");
-  return `${year}-${month}-${day}`;
-}
-
 
 let offset = 0;
 let lastTap = 0;
+
+/* LOCAL DATE STRING (NO UTC) */
+function getLocalDateKey(date) {
+  const y = date.getFullYear();
+  const m = String(date.getMonth() + 1).padStart(2, '0');
+  const d = String(date.getDate()).padStart(2, '0');
+  return `${y}-${m}-${d}`;
+}
 
 /* DATE PICKER SYNC */
 dateDisplay.addEventListener('click', () => dateInput.showPicker?.());
@@ -110,9 +110,14 @@ backBtn.addEventListener('click', () => location.href='dashboard.html');
 
 /* ADD WORKOUT */
 addBtn.onclick = () => {
-  if (!workoutName.value || !dateInput.value) return alert('Enter name & date');
+  if (!workoutName.value || !dateInput.value) {
+    alert('Enter name & date');
+    return;
+  }
+
   planner[dateInput.value] = workoutName.value;
   localStorage.setItem('planner', JSON.stringify(planner));
+
   workoutName.value = '';
   dateInput.value = '';
   dateDisplay.value = '';
@@ -123,8 +128,8 @@ addBtn.onclick = () => {
 function renderDay() {
   const d = new Date();
   d.setDate(d.getDate() + offset);
-  date: getLocalDateString()
 
+  const key = getLocalDateKey(d);
 
   dayView.innerHTML = `
     <div class="day-box swipe-reset" data-date="${key}">
@@ -139,31 +144,30 @@ function renderDay() {
 
   // DOUBLE TAP TO DELETE
   box.addEventListener('touchend', e => {
-    const currentTime = new Date().getTime();
-    const tapLength = currentTime - lastTap;
-    if (tapLength < 300 && tapLength > 0) { // double tap detected
-      e.preventDefault(); // prevent zoom
+    const now = Date.now();
+    if (now - lastTap < 300) {
+      e.preventDefault();
       if (planner[key]) {
         delete planner[key];
         localStorage.setItem('planner', JSON.stringify(planner));
         renderDay();
-        if (navigator.vibrate) navigator.vibrate(50);
+        navigator.vibrate?.(50);
       }
     }
-    lastTap = currentTime;
+    lastTap = now;
   });
 
-  // SWIPE LEFT/RIGHT
+  // SWIPE
   let startX = 0;
   box.addEventListener('touchstart', e => startX = e.touches[0].clientX);
   box.addEventListener('touchend', e => {
     const dx = e.changedTouches[0].clientX - startX;
-    if (dx < -50) { box.classList.add('swipe-left'); setTimeout(()=>{ offset +=1; renderDay(); },300);}
-    if (dx > 50) { box.classList.add('swipe-right'); setTimeout(()=>{ offset -=1; renderDay(); },300);}
+    if (dx < -50) setTimeout(() => { offset++; renderDay(); }, 300);
+    if (dx > 50) setTimeout(() => { offset--; renderDay(); }, 300);
   });
 }
 
-/* INITIAL RENDER */
+/* INITIAL */
 renderDay();
 </script>
 
