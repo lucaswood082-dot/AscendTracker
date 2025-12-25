@@ -96,26 +96,15 @@ button.secondary {
   opacity: 0;
 }
 
-/* ===== 3 DAY VIEW ===== */
+/* ===== DAY VIEW ===== */
 .days-card {
   overflow: hidden;
-}
-
-.days-track {
-  display: flex;
-  transition: transform 0.3s ease;
-}
-
-.day-column {
-  min-width: 100%;
-  padding: 0.25rem;
 }
 
 .day-box {
   border: 1px solid #1f2937;
   border-radius: 12px;
-  padding: 0.75rem;
-  margin-bottom: 0.75rem;
+  padding: 0.9rem;
   background: #020617;
 }
 
@@ -175,10 +164,10 @@ button.secondary {
       </button>
     </div>
 
-    <!-- NEXT DAYS VIEW -->
+    <!-- DAY VIEW -->
     <div class="card days-card">
-      <h3>Upcoming</h3>
-      <div class="days-track" id="daysTrack"></div>
+      <h3>Day</h3>
+      <div id="dayView"></div>
     </div>
 
   </div>
@@ -209,8 +198,11 @@ button.secondary {
 
 <script>
 const planner = JSON.parse(localStorage.getItem('planner')) || {};
-const track = document.getElementById('daysTrack');
+const dayView = document.getElementById('dayView');
+
 let offset = 0;
+let startX = 0;
+let pressTimer;
 
 /* DATE PICKER SYNC */
 dateInput.addEventListener('change', () => {
@@ -225,42 +217,53 @@ addBtn.onclick = () => {
   workoutName.value = '';
   dateInput.value = '';
   dateDisplay.value = '';
-  renderDays();
+  renderDay();
 };
 
-/* RENDER DAYS */
-function renderDays() {
-  track.innerHTML = '';
-  for (let i = 0; i < 3; i++) {
-    const d = new Date();
-    d.setDate(d.getDate() + offset + i);
-    const key = d.toISOString().split('T')[0];
+/* RENDER SINGLE DAY */
+function renderDay() {
+  const d = new Date();
+  d.setDate(d.getDate() + offset);
+  const key = d.toISOString().split('T')[0];
 
-    const col = document.createElement('div');
-    col.className = 'day-column';
-    col.innerHTML = `
-      <div class="day-box">
-        <div class="day-title">${d.toDateString()}</div>
-        <div class="day-workout">
-          ${planner[key] || '<span class="empty">No workout</span>'}
-        </div>
+  dayView.innerHTML = `
+    <div class="day-box" data-date="${key}">
+      <div class="day-title">${d.toDateString()}</div>
+      <div class="day-workout">
+        ${planner[key] || '<span class="empty">No workout</span>'}
       </div>
-    `;
-    track.appendChild(col);
-  }
+    </div>
+  `;
+
+  const box = dayView.querySelector('.day-box');
+
+  // LONG PRESS TO DELETE
+  box.addEventListener('touchstart', () => {
+    pressTimer = setTimeout(() => {
+      if (planner[key]) {
+        delete planner[key];
+        localStorage.setItem('planner', JSON.stringify(planner));
+        renderDay();
+      }
+    }, 600);
+  });
+
+  box.addEventListener('touchend', () => clearTimeout(pressTimer));
 }
 
-/* SWIPE */
-let startX = 0;
-track.addEventListener('touchstart', e => startX = e.touches[0].clientX);
-track.addEventListener('touchend', e => {
-  const dx = e.changedTouches[0].clientX - startX;
-  if (dx < -50) offset += 3;
-  if (dx > 50 && offset >= 3) offset -= 3;
-  renderDays();
+/* SWIPE DAY BY DAY */
+dayView.addEventListener('touchstart', e => {
+  startX = e.touches[0].clientX;
 });
 
-renderDays();
+dayView.addEventListener('touchend', e => {
+  const dx = e.changedTouches[0].clientX - startX;
+  if (dx < -50) offset += 1;
+  if (dx > 50) offset -= 1;
+  renderDay();
+});
+
+renderDay();
 </script>
 
 </body>
