@@ -433,3 +433,7 @@ input:checked + .slider::after {
   padding: 0.5rem 1rem !important; /* smaller button padding */
   font-size: 14px !important;      /* smaller button text */
 }
+/* ===== SPACE BETWEEN TODAY WORKOUT BOX AND BOTTOM OF PLANNER CARD ===== */
+.planner-card .planner-preview {
+  margin-bottom: 24px !important; /* adjust for desired gap */
+}
