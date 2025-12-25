@@ -10,7 +10,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="stylesheet" href="style.css">
 <style>
-    /* Sticky Top Navigation */
     .top-nav {
       position: sticky;
       top: 0;
@@ -69,10 +68,6 @@
     }
 
     details.exercise {
-      background: #020617;
-      border: 1px solid #1f2937;
-      border-radius: 12px;
-      padding: 0.75rem;
       margin-bottom: 0.75rem;
     }
 
@@ -82,6 +77,7 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
+      padding: 0.5rem 0; /* clean spacing, no box */
     }
 
     .exercise-details { margin-top: 0.5rem; padding-left: 0.5rem; }
@@ -114,16 +110,12 @@
 <script>
 console.log("view.js loaded");
 
-// Get container
 const workoutsList = document.getElementById("workoutsList");
-
-// Load users from localStorage
 const users = JSON.parse(localStorage.getItem("users")) || [];
-const currentUser = users[0]; // assuming single user
+const currentUser = users[0];
 
 workoutsList.innerHTML = "";
 
-// No workouts
 if (!currentUser || !currentUser.workouts || currentUser.workouts.length === 0) {
   workoutsList.innerHTML = `<p style="text-align:center; color:#9ca3af;">No workouts saved yet.</p>`;
 } else {
@@ -189,7 +181,6 @@ if (!currentUser || !currentUser.workouts || currentUser.workouts.length === 0) 
 }
 </script>
 
-<!-- BOTTOM NAVIGATION -->
 <nav class="bottom-nav">
   <button data-page="dashboard" onclick="location.href='dashboard.html'">
     <span class="icon"><img src="/icons/home.png" alt="Home" class="nav-icon"></span>
