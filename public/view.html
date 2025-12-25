@@ -71,8 +71,9 @@
   color: #38bdf8;
   font-weight: 600;
   font-size: 1.5rem;
-  margin-bottom: 0.75rem;
-  text-align: center;
+  margin-bottom: 1rem;
+  text-align: left;
+  margin-left: 0.5rem;
 }
 
 details.exercise {
@@ -100,7 +101,7 @@ summary {
 .exercise-name {
   font-weight: 600;
   margin-top: 0.5rem;
-  margin-bottom: 0.25rem; /* space between exercise name and sets */
+  margin-bottom: 0.4rem; /* spacing between exercise name and sets */
 }
 
 .set-item {
@@ -148,7 +149,7 @@ details[open] .summary-arrow {
 <div class="page">
   <div class="container">
 
-    <!-- Title -->
+    <!-- Title moved to left -->
     <div class="workouts-title">My Workouts</div>
 
     <div id="workoutsList"></div>
@@ -213,7 +214,7 @@ function loadWorkouts() {
     workout.exercises.forEach(ex => {
       const exName = document.createElement("div");
       exName.textContent = `${ex.name}:`;
-      exName.classList.add("exercise-name"); // spacing handled here
+      exName.classList.add("exercise-name");
       detailsDiv.appendChild(exName);
 
       ex.sets.forEach(s => {
