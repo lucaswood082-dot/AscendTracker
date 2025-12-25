@@ -37,7 +37,7 @@
   margin: 0 auto;
 }
 
-/* ===== CARDS ===== */
+/* ===== CARD ===== */
 .card {
   background: #111827;
   border-radius: 14px;
@@ -47,8 +47,7 @@
 }
 
 /* ===== INPUTS ===== */
-input,
-textarea {
+input {
   width: 100%;
   padding: 0.75rem;
   border-radius: 10px;
@@ -77,14 +76,12 @@ button.secondary {
   color: #e5e7eb;
 }
 
-/* ===== CUSTOM DATE PICKER ===== */
+/* ===== DATE PICKER ===== */
 .date-wrapper {
   position: relative;
-  width: 100%;
   margin-bottom: 0.75rem;
 }
-
-#plannerWorkoutDateDisplay {
+.date-display {
   width: 100%;
   padding: 0.75rem;
   border-radius: 10px;
@@ -92,51 +89,50 @@ button.secondary {
   background: #020617;
   color: #e5e7eb;
   font-size: 16px;
-  cursor: pointer;
 }
-
-.hidden-date {
+.date-hidden {
   position: absolute;
   inset: 0;
   opacity: 0;
-  cursor: pointer;
 }
 
-/* ===== NOTES ===== */
-#plannerWorkoutNotes {
-  min-height: 60px;
-  resize: vertical;
+/* ===== 3 DAY VIEW ===== */
+.days-card {
+  overflow: hidden;
 }
 
-/* ===== WORKOUT LIST ===== */
-#workoutList {
-  max-height: 260px;
-  overflow-y: auto;
-  padding-right: 4px;
-}
-
-.workout-item {
+.days-track {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background: #111827;
+  transition: transform 0.3s ease;
+}
+
+.day-column {
+  min-width: 100%;
+  padding: 0.25rem;
+}
+
+.day-box {
   border: 1px solid #1f2937;
   border-radius: 12px;
   padding: 0.75rem;
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.75rem;
+  background: #020617;
 }
 
-.workout-item span {
+.day-title {
+  font-weight: 600;
+  margin-bottom: 0.4rem;
+  color: #38bdf8;
+}
+
+.day-workout {
+  font-size: 0.95rem;
   color: #e5e7eb;
 }
 
-/* ===== REMOVE BUTTON ===== */
-.remove-btn {
-  background: transparent;
-  border: none;
-  color: #ef4444;
-  font-size: 1.1rem;
-  cursor: pointer;
+.empty {
+  color: #9ca3af;
+  font-size: 0.9rem;
 }
 </style>
 </head>
@@ -154,46 +150,35 @@ button.secondary {
 
       <input
         type="text"
-        id="plannerWorkoutName"
+        id="workoutName"
         placeholder="Workout Name"
       />
 
-      <!-- Custom Date Picker -->
       <div class="date-wrapper">
         <input
           type="text"
-          id="plannerWorkoutDateDisplay"
+          id="dateDisplay"
+          class="date-display"
           placeholder="Select date"
           readonly
         />
         <input
           type="date"
-          id="plannerWorkoutDate"
-          class="hidden-date"
+          id="dateInput"
+          class="date-hidden"
         />
       </div>
 
-      <textarea
-        id="plannerWorkoutNotes"
-        placeholder="Add notes (optional)"
-      ></textarea>
-
-      <button id="addPlannerWorkoutBtn">Add Workout</button>
-
-      <button
-        class="secondary"
-        onclick="location.href='dashboard.html'"
-      >
+      <button id="addBtn">Add Workout</button>
+      <button class="secondary" onclick="location.href='dashboard.html'">
         ← Back to Dashboard
       </button>
     </div>
 
-    <!-- SCHEDULED WORKOUTS -->
-    <div class="card">
-      <h3>Scheduled Workouts</h3>
-      <div id="workoutList">
-        <p class="planner-empty">No workouts scheduled yet</p>
-      </div>
+    <!-- NEXT DAYS VIEW -->
+    <div class="card days-card">
+      <h3>Upcoming</h3>
+      <div class="days-track" id="daysTrack"></div>
     </div>
 
   </div>
@@ -201,25 +186,21 @@ button.secondary {
 
 <!-- BOTTOM NAV -->
 <nav class="bottom-nav">
-  <button data-page="dashboard" onclick="location.href='dashboard.html'">
+  <button onclick="location.href='dashboard.html'">
     <span class="icon"><img src="/icons/home.png" class="nav-icon"></span>
     <span class="label">Home</span>
   </button>
-
-  <button data-page="view" onclick="location.href='view.html'">
+  <button onclick="location.href='view.html'">
     <span class="icon"><img src="/icons/workout.png" class="nav-icon"></span>
     <span class="label">Workouts</span>
   </button>
-
-  <button data-page="workout" class="create-btn" onclick="location.href='workout.html'">
+  <button class="create-btn" onclick="location.href='workout.html'">
     <span class="icon">＋</span>
   </button>
-
   <button disabled>
     <span class="icon"><img src="/icons/analytics.png" class="nav-icon"></span>
     <span class="label">Analytics</span>
   </button>
-
   <button disabled>
     <span class="icon"><img src="/icons/profile.png" class="nav-icon"></span>
     <span class="label">Profile</span>
@@ -227,75 +208,59 @@ button.secondary {
 </nav>
 
 <script>
-const workoutListEl = document.getElementById('workoutList');
-const dateInput = document.getElementById('plannerWorkoutDate');
-const dateDisplay = document.getElementById('plannerWorkoutDateDisplay');
+const planner = JSON.parse(localStorage.getItem('planner')) || {};
+const track = document.getElementById('daysTrack');
+let offset = 0;
 
-let plannerData = JSON.parse(localStorage.getItem('planner')) || {};
-
-/* ===== DATE DISPLAY SYNC ===== */
+/* DATE PICKER SYNC */
 dateInput.addEventListener('change', () => {
   dateDisplay.value = dateInput.value;
 });
 
-/* ===== RENDER WORKOUTS ===== */
-function renderWorkouts() {
-  workoutListEl.innerHTML = '';
-  const dates = Object.keys(plannerData).sort();
+/* ADD WORKOUT */
+addBtn.onclick = () => {
+  if (!workoutName.value || !dateInput.value) return alert('Enter name & date');
+  planner[dateInput.value] = workoutName.value;
+  localStorage.setItem('planner', JSON.stringify(planner));
+  workoutName.value = '';
+  dateInput.value = '';
+  dateDisplay.value = '';
+  renderDays();
+};
 
-  if (dates.length === 0) {
-    workoutListEl.innerHTML = '<p class="planner-empty">No workouts scheduled yet</p>';
-    return;
+/* RENDER DAYS */
+function renderDays() {
+  track.innerHTML = '';
+  for (let i = 0; i < 3; i++) {
+    const d = new Date();
+    d.setDate(d.getDate() + offset + i);
+    const key = d.toISOString().split('T')[0];
+
+    const col = document.createElement('div');
+    col.className = 'day-column';
+    col.innerHTML = `
+      <div class="day-box">
+        <div class="day-title">${d.toDateString()}</div>
+        <div class="day-workout">
+          ${planner[key] || '<span class="empty">No workout</span>'}
+        </div>
+      </div>
+    `;
+    track.appendChild(col);
   }
-
-  dates.forEach(date => {
-    const workout = plannerData[date];
-
-    const div = document.createElement('div');
-    div.className = 'workout-item';
-
-    const text = document.createElement('span');
-    text.textContent = `${workout.name} – ${date}${workout.notes ? ' | ' + workout.notes : ''}`;
-
-    const remove = document.createElement('button');
-    remove.className = 'remove-btn';
-    remove.textContent = '×';
-    remove.onclick = () => {
-      delete plannerData[date];
-      localStorage.setItem('planner', JSON.stringify(plannerData));
-      renderWorkouts();
-    };
-
-    div.appendChild(text);
-    div.appendChild(remove);
-    workoutListEl.appendChild(div);
-  });
 }
 
-/* ===== ADD WORKOUT ===== */
-document.getElementById('addPlannerWorkoutBtn').addEventListener('click', () => {
-  const name = plannerWorkoutName.value.trim();
-  const date = plannerWorkoutDate.value;
-  const notes = plannerWorkoutNotes.value.trim();
-
-  if (!name || !date) {
-    alert('Enter workout name and date');
-    return;
-  }
-
-  plannerData[date] = { name, notes };
-  localStorage.setItem('planner', JSON.stringify(plannerData));
-
-  plannerWorkoutName.value = '';
-  plannerWorkoutDate.value = '';
-  plannerWorkoutDateDisplay.value = '';
-  plannerWorkoutNotes.value = '';
-
-  renderWorkouts();
+/* SWIPE */
+let startX = 0;
+track.addEventListener('touchstart', e => startX = e.touches[0].clientX);
+track.addEventListener('touchend', e => {
+  const dx = e.changedTouches[0].clientX - startX;
+  if (dx < -50) offset += 3;
+  if (dx > 50 && offset >= 3) offset -= 3;
+  renderDays();
 });
 
-/* ===== INIT ===== */
-renderWorkouts();
+renderDays();
 </script>
 
 </body>
