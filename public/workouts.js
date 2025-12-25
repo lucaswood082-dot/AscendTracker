@@ -8,7 +8,7 @@ let exercises = [];
 
 /* ---------------- POPUP ---------------- */
 function showPopup(message) {
-  const popup = document.getElementById("popup");
+  const popup = document.getElementById("saveToast");
   popup.textContent = message;
   popup.classList.add("show");
   popup.classList.remove("hidden");
@@ -19,6 +19,7 @@ function showPopup(message) {
   }, 2000);
 }
 
+/* ---------------- CREATE SET ELEMENT ---------------- */
 function createSetElement(isUnilateral, weightValue = "") {
   const setLi = document.createElement("li");
 
@@ -41,21 +42,7 @@ function createSetElement(isUnilateral, weightValue = "") {
     `;
   }
 
-  // 🔧 INDIVIDUAL SPACING CONTROL
-  setLi.querySelectorAll(".reps-input").forEach(el => {
-    el.style.marginBottom = "0.5rem";   // reps → next input
-  });
-
-  setLi.querySelector(".weight-input").style.marginBottom = "0.4rem"; // weight → remove
-  setLi.querySelector(".remove-btn").style.marginBottom = "0.25rem";  // after remove
-  setLi.querySelector(".reps-input").style.marginBottom = "0.4rem"; // reps → remove
-
-
-
-  setLi.querySelector(".remove-set").addEventListener("click", () => {
-    setLi.remove();
-  });
-
+  setLi.querySelector(".remove-set").addEventListener("click", () => setLi.remove());
   return setLi;
 }
 
@@ -134,21 +121,10 @@ addExerciseBtn.addEventListener("click", () => {
   renderExercises();
 });
 
-/* ---------------- SAVE ---------------- */
+/* ---------------- SAVE WORKOUT ---------------- */
 saveWorkoutBtn.addEventListener("click", () => {
-  const toast = document.getElementById("saveToast");
-
-toast.classList.add("show");
-
-setTimeout(() => {
-  toast.classList.remove("show");
-}, 2000);
-if (navigator.vibrate) {
-  navigator.vibrate(30);
-}
-
+  // Build exercises array from DOM
   exercises = [];
-
   document.querySelectorAll(".exercise-item").forEach(li => {
     const name = li.querySelector(".exercise-name").value;
     const unilateral = li.querySelector(".unilateral-toggle").checked;
@@ -157,14 +133,14 @@ if (navigator.vibrate) {
     li.querySelectorAll(".sets-list li").forEach(setLi => {
       if (unilateral) {
         sets.push({
-          leftReps: setLi.querySelector(".set-left").value,
-          rightReps: setLi.querySelector(".set-right").value,
-          weight: setLi.querySelector(".set-weight").value
+          leftReps: parseInt(setLi.querySelector(".set-left").value) || 0,
+          rightReps: parseInt(setLi.querySelector(".set-right").value) || 0,
+          weight: parseFloat(setLi.querySelector(".set-weight").value) || 0
         });
       } else {
         sets.push({
-          reps: setLi.querySelector(".set-reps").value,
-          weight: setLi.querySelector(".set-weight").value
+          reps: parseInt(setLi.querySelector(".set-reps").value) || 0,
+          weight: parseFloat(setLi.querySelector(".set-weight").value) || 0
         });
       }
     });
@@ -172,13 +148,26 @@ if (navigator.vibrate) {
     exercises.push({ name, unilateral, sets });
   });
 
-  const saved = JSON.parse(localStorage.getItem("workouts") || "[]");
-  saved.push({
-    name: document.getElementById("workoutName").value,
-    exercises,
-    date: new Date()
-  });
+  // ✅ Properly save per user
+  let users = JSON.parse(localStorage.getItem("users")) || [];
+  let currentUser = users[0] || { username: "Lucas", workouts: [] };
+  if (!currentUser.workouts) currentUser.workouts = [];
 
-  localStorage.setItem("workouts", JSON.stringify(saved));
+  const workoutObj = {
+    name: document.getElementById("workoutName").value || "Unnamed Workout",
+    exercises,
+    date: new Date().toISOString().split("T")[0]
+  };
+
+  currentUser.workouts.push(workoutObj);
+
+  if (!users.length) users.push(currentUser);
+  localStorage.setItem("users", JSON.stringify(users));
+
   showPopup("Workout Saved!");
+
+  // Clear form
+  document.getElementById("workoutName").value = "";
+  exerciseList.innerHTML = "";
+  exercises = [];
 });
