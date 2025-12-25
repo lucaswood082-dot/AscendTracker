@@ -50,21 +50,21 @@
       display: flex;
       flex-direction: column;
       padding-top: 1rem;
-      max-height: calc(100vh - 60px); /* adjust based on nav height */
+      max-height: calc(100vh - 60px);
     }
 
     .container {
       flex: 1;
       display: flex;
       flex-direction: column;
-      overflow: hidden; /* prevents double scroll */
+      overflow: hidden;
     }
 
     .card {
       flex: 1;
       display: flex;
       flex-direction: column;
-      overflow: hidden; /* scroll inside workouts list only */
+      overflow: hidden;
     }
 
     /* SCROLLABLE WORKOUTS AREA */
@@ -72,7 +72,7 @@
       flex: 1;
       margin-top: 0.5rem;
       overflow-y: auto;
-      -webkit-overflow-scrolling: touch; /* smooth mobile scrolling */
+      -webkit-overflow-scrolling: touch;
     }
 
     details.exercise {
@@ -99,12 +99,15 @@
     .exercise-name {
       font-weight: 600;
       margin-top: 0.5rem; /* space between name and sets */
-      /* NO background, no border, no box around name */
+      background: none; /* removed box */
+      border: none;
+      padding: 0;
+      font-size: 0.9rem; /* same size as reps and weight */
     }
 
     .set-item {
       margin-left: 10px;
-      font-size: 0.9rem;
+      font-size: 0.9rem; /* same size as exercise name */
       display: flex;
       gap: 12px;
     }
@@ -173,7 +176,7 @@ const workoutsList = document.getElementById("workoutsList");
 
 function loadWorkouts() {
   const users = JSON.parse(localStorage.getItem("users")) || [];
-  const username = "Lucas"; // replace with dynamic current user if needed
+  const username = "Lucas"; 
   const currentUser = users.find(u => u.username === username);
 
   workoutsList.innerHTML = "";
@@ -220,7 +223,7 @@ function loadWorkouts() {
 
     workout.exercises.forEach(ex => {
       const exName = document.createElement("div");
-      exName.textContent = `${ex.name}:`; // just text, no box
+      exName.textContent = `${ex.name}:`; // plain text
       exName.classList.add("exercise-name");
       detailsDiv.appendChild(exName);
 
@@ -248,7 +251,6 @@ loadWorkouts();
 
 <!-- BOTTOM NAVIGATION -->
 <nav class="bottom-nav">
-  <!-- Home -->
   <button data-page="dashboard" onclick="location.href='dashboard.html'">
     <span class="icon">
       <img src="/icons/home.png" alt="Home" class="nav-icon">
@@ -256,7 +258,6 @@ loadWorkouts();
     <span class="label">Home</span>
   </button>
 
-  <!-- Workouts -->
   <button data-page="view" onclick="location.href='view.html'">
     <span class="icon">
       <img src="/icons/workout.png" alt="Workouts" class="nav-icon">
@@ -264,12 +265,10 @@ loadWorkouts();
     <span class="label">Workouts</span>
   </button>
 
-  <!-- CENTER CREATE BUTTON -->
   <button data-page="workout" class="create-btn" onclick="location.href='workout.html'">
     <span class="icon">＋</span>
   </button>
 
-  <!-- Analytics -->
   <button data-page="stats" disabled>
     <span class="icon">
       <img src="/icons/analytics.png" alt="Analytics" class="nav-icon">
@@ -277,7 +276,6 @@ loadWorkouts();
     <span class="label">Analytics</span>
   </button>
 
-  <!-- Profile -->
   <button data-page="profile" disabled>
     <span class="icon">
       <img src="/icons/profile.png" alt="Profile" class="nav-icon">
