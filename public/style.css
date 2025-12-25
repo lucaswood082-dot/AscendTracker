@@ -425,11 +425,20 @@ input:checked + .slider::after {
 
 .planner-preview {
   min-height: 60px !important;    /* shorter preview box */
-  padding: 1rem !important;    /* smaller inner spacing */
+  padding: 0.75rem !important;    /* smaller inner spacing */
   font-size: 14px !important;     /* slightly smaller text */
 }
 
 .planner-card button {
   padding: 0.5rem 1rem !important; /* smaller button padding */
   font-size: 14px !important;      /* smaller button text */
+}
+/* ===== ADD SPACE BELOW TODAY WORKOUT CARD BEFORE PLANNER ===== */
+.planner-card {
+  margin-top: 24px !important; /* increases space above planner card */
+}
+
+/* optional: add extra bottom space inside planner-preview if needed */
+.planner-preview {
+  margin-bottom: 20px !important; /* increases space between preview and bottom of planner card */
 }
