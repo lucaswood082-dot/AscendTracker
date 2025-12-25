@@ -7,7 +7,6 @@
 <meta name="theme-color" content="#111827">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-capable" content="yes">
-
 <link rel="stylesheet" href="style.css">
 
 <style>
@@ -25,13 +24,12 @@
   text-align: center;
 }
 
-/* ===== PAGE CONTAINER ===== */
+/* ===== PAGE ===== */
 .page {
   padding: 1rem;
   min-height: 100vh;
   padding-bottom: 140px;
 }
-
 .container {
   max-width: 480px;
   margin: 0 auto;
@@ -44,6 +42,18 @@
   padding: 1.25rem;
   margin-bottom: 1rem;
   border: 1px solid #1f2937;
+}
+
+/* ===== INPUTS ===== */
+input, select, textarea {
+  width: 100%;
+  padding: 0.75rem;
+  border-radius: 10px;
+  border: 1px solid #1f2937;
+  background: #020617;
+  color: #e5e7eb;
+  font-size: 16px;
+  margin-bottom: 0.75rem;
 }
 
 /* ===== BUTTONS ===== */
@@ -64,28 +74,17 @@ button.secondary {
   color: #e5e7eb;
 }
 
-/* ===== FORM INPUTS ===== */
-input, select {
-  width: 100%;
-  padding: 0.75rem;
-  border-radius: 10px;
-  border: 1px solid #1f2937;
-  background: #020617;
-  color: #e5e7eb;
-  font-size: 16px;
-  margin-bottom: 0.75rem;
-}
-
 /* ===== WORKOUT LIST ===== */
 .workout-item {
   display: flex;
-  align-items: center;
   justify-content: space-between;
+  align-items: center;
   background: #111827;
   border: 1px solid #1f2937;
   border-radius: 12px;
   padding: 0.75rem;
   margin-bottom: 0.5rem;
+  flex-wrap: wrap;
 }
 
 .workout-item span {
@@ -93,7 +92,7 @@ input, select {
   color: #e5e7eb;
 }
 
-/* ===== MINIMAL REMOVE BUTTON ===== */
+/* ===== REMOVE BUTTON ===== */
 .remove-btn {
   background: transparent;
   color: #ef4444;
@@ -104,19 +103,20 @@ input, select {
   margin-left: 0.5rem;
 }
 
-/* ===== TAG SELECTOR ===== */
-.tag-select {
+/* ===== DATE PICKER CALENDAR ===== */
+.calendar-input {
   width: 100%;
-  padding: 0.6rem;
+  padding: 0.75rem;
   border-radius: 10px;
   border: 1px solid #1f2937;
   background: #020617;
   color: #e5e7eb;
-  font-size: 14px;
+  font-size: 16px;
+  cursor: pointer;
   margin-bottom: 0.75rem;
 }
 
-/* ===== HEADER ===== */
+/* ===== WORKOUT ADDITION HEADER ===== */
 .planner-header {
   display: flex;
   justify-content: space-between;
@@ -128,6 +128,18 @@ input, select {
   margin: 0;
   color: #e5e7eb;
 }
+
+/* ===== NOTES INPUT ===== */
+#plannerWorkoutNotes {
+  min-height: 60px;
+  resize: vertical;
+  background: #020617;
+  border: 1px solid #1f2937;
+  border-radius: 10px;
+  color: #e5e7eb;
+  padding: 0.75rem;
+  font-size: 14px;
+}
 </style>
 </head>
 <body>
@@ -137,21 +149,16 @@ input, select {
 <div class="page">
   <div class="container">
 
-    <!-- ADD WORKOUT -->
+    <!-- ADD WORKOUT CARD -->
     <div class="card">
       <h3>Add Workout</h3>
       <input type="text" id="plannerWorkoutName" placeholder="Workout Name" />
-      <input type="date" id="plannerWorkoutDate" />
-      <select id="plannerWorkoutTag" class="tag-select">
-        <option value="">Select Type (Optional)</option>
-        <option value="Strength">Strength</option>
-        <option value="Cardio">Cardio</option>
-        <option value="Flexibility">Flexibility</option>
-      </select>
+      <input type="date" id="plannerWorkoutDate" class="calendar-input" />
+      <textarea id="plannerWorkoutNotes" placeholder="Add notes (optional)"></textarea>
       <button id="addPlannerWorkoutBtn">Add Workout</button>
     </div>
 
-    <!-- WORKOUT LIST -->
+    <!-- WORKOUT LIST CARD -->
     <div class="card">
       <div class="planner-header">
         <h3>Scheduled Workouts</h3>
@@ -189,14 +196,13 @@ input, select {
 
 <script>
 const workoutListEl = document.getElementById('workoutList');
-
 let plannerData = JSON.parse(localStorage.getItem('planner')) || {};
 
-// ===== Render Workouts =====
+// ===== RENDER WORKOUTS =====
 function renderWorkouts() {
   workoutListEl.innerHTML = '';
   const dates = Object.keys(plannerData).sort();
-  if(dates.length === 0){
+  if (dates.length === 0) {
     workoutListEl.innerHTML = '<p class="planner-empty">No workouts scheduled yet</p>';
     return;
   }
@@ -207,7 +213,7 @@ function renderWorkouts() {
     div.className = 'workout-item';
 
     const textSpan = document.createElement('span');
-    textSpan.textContent = `${workout.name} ${workout.tag ? `(${workout.tag})` : ''} - ${date}`;
+    textSpan.innerHTML = `<strong>${workout.name}</strong> - ${date}${workout.notes ? ` | ${workout.notes}` : ''}`;
     div.appendChild(textSpan);
 
     const removeBtn = document.createElement('button');
@@ -224,25 +230,25 @@ function renderWorkouts() {
   });
 }
 
-// ===== Add Workout =====
+// ===== ADD WORKOUT =====
 document.getElementById('addPlannerWorkoutBtn').addEventListener('click', () => {
   const name = document.getElementById('plannerWorkoutName').value.trim();
   const date = document.getElementById('plannerWorkoutDate').value;
-  const tag = document.getElementById('plannerWorkoutTag').value;
+  const notes = document.getElementById('plannerWorkoutNotes').value.trim();
 
   if(!name || !date) return alert('Enter workout name and date');
 
-  plannerData[date] = { name, tag };
+  plannerData[date] = { name, notes };
   localStorage.setItem('planner', JSON.stringify(plannerData));
 
   document.getElementById('plannerWorkoutName').value = '';
   document.getElementById('plannerWorkoutDate').value = '';
-  document.getElementById('plannerWorkoutTag').value = '';
+  document.getElementById('plannerWorkoutNotes').value = '';
 
   renderWorkouts();
 });
 
-// ===== Initial render =====
+// ===== INITIAL RENDER =====
 renderWorkouts();
 </script>
 
