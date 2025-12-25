@@ -1,9 +1,16 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <!-- Status bar / browser UI colour -->
+<meta name="theme-color" content="#111827">
+
+<!-- iOS PWA status bar -->
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-capable" content="yes">
+
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>My Workouts</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="style.css">
   <style>
     /* Sticky Top Navigation */
@@ -19,6 +26,7 @@
       color: #38bdf8;
       font-size: 1.2rem;
     }
+
     .back-btn {
       display: inline-block;
       margin: 0.5rem auto 1rem auto;
@@ -32,19 +40,67 @@
       font-size: 0.9rem;
       text-align: center;
     }
-    .back-btn:hover { opacity: 0.85; }
 
-    .page { display: flex; flex-direction: column; padding-top: 1rem; max-height: calc(100vh - 60px); }
-    .container { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
-    .card { flex: 1; display: flex; flex-direction: column; overflow: hidden; margin-bottom: 1rem; padding: 1rem; border-radius: 12px; background: #020617; border: 1px solid #1f2937; }
-    #workoutsList { flex: 1; overflow-y: auto; -webkit-overflow-scrolling: touch; }
-    .exercise-name { font-weight: 600; margin-top: 0.5rem; }
-    .set-item { margin-left: 10px; font-size: 0.9rem; display: flex; gap: 12px; }
+    .back-btn:hover {
+      opacity: 0.85;
+    }
+
+    /* PAGE LAYOUT */
+    .page {
+      display: flex;
+      flex-direction: column;
+      padding-top: 1rem;
+      max-height: calc(100vh - 60px); /* adjust based on nav height */
+    }
+
+    .container {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden; /* prevents double scroll */
+    }
+
+    .card {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden; /* scroll inside workouts list only */
+      margin-bottom: 1rem;
+      padding: 1rem;
+      border-radius: 12px;
+      background: #020617;
+      border: 1px solid #1f2937;
+    }
+
+    /* SCROLLABLE WORKOUTS AREA */
+    #workoutsList {
+      flex: 1;
+      margin-top: 0.5rem;
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch; /* smooth mobile scrolling */
+    }
+
+    .exercise-name {
+      font-weight: 600;
+      margin-top: 0.5rem;
+    }
+
+    .set-item {
+      margin-left: 10px;
+      font-size: 0.9rem;
+      display: flex;
+      gap: 12px;
+    }
   </style>
 </head>
 <body>
 
-<div class="top-nav">Ascend</div>
+<!-- NAV BAR -->
+<div class="top-nav">
+  Ascend
+</div>
+
+<!-- Back Button -->
 <div style="text-align:center;">
   <button class="back-btn" onclick="window.location.href='workout.html'">← Back to Create Workout</button>
 </div>
@@ -52,7 +108,11 @@
 <div class="page">
   <div class="container">
     <div id="workoutsList"></div>
-    <button type="button" class="secondary" onclick="location.href='workout.html'">
+    <button
+      type="button"
+      class="secondary"
+      onclick="location.href='workout.html'"
+    >
       Create New Workout
     </button>
   </div>
@@ -61,17 +121,20 @@
 <script>
 console.log("view.js loaded");
 
+// Get the container
 const workoutsList = document.getElementById("workoutsList");
 
-// Load current user workouts
+// Load users from localStorage
 const users = JSON.parse(localStorage.getItem("users")) || [];
-const currentUser = users[0]; // assuming single user for now
+const currentUser = users[0]; // assuming single user
 
 workoutsList.innerHTML = "";
 
+// No workouts message
 if (!currentUser || !currentUser.workouts || currentUser.workouts.length === 0) {
   workoutsList.innerHTML = `<p style="text-align:center; color:#9ca3af;">No workouts saved yet.</p>`;
 } else {
+  // Render workouts
   currentUser.workouts.forEach((w, i) => {
     const card = document.createElement("div");
     card.className = "card";
@@ -108,6 +171,60 @@ if (!currentUser || !currentUser.workouts || currentUser.workouts.length === 0) 
     workoutsList.appendChild(card);
   });
 }
+</script>
+
+<!-- BOTTOM NAVIGATION -->
+<nav class="bottom-nav">
+  <!-- Home -->
+  <button data-page="dashboard" onclick="location.href='dashboard.html'">
+    <span class="icon">
+      <img src="/icons/home.png" alt="Home" class="nav-icon">
+    </span>
+    <span class="label">Home</span>
+  </button>
+
+  <!-- Workouts -->
+  <button data-page="view" onclick="location.href='view.html'">
+    <span class="icon">
+      <img src="/icons/workout.png" alt="Workouts" class="nav-icon">
+    </span>
+    <span class="label">Workouts</span>
+  </button>
+
+  <!-- CENTER CREATE BUTTON -->
+  <button
+    data-page="workout"
+    class="create-btn"
+    onclick="location.href='workout.html'"
+  >
+    <span class="icon">＋</span>
+  </button>
+
+  <!-- Analytics -->
+  <button data-page="stats" disabled>
+    <span class="icon">
+      <img src="/icons/analytics.png" alt="Analytics" class="nav-icon">
+    </span>
+    <span class="label">Analytics</span>
+  </button>
+
+  <!-- Profile -->
+  <button data-page="profile" disabled>
+    <span class="icon">
+      <img src="/icons/profile.png" alt="Profile" class="nav-icon">
+    </span>
+    <span class="label">Profile</span>
+  </button>
+</nav>
+
+<script>
+  const current = location.pathname.split("/").pop().replace(".html", "");
+
+  document.querySelectorAll(".bottom-nav button").forEach(btn => {
+    if (btn.dataset.page === current) {
+      btn.classList.add("active");
+    }
+  });
 </script>
 
 </body>
