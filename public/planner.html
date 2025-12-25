@@ -230,7 +230,8 @@ const backBtn = document.getElementById('backBtn');
 
 let offset = 0;
 let startX = 0;
-let pressTimer;
+let holdTimer;
+let progressInterval;
 
 /* DATE PICKER SYNC */
 dateDisplay.addEventListener('click', () => dateInput.showPicker?.());
@@ -269,25 +270,33 @@ function renderDay() {
   const box = dayView.querySelector('.day-box');
   const progress = box.querySelector('.delete-progress');
 
-  /* LONG PRESS DELETE */
+  /* LONG PRESS DELETE: 3s delay */
   box.addEventListener('touchstart', () => {
-    let progressWidth = 0;
-    pressTimer = setInterval(() => {
-      progressWidth += 2;
-      progress.style.width = progressWidth + '%';
-      if (progressWidth >= 100) {
-        clearInterval(pressTimer);
-        if (planner[key]) {
-          delete planner[key];
-          localStorage.setItem('planner', JSON.stringify(planner));
-          if (navigator.vibrate) navigator.vibrate(50);
-          renderDay();
+    holdTimer = setTimeout(() => {
+      // Start showing progress bar only after 3s hold
+      let width = 0;
+      progress.style.width = '0%';
+      progressInterval = setInterval(() => {
+        width += 1;
+        progress.style.width = width + '%';
+        if (width >= 100) {
+          clearInterval(progressInterval);
+          if (planner[key]) {
+            delete planner[key];
+            localStorage.setItem('planner', JSON.stringify(planner));
+            if (navigator.vibrate) navigator.vibrate(50);
+            renderDay();
+          }
         }
-      }
-    }, 10);
+      }, 30);
+    }, 3000); // 3 seconds before progress appears
   });
 
-  box.addEventListener('touchend', () => clearInterval(pressTimer));
+  box.addEventListener('touchend', () => {
+    clearTimeout(holdTimer);
+    clearInterval(progressInterval);
+    progress.style.width = '0%';
+  });
 
   /* SWIPE ANIMATION */
   box.addEventListener('touchstart', e => startX = e.touches[0].clientX);
