@@ -71,6 +71,11 @@
     <div class="planner-preview" id="plannerPreview">
   <p class="planner-empty">No workout planned for today</p>
 </div>
+<div class="card">
+  <h3>Today's Workout</h3>
+  <p id="todayWorkout">Loading...</p>
+</div>
+
 
 
     <button
@@ -159,7 +164,24 @@ window.addEventListener("DOMContentLoaded", () => {
     ? `<p>${todayWorkout.workout}</p>`
     : `<p class="planner-empty">No workout planned for today</p>`;
 });
+// 1️⃣ Get planner data from localStorage
+const planner = JSON.parse(localStorage.getItem('planner')) || {};
+
+// 2️⃣ Get today's date in YYYY-MM-DD format
+const todayKey = new Date().toISOString().split('T')[0];
+
+// 3️⃣ Get the element where we'll show today's workout
+const todayWorkoutEl = document.getElementById('todayWorkout');
+
+// 4️⃣ Set the content safely
+todayWorkoutEl.textContent = planner[todayKey] || 'No workout planned for today';
+window.addEventListener('storage', () => {
+  const updatedPlanner = JSON.parse(localStorage.getItem('planner')) || {};
+  todayWorkoutEl.textContent = updatedPlanner[todayKey] || 'No workout planned for today';
+});
+
 </script>
+
 
 </body>
 </html>
