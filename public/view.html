@@ -67,6 +67,14 @@
   -webkit-overflow-scrolling: touch;
 }
 
+.workouts-title {
+  color: #38bdf8;
+  font-weight: 600;
+  font-size: 1.5rem;
+  margin-bottom: 0.75rem;
+  text-align: center;
+}
+
 details.exercise {
   background: #020617;
   border: 1px solid #1f2937;
@@ -87,6 +95,12 @@ summary {
 .exercise-details {
   margin-top: 0.5rem;
   padding-left: 0.5rem;
+}
+
+.exercise-name {
+  font-weight: 600;
+  margin-top: 0.5rem;
+  margin-bottom: 0.25rem; /* space between exercise name and sets */
 }
 
 .set-item {
@@ -133,7 +147,12 @@ details[open] .summary-arrow {
 
 <div class="page">
   <div class="container">
+
+    <!-- Title -->
+    <div class="workouts-title">My Workouts</div>
+
     <div id="workoutsList"></div>
+
     <button type="button" class="secondary" onclick="location.href='workout.html'">
       Create New Workout
     </button>
@@ -192,9 +211,9 @@ function loadWorkouts() {
     detailsDiv.classList.add("exercise-details");
 
     workout.exercises.forEach(ex => {
-      // Exercise name as plain text, no box
       const exName = document.createElement("div");
       exName.textContent = `${ex.name}:`;
+      exName.classList.add("exercise-name"); // spacing handled here
       detailsDiv.appendChild(exName);
 
       ex.sets.forEach(s => {
