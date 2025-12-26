@@ -1,104 +1,73 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <style>
+    .top-nav {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: #111827;       /* match page background */
+  border-bottom: 1px solid #1f2937;
+  padding: 1.5rem 1rem;      /* moved down a bit */
+  text-align: left;          /* top left corner */
+  font-weight: 600;
+  color: #38bdf8;
+  font-size: 1.4rem;         /* slightly bigger */
+  line-height: 1.4;          /* vertical alignment */
+}
+
+    .page { padding-top: 1rem; }
+    .back-btn, .logout-btn {
+      display: inline-block;
+      margin-top: 0.5rem;
+      padding: 0.5rem 1rem;
+      border-radius: 10px;
+      border: none;
+      background: #38bdf8;
+      color: #020617;
+      font-weight: 600;
+      cursor: pointer;
+      font-size: 0.9rem;
+      margin-right: 5px;
+    }
+    .back-btn:hover, .logout-btn:hover { opacity: 0.85; }
+    body {
+  margin: 0;
+  background: #111827;   /* same as other pages */
+  font-family: sans-serif;
+  min-height: 100vh;
+}
+
+  </style>
+  
+  <div class="top-nav">Ascend</div>
+
+    <meta name="theme-color" content="#111827">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-capable" content="yes">
+
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Analytics</title>
 
-  <!-- Status bar / PWA -->
-  <meta name="theme-color" content="#111827">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <meta name="apple-mobile-web-app-capable" content="yes">
-
-  <style>
-    /* ===== TOP NAV ===== */
-    .top-nav {
-      position: sticky;
-      top: 0;
-      z-index: 100;
-      background: #111827; /* same as page background */
-      border-bottom: 1px solid #1f2937;
-      padding: 1.5rem 1rem;  /* moved down a bit */
-      text-align: left;      /* top left corner */
-      font-weight: 600;
-      color: #38bdf8;
-      font-size: 1.4rem;     /* slightly bigger */
-      line-height: 1.4;      /* adjust vertical alignment */
-    }
-
-    body {
-      margin: 0;
-      background: #111827;   /* match all other pages */
-      font-family: sans-serif;
-      min-height: 100vh;
-    }
-
-    .page {
-      padding: 1rem;
-      padding-bottom: 140px; /* space for bottom nav */
-    }
-
-    .container {
-      max-width: 480px;
-      margin: 0 auto;
-    }
-
-    .card {
-      background: #111827;
-      border-radius: 14px;
-      padding: 1.25rem;
-      margin-bottom: 1rem;
-      border: 1px solid #1f2937;
-    }
-
-    h3 { color: #38bdf8; margin-bottom: 0.5rem; }
-    p { color: #e5e7eb; font-size: 1.1rem; margin: 0.25rem 0; }
-
-    /* ===== BOTTOM NAV ===== */
-    .bottom-nav {
-      position: fixed;
-      bottom: 0;
-      left: 0;
-      width: 100%;
-      display: flex;
-      justify-content: space-around;
-      background: #111827;
-      border-top: 1px solid #1f2937;
-      padding: 0.5rem 0;
-      z-index: 100;
-    }
-
-    .bottom-nav button {
-      background: none;
-      border: none;
-      color: #9ca3af;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      font-size: 0.75rem;
-      cursor: pointer;
-    }
-
-    .bottom-nav button.active { color: #38bdf8; }
-    .bottom-nav button .icon { margin-bottom: 0.2rem; }
-
-    .create-btn {
-      font-size: 1.5rem;
-      color: #38bdf8;
-    }
-  </style>
+  <link rel="stylesheet" href="style.css">
 </head>
-<body>
+<body class="analytics-page">
 
-  <!-- TOP NAV -->
-  <div class="top-nav">Ascend</div>
 
-  <div class="page">
+ 
+</div>
+
+
+<div class="page">
+
     <div class="container">
-      <!-- ANALYTICS CARDS -->
+
       <div class="card">
         <h3>Total Session Tonnage</h3>
-        <p id="totalTonnage">0 kg</p>
+        <p id="totalTonnage" style="font-size: 1.6rem; font-weight: 600;">
+          0 kg
+        </p>
       </div>
 
       <div class="card">
@@ -110,44 +79,99 @@
         <h3>Total Reps</h3>
         <p id="totalReps">0</p>
       </div>
+
     </div>
   </div>
 
-  <!-- BOTTOM NAV -->
-  <nav class="bottom-nav">
-    <button data-page="dashboard" onclick="location.href='dashboard.html'">
-      <span class="icon"><img src="/icons/home.png" class="nav-icon"></span>
-      <span class="label">Home</span>
-    </button>
-
-    <button data-page="view" onclick="location.href='view.html'">
-      <span class="icon"><img src="/icons/workout.png" class="nav-icon"></span>
-      <span class="label">Workouts</span>
-    </button>
-
-    <button data-page="workout" class="create-btn" onclick="location.href='workout.html'">
-      <span class="icon">＋</span>
-    </button>
-
-    <button data-page="analytics" onclick="location.href='analytics.html'">
-      <span class="icon"><img src="/icons/analytics.png" class="nav-icon"></span>
-      <span class="label">Analytics</span>
-    </button>
-
-    <button data-page="profile" disabled>
-      <span class="icon"><img src="/icons/profile.png" class="nav-icon"></span>
-      <span class="label">Profile</span>
-    </button>
-  </nav>
-
-  <script>
-    // Highlight current page in bottom nav
-    const currentPage = location.pathname.split("/").pop().replace(".html", "");
-    document.querySelectorAll(".bottom-nav button").forEach(btn => {
-      if (btn.dataset.page === currentPage) btn.classList.add("active");
-    });
-  </script>
-
   <script src="analytics.js"></script>
+  <nav class="bottom-nav">
+  <button data-page="dashboard" onclick="location.href='dashboard.html'">
+    <span class="icon">
+      <img src="/icons/home.png" class="nav-icon">
+    </span>
+    <span class="label">Home</span>
+  </button>
+
+  <button data-page="view" onclick="location.href='view.html'">
+    <span class="icon">
+      <img src="/icons/workout.png" class="nav-icon">
+    </span>
+    <span class="label">Workouts</span>
+  </button>
+
+  <button
+    data-page="workout"
+    class="create-btn"
+    onclick="location.href='workout.html'"
+  >
+    <span class="icon">＋</span>
+  </button>
+
+  <button data-page="analytics" onclick="location.href='analytics.html'">
+    <span class="icon">
+      <img src="/icons/analytics.png" class="nav-icon">
+    </span>
+    <span class="label">Analytics</span>
+  </button>
+
+  <button data-page="profile"
+     class="icon">
+      <img src="/icons/profile.png" class="nav-icon">
+    </span>
+    <span class="label">Profile</span>
+  </button>
+</nav>
+<script>
+  const currentPage = location.pathname.split("/").pop().replace(".html", "");
+
+  document.querySelectorAll(".bottom-nav button").forEach(btn => {
+    if (btn.dataset.page === currentPage) {
+      btn.classList.add("active");
+    }
+  });
+</script>
+<!-- BOTTOM NAVIGATION -->
+<nav class="bottom-nav">
+  <button data-page="dashboard" onclick="location.href='dashboard.html'">
+    <span class="icon">
+      <img src="/icons/home.png" alt="Home" class="nav-icon">
+    </span>
+    <span class="label">Home</span>
+  </button>
+
+  <button data-page="view" onclick="location.href='view.html'">
+    <span class="icon">
+      <img src="/icons/workout.png" alt="Workouts" class="nav-icon">
+    </span>
+    <span class="label">Workouts</span>
+  </button>
+
+  <button data-page="workout" class="create-btn" onclick="location.href='workout.html'">
+    <span class="icon">＋</span>
+  </button>
+
+  <button data-page="stats" disabled>
+    <span class="icon">
+      <img src="/icons/analytics.png" alt="Analytics" class="nav-icon">
+    </span>
+    <span class="label">Analytics</span>
+  </button>
+
+  <button data-page="profile" disabled>
+    <span class="icon">
+      <img src="/icons/profile.png" alt="Profile" class="nav-icon">
+    </span>
+    <span class="label">Profile</span>
+  </button>
+</nav>
+<script>
+  const current = location.pathname.split("/").pop().replace(".html", "");
+  document.querySelectorAll(".bottom-nav button").forEach(btn => {
+    if (btn.dataset.page === current) {
+      btn.classList.add("active");
+    }
+  });
+</script>
+
 </body>
 </html>
