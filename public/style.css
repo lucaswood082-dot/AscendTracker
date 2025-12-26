@@ -506,3 +506,11 @@ body.analytics-page .top-nav {
 body.analytics-page .bottom-nav button[data-page="analytics"] {
   color: #38bdf8;
 }
+/* Bottom nav active state */
+.bottom-nav button.active .label {
+  color: #38bdf8; /* your blue */
+}
+
+.bottom-nav button.active .nav-icon {
+  filter: brightness(0) saturate(100%) invert(69%) sepia(96%) saturate(749%) hue-rotate(176deg);
+}
