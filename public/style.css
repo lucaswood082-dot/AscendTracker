@@ -444,3 +444,12 @@ html, body {
   height: 100%;
   overflow: hidden;
 }
+/* ===== ANALYTICS PAGE FIX ===== */
+body.analytics-page .page {
+  padding-bottom: 140px !important; /* space for bottom nav */
+}
+
+/* Fallback if body class is missing */
+.analytics-page .page {
+  padding-bottom: 140px !important;
+}

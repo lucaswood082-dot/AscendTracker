@@ -1,6 +1,37 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <style>
+    .top-nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: #111827;
+      border-bottom: 1px solid #1f2937;
+      padding: 1rem;
+      text-align: center;
+      font-weight: 600;
+      color: #38bdf8;
+      font-size: 1.2rem;
+    }
+    .page { padding-top: 1rem; }
+    .back-btn, .logout-btn {
+      display: inline-block;
+      margin-top: 0.5rem;
+      padding: 0.5rem 1rem;
+      border-radius: 10px;
+      border: none;
+      background: #38bdf8;
+      color: #020617;
+      font-weight: 600;
+      cursor: pointer;
+      font-size: 0.9rem;
+      margin-right: 5px;
+    }
+    .back-btn:hover, .logout-btn:hover { opacity: 0.85; }
+  </style>
+  <div class="top-nav">Ascend</div>
+
     <meta name="theme-color" content="#111827">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -11,10 +42,10 @@
 
   <link rel="stylesheet" href="style.css">
 </head>
-<body>
+<body class="analytics-page">
 
-  <div class="top-nav">
-  Ascend
+
+ 
 </div>
 
 
