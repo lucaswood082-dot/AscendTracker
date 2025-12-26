@@ -82,7 +82,11 @@ button.secondary { background: #1f2937; color: #e5e7eb; }
 </nav>
 
 <script>
-const planner = JSON.parse(localStorage.getItem('planner')) || {};
+const users = JSON.parse(localStorage.getItem("users")) || [];
+const currentUser = users[0];
+
+if (!currentUser.planner) currentUser.planner = {};
+const planner = currentUser.planner;
 const dayView = document.getElementById('dayView');
 const workoutName = document.getElementById('workoutName');
 const dateInput = document.getElementById('dateInput');
@@ -116,7 +120,8 @@ addBtn.onclick = () => {
   }
 
   planner[dateInput.value] = workoutName.value;
-  localStorage.setItem('planner', JSON.stringify(planner));
+localStorage.setItem("users", JSON.stringify(users));
+
 
   workoutName.value = '';
   dateInput.value = '';
@@ -149,7 +154,7 @@ function renderDay() {
       e.preventDefault();
       if (planner[key]) {
         delete planner[key];
-        localStorage.setItem('planner', JSON.stringify(planner));
+        localStorage.setItem("users", JSON.stringify(users));
         renderDay();
         navigator.vibrate?.(50);
       }
