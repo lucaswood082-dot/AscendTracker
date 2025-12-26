@@ -58,129 +58,99 @@
 
       <button onclick="location.href='workout.html'">Create Workout</button>
       <button class="secondary" onclick="location.href='view.html'">View My Workouts</button>
-     
-
     </div>
 
     <!-- Planner Preview Card -->
-<div class="card planner-card">
+    <div class="card planner-card">
+      <div class="planner-header">
+        <h3>Planner</h3>
+      </div>
 
-  <div class="planner-header">
-    <h3>Planner</h3>
+      <div class="card">
+        <h3>Today's Workout</h3>
+        <p id="todayWorkout">Loading...</p>
+      </div>
+
+      <button class="planner-link" onclick="location.href='planner.html'">
+        Show more
+      </button>
+    </div>
   </div>
-
-
-<div class="card">
-  <h3>Today's Workout</h3>
-  <p id="todayWorkout">Loading...</p>
 </div>
-
-
-
-    <button
-      class="planner-link"
-      onclick="location.href='planner.html'"
-    >
-      Show more 
-    </button>
-  </div>
-
-</div>
-
 
 <!-- BOTTOM NAVIGATION -->
 <nav class="bottom-nav">
-  <!-- Home -->
   <button data-page="dashboard" onclick="location.href='dashboard.html'">
-    <span class="icon">
-      <img src="/icons/home.png" alt="Home" class="nav-icon">
-    </span>
+    <span class="icon"><img src="/icons/home.png" class="nav-icon"></span>
     <span class="label">Home</span>
   </button>
 
-  <!-- Workouts -->
   <button data-page="view" onclick="location.href='view.html'">
-    <span class="icon">
-      <img src="/icons/workout.png" alt="Workouts" class="nav-icon">
-    </span>
+    <span class="icon"><img src="/icons/workout.png" class="nav-icon"></span>
     <span class="label">Workouts</span>
   </button>
 
-  <!-- CENTER CREATE BUTTON -->
   <button data-page="workout" class="create-btn" onclick="location.href='workout.html'">
     <span class="icon">＋</span>
   </button>
 
-  <!-- Analytics -->
- <button onclick="location.href='analytics.html'">
-    <span class="icon">
-      <img src="/icons/analytics.png" alt="Analytics" class="nav-icon">
-    </span>
+  <button data-page="analytics" onclick="location.href='analytics.html'">
+    <span class="icon"><img src="/icons/analytics.png" class="nav-icon"></span>
     <span class="label">Analytics</span>
   </button>
 
-  <!-- Profile -->
   <button data-page="profile" disabled>
-    <span class="icon">
-      <img src="/icons/profile.png" alt="Profile" class="nav-icon">
-    </span>
+    <span class="icon"><img src="/icons/profile.png" class="nav-icon"></span>
     <span class="label">Profile</span>
   </button>
 </nav>
 
 <script>
 window.addEventListener("DOMContentLoaded", () => {
+  // AUTH
   const currentUser = JSON.parse(localStorage.getItem("currentUser"));
   if (!currentUser) {
     setTimeout(() => window.location.href = "index.html", 50);
     return;
   }
 
-  document.getElementById("dashboardTitle").textContent = `Welcome, ${currentUser.username}`;
+  document.getElementById("dashboardTitle").textContent =
+    `Welcome, ${currentUser.username}`;
 
-  // Logout button
-  const logoutBtn = document.getElementById("logoutBtn");
-  if (logoutBtn) {
-    logoutBtn.addEventListener("click", () => {
-      localStorage.removeItem("currentUser"); // do NOT delete all accounts
-      window.location.href = "index.html";
-    });
-  }
+  // LOGOUT
+  document.getElementById("logoutBtn").addEventListener("click", () => {
+    localStorage.removeItem("currentUser");
+    window.location.href = "index.html";
+  });
 
-  // Highlight active bottom nav button
+  // ACTIVE NAV
   const current = location.pathname.split("/").pop().replace(".html", "");
   document.querySelectorAll(".bottom-nav button").forEach(btn => {
     if (btn.dataset.page === current) btn.classList.add("active");
   });
 
-  // Planner Preview
-  const plannerData = JSON.parse(localStorage.getItem("planner")) || {};
-  const today = new Date().toISOString().split('T')[0]; // yyyy-mm-dd
-  const todayWorkout = plannerData[today];
+  // ===== FIXED PLANNER PREVIEW =====
+  const users = JSON.parse(localStorage.getItem("users")) || [];
+  const user = users[0];
+  const planner = user?.planner || {};
 
-  const previewDiv = document.getElementById("plannerPreview");
-  previewDiv.innerHTML = todayWorkout
-    ? `<p>${todayWorkout.workout}</p>`
-    : `<p class="planner-empty">No workout planned for today</p>`;
+  // LOCAL DATE (NO UTC BUG)
+  const now = new Date();
+  const todayKey =
+    `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2,'0')}-${String(now.getDate()).padStart(2,'0')}`;
+
+  const todayWorkoutEl = document.getElementById("todayWorkout");
+
+  if (planner[todayKey]) {
+    todayWorkoutEl.textContent =
+      typeof planner[todayKey] === "string"
+        ? planner[todayKey]
+        : planner[todayKey].name;
+  } else {
+    todayWorkoutEl.textContent = "No workout planned for today";
+  }
 });
-// 1️⃣ Get planner data from localStorage
-const planner = JSON.parse(localStorage.getItem('planner')) || {};
-
-// 2️⃣ Get today's date in YYYY-MM-DD format
-const todayKey = new Date().toISOString().split('T')[0];
-
-// 3️⃣ Get the element where we'll show today's workout
-const todayWorkoutEl = document.getElementById('todayWorkout');
-
-// 4️⃣ Set the content safely
-todayWorkoutEl.textContent = planner[todayKey] || 'No workout planned for today';
-window.addEventListener('storage', () => {
-  const updatedPlanner = JSON.parse(localStorage.getItem('planner')) || {};
-  todayWorkoutEl.textContent = updatedPlanner[todayKey] || 'No workout planned for today';
-});
-
 </script>
-
 
 </body>
 </html>
