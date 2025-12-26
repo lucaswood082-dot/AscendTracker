@@ -453,3 +453,25 @@ body.analytics-page .page {
 .analytics-page .page {
   padding-bottom: 140px !important;
 }
+/* ===== TOP NAV — ANALYTICS MATCH DASHBOARD ===== */
+body.analytics-page .top-nav {
+  background: #0f172a;       /* same as other pages background */
+  border-bottom: 1px solid #1f2937;
+  padding: 1.25rem 1rem;     /* slightly bigger padding */
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+body.analytics-page .top-nav .nav-title,
+body.analytics-page .top-nav {
+  font-size: 1.4rem;         /* slightly bigger font */
+  font-weight: 600;
+  color: #38bdf8;
+  line-height: 1.4;
+}
+
+/* Ensure body background matches other pages */
+body.analytics-page {
+  background: #0f172a;
+}
