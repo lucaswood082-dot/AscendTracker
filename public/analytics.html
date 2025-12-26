@@ -14,10 +14,12 @@
 <body>
 
   <div class="top-nav">
-    <div class="nav-title">Analytics</div>
-  </div>
+  Ascend
+</div>
 
-  <div class="page scroll-page">
+
+<div class="page">
+
     <div class="container">
 
       <div class="card">
@@ -83,6 +85,48 @@
 
   document.querySelectorAll(".bottom-nav button").forEach(btn => {
     if (btn.dataset.page === currentPage) {
+      btn.classList.add("active");
+    }
+  });
+</script>
+<!-- BOTTOM NAVIGATION -->
+<nav class="bottom-nav">
+  <button data-page="dashboard" onclick="location.href='dashboard.html'">
+    <span class="icon">
+      <img src="/icons/home.png" alt="Home" class="nav-icon">
+    </span>
+    <span class="label">Home</span>
+  </button>
+
+  <button data-page="view" onclick="location.href='view.html'">
+    <span class="icon">
+      <img src="/icons/workout.png" alt="Workouts" class="nav-icon">
+    </span>
+    <span class="label">Workouts</span>
+  </button>
+
+  <button data-page="workout" class="create-btn" onclick="location.href='workout.html'">
+    <span class="icon">＋</span>
+  </button>
+
+  <button data-page="stats" disabled>
+    <span class="icon">
+      <img src="/icons/analytics.png" alt="Analytics" class="nav-icon">
+    </span>
+    <span class="label">Analytics</span>
+  </button>
+
+  <button data-page="profile" disabled>
+    <span class="icon">
+      <img src="/icons/profile.png" alt="Profile" class="nav-icon">
+    </span>
+    <span class="label">Profile</span>
+  </button>
+</nav>
+<script>
+  const current = location.pathname.split("/").pop().replace(".html", "");
+  document.querySelectorAll(".bottom-nav button").forEach(btn => {
+    if (btn.dataset.page === current) {
       btn.classList.add("active");
     }
   });
