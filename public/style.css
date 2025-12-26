@@ -453,3 +453,31 @@ body.analytics-page .page {
 .analytics-page .page {
   padding-bottom: 140px !important;
 }
+/* ================================
+   ANALYTICS PAGE HARD OVERRIDES
+   ================================ */
+
+body.analytics-page {
+  background: #111827 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+/* Make page background match dashboard */
+body.analytics-page .page {
+  background: #111827 !important;
+  min-height: 100vh !important;
+  padding-bottom: 120px !important; /* space for bottom nav */
+}
+
+/* Remove phantom black strip above bottom nav */
+body.analytics-page .container {
+  margin-bottom: 0 !important;
+  padding-bottom: 0 !important;
+}
+
+/* Ensure bottom nav sits cleanly */
+body.analytics-page .bottom-nav {
+  background: #111827 !important;
+  box-shadow: none !important;
+}
