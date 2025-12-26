@@ -475,3 +475,30 @@ body.analytics-page .top-nav {
 body.analytics-page {
   background: #0f172a;
 }
+/* ===== ANALYTICS PAGE FINAL TWEAKS ===== */
+body.analytics-page {
+  background: #0f172a; /* exact dashboard background */
+}
+
+/* Top bar sizing + color match */
+body.analytics-page .top-nav {
+  background: #0f172a;      /* match dashboard */
+  padding: 0.9rem 1rem;    /* smaller height */
+  border-bottom: 1px solid #1f2937;
+}
+
+/* Ascend logo sizing + position */
+body.analytics-page .top-nav {
+  font-size: 1.25rem;      /* slightly smaller */
+  font-weight: 600;
+  color: #38bdf8;
+}
+
+/* Bottom nav active highlight (word + icon) */
+.bottom-nav button.active {
+  color: #38bdf8;
+}
+
+.bottom-nav button.active img {
+  filter: brightness(1.4);
+}
