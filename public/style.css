@@ -483,7 +483,7 @@ body.analytics-page {
 /* Top bar sizing + color match */
 body.analytics-page .top-nav {
   background: #0f172a;      /* match dashboard */
-  padding: 0.8rem 1rem;    /* smaller height */
+  padding: 0.7rem 1rem;    /* smaller height */
   border-bottom: 1px solid #1f2937;
 }
 
