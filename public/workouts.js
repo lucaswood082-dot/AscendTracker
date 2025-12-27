@@ -19,6 +19,15 @@ function showPopup(message) {
   }, 2000);
 }
 
+/* ---------------- LOCAL DATE (FIXED) ---------------- */
+function getLocalDateString() {
+  const now = new Date();
+  const year = now.getFullYear();
+  const month = String(now.getMonth() + 1).padStart(2, "0");
+  const day = String(now.getDate()).padStart(2, "0");
+  return `${year}-${month}-${day}`;
+}
+
 /* ---------------- CREATE SET ELEMENT ---------------- */
 function createSetElement(isUnilateral, weightValue = "") {
   const setLi = document.createElement("li");
@@ -96,26 +105,17 @@ function createExerciseElement(exercise) {
   return li;
 }
 
-/* ---------------- RENDER ---------------- */
-function renderExercises() {
-  exerciseList.innerHTML = "";
-  exercises.forEach(ex => {
-    exerciseList.appendChild(createExerciseElement(ex));
-  });
-}
-
 /* ---------------- ADD EXERCISE ---------------- */
 addExerciseBtn.addEventListener("click", () => {
   const newExercise = { name: "", sets: [], unilateral: false };
   exercises.push(newExercise);
-
-  // Instead of re-rendering all exercises, just append the new one
   exerciseList.appendChild(createExerciseElement(newExercise));
 });
 
 /* ---------------- SAVE WORKOUT ---------------- */
 saveWorkoutBtn.addEventListener("click", () => {
   exercises = [];
+
   document.querySelectorAll(".exercise-item").forEach(li => {
     const name = li.querySelector(".exercise-name").value;
     const unilateral = li.querySelector(".unilateral-toggle").checked;
@@ -139,17 +139,15 @@ saveWorkoutBtn.addEventListener("click", () => {
     exercises.push({ name, unilateral, sets });
   });
 
-  // Save per user
-  let users = JSON.parse(localStorage.getItem("users")) || [];
-  let currentUser = users[0] || { username: "Lucas", workouts: [] };
+  const users = JSON.parse(localStorage.getItem("users")) || [];
+  const currentUser = users[0] || { username: "Lucas", workouts: [] };
+
   if (!currentUser.workouts) currentUser.workouts = [];
 
   const workoutObj = {
     name: document.getElementById("workoutName").value || "Unnamed Workout",
     exercises,
-    date: new Date().toISOString().split("T")[0]
-    
-  
+    date: getLocalDateString() // ✅ FIXED HERE
   };
 
   currentUser.workouts.push(workoutObj);
@@ -159,7 +157,6 @@ saveWorkoutBtn.addEventListener("click", () => {
 
   showPopup("Workout Saved!");
 
-  // Clear form
   document.getElementById("workoutName").value = "";
   exerciseList.innerHTML = "";
   exercises = [];
