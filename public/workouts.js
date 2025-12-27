@@ -252,3 +252,32 @@ document.addEventListener("input", saveDraft);
 
 /* ---------------- INIT ---------------- */
 loadDraft();
+/* ---------- CLEAR WORKOUT ---------- */
+
+const clearBtn = document.getElementById("clearWorkout");
+const clearModal = document.getElementById("clearModal");
+const cancelClear = document.getElementById("cancelClear");
+const confirmClear = document.getElementById("confirmClear");
+
+if (clearBtn) {
+  clearBtn.addEventListener("click", () => {
+    clearModal.classList.remove("hidden");
+  });
+}
+
+cancelClear.addEventListener("click", () => {
+  clearModal.classList.add("hidden");
+});
+
+confirmClear.addEventListener("click", () => {
+  // Clear UI
+  document.getElementById("workoutName").value = "";
+  exerciseList.innerHTML = "";
+  exercises = [];
+
+  // Clear draft (if using persistence)
+  localStorage.removeItem("workoutDraft");
+
+  clearModal.classList.add("hidden");
+  showPopup("Workout cleared");
+});
