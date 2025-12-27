@@ -13,7 +13,7 @@
   <link rel="stylesheet" href="style.css" />
 
   <style>
-    /* 🔒 FORCE SCROLL BACK ON */
+    /* 🔒 FORCE SCROLL BACK ON (OVERRIDES style.css) */
     html, body {
       height: auto !important;
       min-height: 100% !important;
@@ -22,6 +22,7 @@
       -webkit-overflow-scrolling: touch !important;
     }
 
+    /* Sticky Top Navigation */
     .top-nav {
       position: sticky;
       top: 0;
@@ -47,6 +48,9 @@
       font-size: 0.9rem;
     }
 
+    .back-btn:hover { opacity: 0.85; }
+
+    /* MAIN PAGE FLOW — NO HEIGHT LIMITS */
     .page {
       padding: 1rem 0 2rem;
       height: auto !important;
@@ -59,99 +63,148 @@
       height: auto !important;
       overflow: visible !important;
     }
+
+    /* HIDE ANY STRAY ICONS INSIDE PAGE (except create button) */
+    .page .icon:not(.create-btn .icon) {
+      display: none !important;
+    }
   </style>
 </head>
-
+<div id="saveToast">Workout saved!</div>
 <body>
 
-<div id="saveToast">Workout saved!</div>
+  <div class="top-nav">Ascend</div>
 
-<div class="top-nav">Ascend</div>
-
-<div style="text-align:center;">
-  <button class="back-btn" onclick="location.href='dashboard.html'">
+  <div style="text-align:center;">
+    <button class="back-btn" onclick="location.href='dashboard.html'">
     Back to Dashboard
-  </button>
-</div>
+    </button>
+  </div>
 
-<div class="page">
-  <div class="container">
-    <div class="card">
+  <div class="page">
+    <div class="container">
+      <div class="card">
 
-      <input id="workoutName" placeholder="Workout name" />
+        <input id="workoutName" placeholder="Workout name" />
 
-      <div id="exerciseList"></div>
+        <!-- THIS WILL NOW SCROLL WITH PAGE -->
+        <div id="exerciseList"></div>
 
-      <button id="addExercise" type="button">Add Exercise</button>
-      <button id="saveWorkout" type="button">Save Workout</button>
+        <button id="addExercise" type="button">Add Exercise</button>
+        <button id="saveWorkout" type="button">Save Workout</button>
+        <button id="clearAll" class="red-btn">Clear All</button>
 
-      <!-- ✅ FIXED ID -->
-      <button id="clearWorkout" class="red-btn">Clear All</button>
 
-      <button class="secondary" type="button" onclick="location.href='view.html'">
-        View My Workouts
-      </button>
+        <button class="secondary" type="button" onclick="location.href='view.html'">
+          View My Workouts
+        </button>
 
+      </div>
     </div>
   </div>
-</div>
 
-<script src="workouts.js"></script>
 
-<!-- BOTTOM NAVIGATION -->
+
+  <script src="workouts.js"></script>
+
+
+  <!-- BOTTOM NAVIGATION -->
 <nav class="bottom-nav">
+  <!-- Home -->
   <button data-page="dashboard" onclick="location.href='dashboard.html'">
-    <span class="icon"><img src="/icons/home.png" class="nav-icon"></span>
+    <span class="icon">
+      <img src="/icons/home.png" alt="Home" class="nav-icon">
+    </span>
     <span class="label">Home</span>
   </button>
 
+  <!-- Workouts -->
   <button data-page="view" onclick="location.href='view.html'">
-    <span class="icon"><img src="/icons/workout.png" class="nav-icon"></span>
+    <span class="icon">
+      <img src="icons/workout.png" alt="Workouts" class="nav-icon">
+    </span>
     <span class="label">Workouts</span>
   </button>
 
-  <button data-page="workout" class="create-btn" onclick="location.href='workout.html'">
+  <!-- CENTER CREATE BUTTON (UNCHANGED) -->
+  <button
+    data-page="workout"
+    class="create-btn"
+    onclick="location.href='workout.html'"
+  >
     <span class="icon">＋</span>
   </button>
 
-  <button data-page="analytics" onclick="location.href='analytics.html'">
-    <span class="icon"><img src="/icons/analytics.png" class="nav-icon"></span>
+ <button data-page="analytics" onclick="location.href='analytics.html'">
+    <span class="icon">
+      <img src="/icons/analytics.png" alt="Analytics" class="nav-icon">
+    </span>
     <span class="label">Analytics</span>
   </button>
 
+  <!-- Profile -->
   <button data-page="profile" disabled>
-    <span class="icon"><img src="/icons/profile.png" class="nav-icon"></span>
+    <span class="icon">
+      <img src="/icons/profile.png" alt="Profile" class="nav-icon">
+    </span>
     <span class="label">Profile</span>
   </button>
 </nav>
 
-<script>
-  const current = location.pathname.split("/").pop().replace(".html", "");
-  document.querySelectorAll(".bottom-nav button").forEach(btn => {
-    if (btn.dataset.page === current) btn.classList.add("active");
-  });
-</script>
 
-<script>
-  document.querySelectorAll('.bottom-nav button:not([disabled])').forEach(btn => {
-    btn.addEventListener('touchstart', () => {
-      btn.classList.add('tap-active');
-      navigator.vibrate?.(12);
+  <script>
+    const current = location.pathname.split("/").pop().replace(".html", "");
+
+    document.querySelectorAll(".bottom-nav button").forEach(btn => {
+      if (btn.dataset.page === current) {
+        btn.classList.add("active");
+      }
     });
-    btn.addEventListener('touchend', () => btn.classList.remove('tap-active'));
-    btn.addEventListener('touchcancel', () => btn.classList.remove('tap-active'));
-  });
+  </script>
+<script>
+  function handleNav(target) {
+    const current = location.pathname.split("/").pop();
+    if (current === target) return; // already on page
+    location.href = target;
+  }
 </script>
+<script>
+  document.querySelectorAll('.bottom-nav button:not([disabled])')
+    .forEach(btn => {
 
-<!-- ✅ CONFIRM CLEAR MODAL (MATCHES JS + CSS) -->
-<div id="clearModal" class="confirm-overlay hidden">
-  <div class="confirm-box">
+      // instant tap feedback
+      btn.addEventListener('touchstart', () => {
+        btn.classList.add('tap-active');
+        navigator.vibrate?.(12);
+      });
+
+      btn.addEventListener('touchend', () => {
+        btn.classList.remove('tap-active');
+      });
+
+      btn.addEventListener('touchcancel', () => {
+        btn.classList.remove('tap-active');
+      });
+
+      // desktop fallback
+      btn.addEventListener('mousedown', () => {
+        btn.classList.add('tap-active');
+      });
+
+      btn.addEventListener('mouseup', () => {
+        btn.classList.remove('tap-active');
+      });
+    });
+</script>
+<!-- CLEAR WORKOUT CONFIRM MODAL -->
+<div id="clearModal" class="modal hidden">
+  <div class="modal-box">
     <h3>Clear workout?</h3>
     <p>This will remove all exercises and sets. This cannot be undone.</p>
 
-    <div class="confirm-actions">
-      <button id="cancelClear">Cancel</button>
-      <button id="confirmClear">Clear</button>
+    <div class="modal-actions">
+      <button id="cancelClear" class="btn-secondary">Cancel</button>
+      <button id="confirmClear" class="btn-danger">Clear</button>
     </div>
   </div>
 </div>
