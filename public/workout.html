@@ -105,7 +105,7 @@
 
   <script src="workouts.js"></script>
 
-  <!-- BOTTOM NAVIGATION -->
+
   <!-- BOTTOM NAVIGATION -->
 <nav class="bottom-nav">
   <!-- Home -->
@@ -134,8 +134,10 @@
   </button>
 
   <!-- Analytics -->
-  <button data-page="stats" disabled>
-    <span class="icon">
+  <button data-page="analytics">
+    <button data-page="analytics" onclick="handleNav('analytics.html')">
+    <span 
+    class="icon">
       <img src="/icons/analytics.png" alt="Analytics" class="nav-icon">
     </span>
     <span class="label">Analytics</span>
@@ -160,6 +162,13 @@
       }
     });
   </script>
+<script>
+  function handleNav(target) {
+    const current = location.pathname.split("/").pop();
+    if (current === target) return; // already on page
+    location.href = target;
+  }
+</script>
 
 </body>
 </html>
