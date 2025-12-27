@@ -291,6 +291,16 @@ loadWorkouts();
     if (btn.dataset.page === current) btn.classList.add("active");
   });
 </script>
+<script>
+  document.querySelectorAll('.bottom-nav button:not([disabled])')
+    .forEach(btn => {
+      btn.addEventListener('click', () => {
+        if (navigator.vibrate) {
+          navigator.vibrate(12);
+        }
+      });
+    });
+</script>
 
 </body>
 </html>

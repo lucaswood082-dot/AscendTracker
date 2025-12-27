@@ -175,6 +175,16 @@ function renderDay() {
 /* INITIAL */
 renderDay();
 </script>
+<script>
+  document.querySelectorAll('.bottom-nav button:not([disabled])')
+    .forEach(btn => {
+      btn.addEventListener('click', () => {
+        if (navigator.vibrate) {
+          navigator.vibrate(12);
+        }
+      });
+    });
+</script>
 
 </body>
 </html>

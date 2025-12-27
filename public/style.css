@@ -514,3 +514,12 @@ body.analytics-page .bottom-nav button[data-page="analytics"] {
 .bottom-nav button.active .nav-icon {
   filter: brightness(0) saturate(100%) invert(69%) sepia(96%) saturate(749%) hue-rotate(176deg);
 }
+/* ===== BOTTOM NAV TAP FEEDBACK ===== */
+.bottom-nav button {
+  transition: transform 0.08s ease, opacity 0.08s ease;
+}
+
+.bottom-nav button:active {
+  transform: scale(0.92);
+  opacity: 0.7;
+}
