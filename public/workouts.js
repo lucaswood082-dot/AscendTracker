@@ -4,6 +4,8 @@ const exerciseList = document.getElementById("exerciseList");
 const addExerciseBtn = document.getElementById("addExercise");
 const saveWorkoutBtn = document.getElementById("saveWorkout");
 
+const DRAFT_KEY = "activeWorkoutDraft";
+
 let exercises = [];
 
 /* ---------------- POPUP ---------------- */
@@ -28,6 +30,70 @@ function getLocalDateString() {
   return `${year}-${month}-${day}`;
 }
 
+/* ---------------- SAVE DRAFT ---------------- */
+function saveDraft() {
+  const draft = {
+    workoutName: document.getElementById("workoutName").value || "",
+    exercises: []
+  };
+
+  document.querySelectorAll(".exercise-item").forEach(li => {
+    const name = li.querySelector(".exercise-name").value;
+    const unilateral = li.querySelector(".unilateral-toggle").checked;
+
+    const sets = [];
+    li.querySelectorAll(".sets-list li").forEach(setLi => {
+      if (unilateral) {
+        sets.push({
+          leftReps: setLi.querySelector(".set-left")?.value || "",
+          rightReps: setLi.querySelector(".set-right")?.value || "",
+          weight: setLi.querySelector(".set-weight")?.value || ""
+        });
+      } else {
+        sets.push({
+          reps: setLi.querySelector(".set-reps")?.value || "",
+          weight: setLi.querySelector(".set-weight")?.value || ""
+        });
+      }
+    });
+
+    draft.exercises.push({ name, unilateral, sets });
+  });
+
+  localStorage.setItem(DRAFT_KEY, JSON.stringify(draft));
+}
+
+/* ---------------- LOAD DRAFT ---------------- */
+function loadDraft() {
+  const saved = localStorage.getItem(DRAFT_KEY);
+  if (!saved) return;
+
+  const draft = JSON.parse(saved);
+  document.getElementById("workoutName").value = draft.workoutName || "";
+
+  exerciseList.innerHTML = "";
+  exercises = [];
+
+  draft.exercises.forEach(ex => {
+    exercises.push(ex);
+    const el = createExerciseElement(ex);
+    const setsList = el.querySelector(".sets-list");
+
+    ex.sets.forEach(set => {
+      const setEl = createSetElement(ex.unilateral, set.weight || "");
+      if (ex.unilateral) {
+        setEl.querySelector(".set-left").value = set.leftReps || "";
+        setEl.querySelector(".set-right").value = set.rightReps || "";
+      } else {
+        setEl.querySelector(".set-reps").value = set.reps || "";
+      }
+      setsList.appendChild(setEl);
+    });
+
+    exerciseList.appendChild(el);
+  });
+}
+
 /* ---------------- CREATE SET ELEMENT ---------------- */
 function createSetElement(isUnilateral, weightValue = "") {
   const setLi = document.createElement("li");
@@ -50,7 +116,11 @@ function createSetElement(isUnilateral, weightValue = "") {
     `;
   }
 
-  setLi.querySelector(".remove-set").addEventListener("click", () => setLi.remove());
+  setLi.querySelector(".remove-set").addEventListener("click", () => {
+    setLi.remove();
+    saveDraft();
+  });
+
   return setLi;
 }
 
@@ -92,6 +162,7 @@ function createExerciseElement(exercise) {
 
   addSetBtn.addEventListener("click", () => {
     setsList.appendChild(createSetElement(unilateralToggle.checked));
+    saveDraft();
   });
 
   unilateralToggle.addEventListener("change", () => {
@@ -100,6 +171,7 @@ function createExerciseElement(exercise) {
       const newSet = createSetElement(unilateralToggle.checked, weight);
       setsList.replaceChild(newSet, oldSet);
     });
+    saveDraft();
   });
 
   return li;
@@ -110,6 +182,17 @@ addExerciseBtn.addEventListener("click", () => {
   const newExercise = { name: "", sets: [], unilateral: false };
   exercises.push(newExercise);
   exerciseList.appendChild(createExerciseElement(newExercise));
+  saveDraft();
+});
+/* ---------------- CLEAR ALL ---------------- */
+const clearAllBtn = document.getElementById("clearAll");
+
+clearAllBtn.addEventListener("click", () => {
+  if (confirm("Are you sure you want to clear all exercises?")) {
+    exercises = [];
+    exerciseList.innerHTML = "";
+    saveDraft(); // also clear draft
+  }
 });
 
 /* ---------------- SAVE WORKOUT ---------------- */
@@ -147,7 +230,7 @@ saveWorkoutBtn.addEventListener("click", () => {
   const workoutObj = {
     name: document.getElementById("workoutName").value || "Unnamed Workout",
     exercises,
-    date: getLocalDateString() // ✅ FIXED HERE
+    date: getLocalDateString()
   };
 
   currentUser.workouts.push(workoutObj);
@@ -155,9 +238,17 @@ saveWorkoutBtn.addEventListener("click", () => {
   if (!users.length) users.push(currentUser);
   localStorage.setItem("users", JSON.stringify(users));
 
+  localStorage.removeItem(DRAFT_KEY); // ✅ clear draft ONLY on save
+
   showPopup("Workout Saved!");
 
   document.getElementById("workoutName").value = "";
   exerciseList.innerHTML = "";
   exercises = [];
 });
+
+/* ---------------- AUTO SAVE ---------------- */
+document.addEventListener("input", saveDraft);
+
+/* ---------------- INIT ---------------- */
+loadDraft();

@@ -524,3 +524,15 @@ body.analytics-page .bottom-nav button[data-page="analytics"] {
   opacity: 0.6;
   transition: transform 0.08s ease, opacity 0.08s ease;
 }
+.red-btn {
+  width: 100%;
+  padding: 0.75rem;
+  border-radius: 10px;
+  border: none;
+  background: #ef4444; /* red */
+  color: #fff;
+  font-weight: 600;
+  cursor: pointer;
+  margin-top: 0.5rem;
+}
+.red-btn:hover { opacity: 0.85; }
