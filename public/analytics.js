@@ -1,57 +1,81 @@
-console.log("analytics.js loaded");
-
 document.addEventListener("DOMContentLoaded", () => {
   const users = JSON.parse(localStorage.getItem("users")) || [];
   const currentUser = users[0] || { username: "Lucas", workouts: [] };
   const workouts = currentUser.workouts || [];
 
-  let overallTonnage = 0;
-  let overallSets = 0;
-  let overallReps = 0;
+  let index = 0;
+  const view = document.getElementById("workoutView");
+  let startX = 0;
 
-  // Calculate totals for all workouts
-  workouts.forEach(workout => {
-    let workoutSets = 0;
-    let workoutReps = 0;
-    let workoutTonnage = 0;
+  function renderCurrentWorkout() {
+    if (workouts.length === 0) {
+      view.innerHTML = `<div class="workout-box swipe-reset"><span class="empty">No workouts</span></div>`;
+      return;
+    }
 
-    workout.exercises.forEach(ex => {
-      ex.sets.forEach(set => {
-        if (ex.unilateral) {
-          const reps = (parseInt(set.leftReps) || 0) + (parseInt(set.rightReps) || 0);
-          workoutReps += reps;
-          workoutTonnage += reps * (parseFloat(set.weight) || 0);
-          workoutSets += 1;
-        } else {
-          const reps = parseInt(set.reps) || 0;
-          workoutReps += reps;
-          workoutTonnage += reps * (parseFloat(set.weight) || 0);
-          workoutSets += 1;
-        }
+    const workout = workouts[index];
+    if (!workout) return;
+
+    // Update workout totals if not already
+    if (workout.sets === undefined || workout.reps === undefined || workout.tonnage === undefined) {
+      let workoutTonnage = 0;
+      let workoutSets = 0;
+      let workoutReps = 0;
+
+      workout.exercises.forEach(ex => {
+        ex.sets.forEach(set => {
+          if (ex.unilateral) {
+            const reps = (parseInt(set.leftReps) || 0) + (parseInt(set.rightReps) || 0);
+            workoutReps += reps;
+            workoutTonnage += reps * (parseFloat(set.weight) || 0);
+            workoutSets += 1;
+          } else {
+            const reps = parseInt(set.reps) || 0;
+            workoutReps += reps;
+            workoutTonnage += reps * (parseFloat(set.weight) || 0);
+            workoutSets += 1;
+          }
+        });
       });
-    });
 
-    // Save totals into the workout object for renderWorkout
-    workout.tonnage = workoutTonnage;
-    workout.sets = workoutSets;
-    workout.reps = workoutReps;
+      workout.tonnage = workoutTonnage;
+      workout.sets = workoutSets;
+      workout.reps = workoutReps;
+    }
 
-    overallTonnage += workoutTonnage;
-    overallSets += workoutSets;
-    overallReps += workoutReps;
+    // Render workout in your existing structure
+    window.analyticsUI?.renderWorkout(workout);
+  }
+
+  function showNext() {
+    if (workouts.length === 0) return;
+    index = (index + 1) % workouts.length;
+    renderCurrentWorkout();
+  }
+
+  function showPrev() {
+    if (workouts.length === 0) return;
+    index = (index - 1 + workouts.length) % workouts.length;
+    renderCurrentWorkout();
+  }
+
+  // Hook swipe events
+  view.addEventListener("touchstart", e => {
+    startX = e.touches[0].clientX;
   });
 
-  // Update overall stats in HTML
-  const totalTonnageEl = document.getElementById("overallTonnage");
-  const totalSetsEl = document.getElementById("totalSets");
-  const totalRepsEl = document.getElementById("totalReps");
+  view.addEventListener("touchend", e => {
+    const dx = e.changedTouches[0].clientX - startX;
+    if (dx < -50) showNext();
+    if (dx > 50) showPrev();
+  });
 
-  if (totalTonnageEl) totalTonnageEl.textContent = `${overallTonnage} kg`;
-  if (totalSetsEl) totalSetsEl.textContent = overallSets;
-  if (totalRepsEl) totalRepsEl.textContent = overallReps;
+  // Optional desktop buttons (arrows)
+  document.addEventListener("keydown", e => {
+    if (e.key === "ArrowRight") showNext();
+    if (e.key === "ArrowLeft") showPrev();
+  });
 
-  // Render the first workout (if exists)
-  if (workouts.length > 0 && window.analyticsUI?.renderWorkout) {
-    window.analyticsUI.renderWorkout(workouts[0]);
-  }
+  // Display the first workout on load
+  renderCurrentWorkout();
 });
