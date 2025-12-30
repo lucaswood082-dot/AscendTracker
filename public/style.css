@@ -876,3 +876,22 @@ body {
 .card, button {
   border-radius: 12px;
 }
+/* ---------- Professional Dropdown Arrow Override ---------- */
+.exercise-header .arrow {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: transform 0.2s ease-in-out;
+  color: var(--primary-color); /* matches your theme */
+}
+
+.exercise-header .arrow svg {
+  width: 1rem; /* adjust size */
+  height: 1rem;
+  transition: transform 0.2s ease-in-out;
+}
+
+.exercise-header .arrow.open svg {
+  transform: rotate(180deg);
+}

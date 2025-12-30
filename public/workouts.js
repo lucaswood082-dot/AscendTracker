@@ -144,7 +144,11 @@ function createExerciseElement(exercise) {
   li.innerHTML = `
     <div class="exercise-header">
       <input type="text" placeholder="Exercise Name" class="exercise-name" value="${exercise.name}" />
-      <span class="arrow">▼</span>
+<span class="arrow">
+  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+  </svg>
+</span>
     </div>
     <div class="exercise-body">
       <div style="display:flex; align-items:center; gap:8px; margin-bottom:0.75rem;">
