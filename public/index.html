@@ -194,6 +194,22 @@ function logout() {
     });
   }
 </script>
+<!-- Confirm Clear All Modal -->
+<div id="confirmOverlay" class="overlay hidden">
+  <div class="modal">
+    <h2>Clear all workouts?</h2>
+    <p>This action cannot be undone.</p>
+
+    <div class="modal-buttons">
+      <button id="cancelClear" class="btn secondary">Cancel</button>
+      <button id="confirmClear" class="btn danger">Clear</button>
+    </div>
+  </div>
+</div>
+<script src="workouts.js"></script>
+</body>
+</html>
+<button id="clearAll">Clear All</button>
 
 </body>
 </html>

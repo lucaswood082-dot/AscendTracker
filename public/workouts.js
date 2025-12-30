@@ -3,6 +3,11 @@ console.log("workouts.js loaded");
 const exerciseList = document.getElementById("exerciseList");
 const addExerciseBtn = document.getElementById("addExercise");
 const saveWorkoutBtn = document.getElementById("saveWorkout");
+const clearAllBtn = document.getElementById("clearAll");
+
+const confirmOverlay = document.getElementById("confirmOverlay");
+const cancelClearBtn = document.getElementById("cancelClear");
+const confirmClearBtn = document.getElementById("confirmClear");
 
 const DRAFT_KEY = "activeWorkoutDraft";
 
@@ -21,7 +26,7 @@ function showPopup(message) {
   }, 2000);
 }
 
-/* ---------------- LOCAL DATE (FIXED) ---------------- */
+/* ---------------- LOCAL DATE ---------------- */
 function getLocalDateString() {
   const now = new Date();
   const year = now.getFullYear();
@@ -94,27 +99,25 @@ function loadDraft() {
   });
 }
 
-/* ---------------- CREATE SET ELEMENT ---------------- */
+/* ---------------- CREATE SET ---------------- */
 function createSetElement(isUnilateral, weightValue = "") {
   const setLi = document.createElement("li");
   setLi.style.display = "flex";
   setLi.style.flexDirection = "column";
   setLi.style.marginBottom = "1rem";
 
-  if (isUnilateral) {
-    setLi.innerHTML = `
+  setLi.innerHTML = isUnilateral
+    ? `
       <input type="number" placeholder="Left Reps" class="set-left reps-input" />
       <input type="number" placeholder="Right Reps" class="set-right reps-input" />
       <input type="number" placeholder="Weight" class="set-weight weight-input" value="${weightValue}" />
       <button class="remove-set remove-btn">Remove</button>
-    `;
-  } else {
-    setLi.innerHTML = `
+    `
+    : `
       <input type="number" placeholder="Reps" class="set-reps reps-input" />
       <input type="number" placeholder="Weight" class="set-weight weight-input" value="${weightValue}" />
       <button class="remove-set remove-btn">Remove</button>
     `;
-  }
 
   setLi.querySelector(".remove-set").addEventListener("click", () => {
     setLi.remove();
@@ -142,7 +145,7 @@ function createExerciseElement(exercise) {
         </label>
         <span style="font-size:0.9rem;">Unilateral</span>
       </div>
-      <button class="add-set" style="margin-bottom:0.75rem;">Add Set</button>
+      <button class="add-set">Add Set</button>
       <ul class="sets-list"></ul>
     </div>
   `;
@@ -184,14 +187,26 @@ addExerciseBtn.addEventListener("click", () => {
   exerciseList.appendChild(createExerciseElement(newExercise));
   saveDraft();
 });
-/* ---------------- CLEAR ALL ---------------- */
-const clearAllBtn = document.getElementById("clearAll");
 
+/* ---------------- CLEAR ALL (CUSTOM MODAL) ---------------- */
 clearAllBtn.addEventListener("click", () => {
-  if (confirm("Are you sure you want to clear all exercises?")) {
-    exercises = [];
-    exerciseList.innerHTML = "";
-    saveDraft(); // also clear draft
+  confirmOverlay.classList.remove("hidden");
+});
+
+cancelClearBtn.addEventListener("click", () => {
+  confirmOverlay.classList.add("hidden");
+});
+
+confirmClearBtn.addEventListener("click", () => {
+  exercises = [];
+  exerciseList.innerHTML = "";
+  localStorage.removeItem(DRAFT_KEY);
+  confirmOverlay.classList.add("hidden");
+});
+
+confirmOverlay.addEventListener("click", (e) => {
+  if (e.target === confirmOverlay) {
+    confirmOverlay.classList.add("hidden");
   }
 });
 
@@ -227,18 +242,16 @@ saveWorkoutBtn.addEventListener("click", () => {
 
   if (!currentUser.workouts) currentUser.workouts = [];
 
-  const workoutObj = {
+  currentUser.workouts.push({
     name: document.getElementById("workoutName").value || "Unnamed Workout",
     exercises,
     date: getLocalDateString()
-  };
-
-  currentUser.workouts.push(workoutObj);
+  });
 
   if (!users.length) users.push(currentUser);
   localStorage.setItem("users", JSON.stringify(users));
 
-  localStorage.removeItem(DRAFT_KEY); // ✅ clear draft ONLY on save
+  localStorage.removeItem(DRAFT_KEY);
 
   showPopup("Workout Saved!");
 
