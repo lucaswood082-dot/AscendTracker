@@ -978,8 +978,8 @@ input, select {
 }
 /* Make all bottom nav icons slightly smaller without touching layout */
 .bottom-nav button .icon svg {
-  width: 14px; /* or whatever size you want */
-  height: 14px;
+  width: 18px; /* or whatever size you want */
+  height: 18px;
   display: block;
 }
 
@@ -995,7 +995,7 @@ input, select {
 
 /* Individually nudge entire button content */
 .bottom-nav button[data-page="dashboard"] {
-  left: 20px;  /* move right: positive, left: negative */
+  left: 30px;  /* move right: positive, left: negative */
   top: 0px;   /* move down: positive, up: negative */
 }
 
@@ -1017,4 +1017,18 @@ input, select {
 .bottom-nav button[data-page="profile"] {
   left: 0px;
   top: 0px;
+}
+/* Make bottom nav taller */
+.bottom-nav {
+  height: 90px; /* adjust as needed */
+  padding: 0 10px; /* optional: left/right padding */
+}
+
+/* Center buttons vertically in taller nav */
+.bottom-nav button {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
 }
