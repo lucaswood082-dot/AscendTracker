@@ -1018,17 +1018,37 @@ input, select {
   left: 0px;
   top: 0px;
 }
-/* Make bottom nav taller */
+/* Make bottom nav taller and fully control layout */
 .bottom-nav {
-  height: 150x; /* adjust as needed */
-  padding: 0 10px; /* optional: left/right padding */
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  height: 100px; /* Desired nav height */
+  display: flex;
+  justify-content: space-around; /* evenly space buttons */
+  align-items: center; /* vertical center */
+  background: #111827; /* keep existing bg */
+  border-top: 1px solid #1f2937;
+  z-index: 1000;
 }
 
-/* Center buttons vertically in taller nav */
+/* Make all buttons fill the nav height and center contents */
 .bottom-nav button {
+  flex: 1; /* each button gets equal space */
+  height: 100%; /* fill nav height */
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  height: 100%;
+  padding: 0; /* remove default padding */
+  border: none;
+  background: transparent;
+}
+
+/* Optional: slightly smaller icons for mobile */
+.bottom-nav .icon {
+  font-size: 20px; /* adjust as needed */
+}
+.bottom-nav .label {
+  font-size: 12px; /* adjust as needed */
 }
