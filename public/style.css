@@ -778,7 +778,7 @@ body.analytics-page .bottom-nav button[data-page="analytics"] {
   flex: 1;
 }
 /* ==============================
-   GLOBAL BUTTON HOVER EFFECT
+   GLOBAL BUTTON HOVER (EXCEPT BOTTOM NAV)
    ============================== */
 
 button {
@@ -788,22 +788,18 @@ button {
     background-color 0.2s ease;
 }
 
-/* Hover (desktop / cursor) */
-button:hover {
+/* Hover ONLY for non-bottom-nav buttons */
+button:hover:not(.bottom-nav button),
+:not(.bottom-nav) > button:hover {
   box-shadow:
     0 10px 25px rgba(0, 0, 0, 0.45),
     0 0 0 1px rgba(255, 255, 255, 0.04);
   transform: translateY(-2px);
 }
 
-/* Pressed */
-button:active {
+/* Press */
+button:active:not(.bottom-nav button) {
   transform: translateY(0);
   box-shadow:
     0 5px 15px rgba(0, 0, 0, 0.4);
-}
-button:not(.create-btn):hover {
-  box-shadow:
-    0 10px 25px rgba(0,0,0,0.45);
-  transform: translateY(-2px);
 }
