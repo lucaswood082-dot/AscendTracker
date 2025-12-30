@@ -1,7 +1,7 @@
 {
-  "name": "Kaizen Tracker",
-  "short_name": "Kaizen",
-  "description": "Track workouts. Improve continuously.",
+  "name": "Workout App",
+  "short_name": "Workout",
+  "description": "Track and manage workouts",
   "start_url": "/",
   "scope": "/",
   "display": "standalone",
