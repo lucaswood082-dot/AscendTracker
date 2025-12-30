@@ -978,8 +978,8 @@ input, select {
 }
 /* Make all bottom nav icons slightly smaller without touching layout */
 .bottom-nav button .icon svg {
-  width: 20px; /* or whatever size you want */
-  height: 20px;
+  width: 14px; /* or whatever size you want */
+  height: 14px;
   display: block;
 }
 
@@ -995,7 +995,7 @@ input, select {
 
 /* Individually nudge entire button content */
 .bottom-nav button[data-page="dashboard"] {
-  left: 0px;  /* move right: positive, left: negative */
+  left: 20px;  /* move right: positive, left: negative */
   top: 0px;   /* move down: positive, up: negative */
 }
 
