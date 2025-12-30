@@ -996,7 +996,7 @@ input, select {
 /* Individually nudge icons (SVGs inside buttons) */
 .bottom-nav button[data-page="dashboard"] svg {
   position: relative;
-  left: 0px; /* move right: positive, left: negative */
+  left: 100px; /* move right: positive, left: negative */
   top: 0px;  /* move down: positive, up: negative */
 }
 
