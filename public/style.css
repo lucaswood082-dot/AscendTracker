@@ -803,3 +803,26 @@ button:active:not(.bottom-nav button) {
   box-shadow:
     0 5px 15px rgba(0, 0, 0, 0.4);
 }
+h1, h2, h3 {
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
+
+.metric span:last-child {
+  font-weight: 600;
+  color: #f9fafb;
+}
+
+.metric span:first-child {
+  color: #9ca3af;
+}
+.card {
+  background: linear-gradient(180deg, #020617, #020617);
+  border-radius: 16px;
+  padding: 1.25rem;
+  border: 1px solid rgba(255,255,255,0.04);
+
+  box-shadow:
+    0 8px 24px rgba(0,0,0,0.35),
+    inset 0 1px 0 rgba(255,255,255,0.03);
+}
