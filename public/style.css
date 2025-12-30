@@ -990,7 +990,7 @@ input, select {
 }
 /* Individual icon adjustment using transform */
 .bottom-nav button[data-page="dashboard"] .icon {
-  transform: translateX(10px); /* adjust left/right */
+  transform: translateX(100px); /* adjust left/right */
 }
 
 .bottom-nav button[data-page="view"] .icon {
