@@ -895,17 +895,16 @@ body {
 .exercise-header .arrow.open svg {
   transform: rotate(180deg);
 }
-/* Force dropdown arrow to use SVG instead of emoji on mobile */
-.exercise-header .arrow {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
+/* Prevent system emoji replacement for arrows and symbols */
+body, button, input, select, textarea, span, div {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif !important;
+  text-rendering: optimizeLegibility !important;
 }
 
-.exercise-header .arrow svg {
-  width: 14px;      /* adjust size as needed */
-  height: 14px;
-  stroke: #38bdf8;  /* arrow color */
-  vertical-align: middle;
-  display: block;
+/* Specifically target arrow characters used in your site */
+.arrow {
+  font-family: "Segoe UI Symbol", "Arial", sans-serif !important;
+  text-rendering: geometricPrecision !important;
+  -webkit-font-smoothing: antialiased !important;
+  -moz-osx-font-smoothing: grayscale !important;
 }
