@@ -895,3 +895,17 @@ body {
 .exercise-header .arrow.open svg {
   transform: rotate(180deg);
 }
+/* Force dropdown arrow to use SVG instead of emoji on mobile */
+.exercise-header .arrow {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.exercise-header .arrow svg {
+  width: 14px;      /* adjust size as needed */
+  height: 14px;
+  stroke: #38bdf8;  /* arrow color */
+  vertical-align: middle;
+  display: block;
+}
