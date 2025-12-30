@@ -1004,3 +1004,65 @@ input, select {
   align-items: center;
   justify-content: center;
 }
+/* ===== BOTTOM NAV ===== */
+.bottom-nav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 60px; /* overall height */
+  display: flex;
+  justify-content: space-around; /* evenly space all buttons */
+  align-items: center;
+  background: #111827;
+  border-top: 1px solid #1f2937;
+  z-index: 100;
+}
+
+/* All nav buttons */
+.bottom-nav button {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  background: none;
+  color: #38bdf8;
+  font-size: 0.75rem;
+  padding: 0;
+  cursor: pointer;
+}
+
+/* Create Workout button bigger */
+.bottom-nav .create-btn {
+  width: 60px;
+  height: 60px;
+  margin-top: -15px; /* pop it above the nav */
+  border-radius: 50%;
+  background: #38bdf8;
+  color: #020617;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.25);
+  transition: transform 0.2s;
+}
+
+/* Hover effect for create button */
+.bottom-nav .create-btn:hover {
+  transform: scale(1.1);
+}
+
+/* Icon sizing */
+.bottom-nav .icon svg {
+  width: 24px;
+  height: 24px;
+}
+
+/* Create button icon bigger */
+.bottom-nav .create-btn svg {
+  width: 32px;
+  height: 32px;
+}
