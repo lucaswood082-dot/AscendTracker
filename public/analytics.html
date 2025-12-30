@@ -6,7 +6,6 @@
   <title>Analytics</title>
 
   <meta name="theme-color" content="#111827">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-capable" content="yes">
 
   <link rel="stylesheet" href="style.css">
@@ -25,27 +24,64 @@
       font-size: 1.2rem;
     }
 
-    .page { padding: 1rem; }
-    .card {
+    .page {
+      padding: 1rem;
+    }
+
+    .stat-card {
       background: #1f2937;
-      color: #e5e7eb;
+      border-radius: 14px;
       padding: 1rem;
       margin-bottom: 1rem;
-      border-radius: 0.5rem;
+      color: #e5e7eb;
     }
 
-    .workout-item {
-      background: #111827;
-      padding: 0.75rem;
-      margin-bottom: 0.5rem;
-      border-radius: 0.5rem;
-    }
-
-    h2, h3 {
+    .stat-card h3 {
       color: #38bdf8;
+      margin-bottom: 0.25rem;
     }
 
-    ul { padding-left: 1rem; list-style: none; }
+    /* SWIPE CONTAINER */
+    .workout-carousel {
+      display: flex;
+      gap: 1rem;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      -webkit-overflow-scrolling: touch;
+      padding-bottom: 1rem;
+    }
+
+    .workout-carousel::-webkit-scrollbar {
+      display: none;
+    }
+
+    .workout-card {
+      flex: 0 0 85%;
+      scroll-snap-align: center;
+      background: #020617;
+      border: 1px solid #1f2937;
+      border-radius: 16px;
+      padding: 1rem;
+      color: #e5e7eb;
+    }
+
+    .workout-card h4 {
+      color: #38bdf8;
+      margin-bottom: 0.25rem;
+    }
+
+    .workout-date {
+      font-size: 0.8rem;
+      opacity: 0.7;
+      margin-bottom: 0.75rem;
+    }
+
+    .metric {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 0.4rem;
+      font-size: 0.95rem;
+    }
   </style>
 </head>
 <body>
@@ -55,26 +91,24 @@
   <div class="page">
 
     <!-- OVERALL STATS -->
-    <div class="card">
-      <h3>Overall Total Tonnage</h3>
-      <p id="overallTonnage" style="font-size: 1.5rem; font-weight: 600;">0 kg</p>
+    <div class="stat-card">
+      <h3>Total Tonnage</h3>
+      <p id="overallTonnage" style="font-size:1.5rem;font-weight:600;">0 kg</p>
     </div>
 
-    <div class="card">
-      <h3>Total Sets</h3>
-      <p id="totalSets">0</p>
+    <div class="stat-card">
+      <div class="metric">
+        <span>Total Sets</span>
+        <span id="totalSets">0</span>
+      </div>
+      <div class="metric">
+        <span>Total Reps</span>
+        <span id="totalReps">0</span>
+      </div>
     </div>
 
-    <div class="card">
-      <h3>Total Reps</h3>
-      <p id="totalReps">0</p>
-    </div>
-
-    <!-- PER WORKOUT ANALYTICS -->
-    <div class="card">
-      <h3>Workouts</h3>
-      <ul id="analyticsList"></ul>
-    </div>
+    <!-- SWIPEABLE WORKOUTS -->
+    <div class="workout-carousel" id="analyticsList"></div>
 
   </div>
 
@@ -108,10 +142,9 @@
   <script src="analytics.js"></script>
 
   <script>
-    // Highlight current nav
-    const currentPage = location.pathname.split("/").pop().replace(".html","");
+    const current = location.pathname.split("/").pop().replace(".html","");
     document.querySelectorAll(".bottom-nav button").forEach(btn => {
-      if(btn.dataset.page === currentPage) btn.classList.add("active");
+      if (btn.dataset.page === current) btn.classList.add("active");
     });
   </script>
 
