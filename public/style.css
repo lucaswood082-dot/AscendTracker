@@ -996,12 +996,12 @@ input, select {
 /* Individually nudge entire button content */
 .bottom-nav button[data-page="dashboard"] {
   left: 14px;  /* move right: positive, left: negative */
-  top: -8px;   /* move down: positive, up: negative */
+  top: -6px;   /* move down: positive, up: negative */
 }
 
 .bottom-nav button[data-page="view"] {
   left: -12px;
-  top: -8px;
+  top: -6px;
 }
 
 .bottom-nav button[data-page="workout"] {
@@ -1011,12 +1011,12 @@ input, select {
 
 .bottom-nav button[data-page="analytics"] {
   left: -48px;
-  top: -8px;
+  top: -6px;
 }
 
 .bottom-nav button[data-page="profile"] {
   left: -20px;
-  top: -8px;
+  top: -6px;
 }
 /* ================= OVERRIDE: Make bottom nav taller ================= */
 .bottom-nav {
