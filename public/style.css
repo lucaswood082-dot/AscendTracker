@@ -988,38 +988,33 @@ input, select {
   width: 24px;
   height: 24px;
 }
-/* Make bottom nav buttons position relative so we can nudge icons */
+/* Make bottom nav buttons position relative */
 .bottom-nav button {
   position: relative;
 }
 
-/* Individually nudge icons (SVGs inside buttons) */
-.bottom-nav button[data-page="dashboard"] svg {
-  position: relative;
-  left: 100px; /* move right: positive, left: negative */
-  top: 0px;  /* move down: positive, up: negative */
+/* Individually nudge entire button content */
+.bottom-nav button[data-page="dashboard"] {
+  left: -100px;  /* move right: positive, left: negative */
+  top: 0px;   /* move down: positive, up: negative */
 }
 
-.bottom-nav button[data-page="view"] svg {
-  position: relative;
+.bottom-nav button[data-page="view"] {
   left: 0px;
   top: 0px;
 }
 
-.bottom-nav button[data-page="workout"] svg {
-  position: relative;
+.bottom-nav button[data-page="workout"] {
   left: 0px;
   top: 0px;
 }
 
-.bottom-nav button[data-page="analytics"] svg {
-  position: relative;
+.bottom-nav button[data-page="analytics"] {
   left: 0px;
   top: 0px;
 }
 
-.bottom-nav button[data-page="profile"] svg {
-  position: relative;
+.bottom-nav button[data-page="profile"] {
   left: 0px;
   top: 0px;
 }
