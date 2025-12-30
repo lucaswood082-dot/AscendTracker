@@ -1012,8 +1012,9 @@ body .bottom-nav {
   width: 100% !important;
   height: 60px !important;
   display: flex !important;
-  justify-content: space-evenly !important; /* even gaps between all buttons */
+  justify-content: space-between !important; /* better control than space-evenly */
   align-items: center !important;
+  padding: 0 25px !important;   /* adds spacing from edges for even visual balance */
   z-index: 100 !important;
 }
 
