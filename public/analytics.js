@@ -10,70 +10,41 @@ document.addEventListener("DOMContentLoaded", () => {
   const analyticsList = document.getElementById("analyticsList");
   const totalDiv = document.getElementById("overallTonnage");
 
-  if (!analyticsList) return;
+  if (!analyticsList || !totalDiv) return;
 
   analyticsList.innerHTML = "";
 
   let overallTonnage = 0;
 
-  // -------------------- SORT BY DATE (NEWEST FIRST) --------------------
+  // -------------------- RENDER WORKOUTS --------------------
+  if (workouts.length === 0) {
+    analyticsList.innerHTML = `<li class="empty">No workouts saved yet.</li>`;
+    totalDiv.textContent = "Overall Total Tonnage: 0 kg";
+    return;
+  }
+
+  // Optional: sort by date newest first
   workouts.sort((a, b) => new Date(b.date) - new Date(a.date));
 
-  // -------------------- RENDER WORKOUTS --------------------
   workouts.forEach(workout => {
-    // ✅ Use saved values (fallback for old workouts)
-    const tonnage =
-      typeof workout.tonnage === "number"
-        ? workout.tonnage
-        : calculateLegacyTonnage(workout);
-
-    const sets = workout.totalSets ?? "—";
-    const reps = workout.totalReps ?? "—";
-
+    const tonnage = workout.tonnage || 0;
     overallTonnage += tonnage;
 
     const li = document.createElement("li");
     li.classList.add("workout-item");
-
+    li.style.background = "#111827";
+    li.style.color = "#e5e7eb";
+    li.style.border = "1px solid #1f2937";
+    li.style.borderRadius = "12px";
+    li.style.padding = "1rem";
+    li.style.marginBottom = "0.75rem";
     li.innerHTML = `
-      <div class="workout-card">
-        <div class="workout-title">${workout.name}</div>
-        <div class="workout-date">${workout.date}</div>
-
-        <div class="workout-stats">
-          <span>${tonnage.toLocaleString()} kg</span>
-          <span>${sets} sets</span>
-          <span>${reps} reps</span>
-        </div>
-      </div>
+      <strong style="color:#38bdf8;">${workout.name}</strong> (${workout.date})<br>
+      Total Tonnage: ${tonnage} kg<br>
+      Sets: ${workout.totalSets || 0} | Reps: ${workout.totalReps || 0}
     `;
-
     analyticsList.appendChild(li);
   });
 
-  // -------------------- DISPLAY OVERALL TOTAL --------------------
-  if (totalDiv) {
-    totalDiv.textContent = `Overall Tonnage: ${overallTonnage.toLocaleString()} kg`;
-  }
-
-  // -------------------- LEGACY FALLBACK --------------------
-  function calculateLegacyTonnage(workout) {
-    let total = 0;
-    workout.exercises?.forEach(exercise => {
-      exercise.sets?.forEach(set => {
-        if (exercise.unilateral) {
-          const left = Number(set.leftReps) || 0;
-          const right = Number(set.rightReps) || 0;
-          const weight = Number(set.weight) || 0;
-          total += (left + right) * weight;
-        } else {
-          const reps = Number(set.reps) || 0;
-          const weight = Number(set.weight) || 0;
-          total += reps * weight;
-        }
-      });
-    });
-    return total;
-  }
-
+  totalDiv.textContent = `Overall Total Tonnage: ${overallTonnage} kg`;
 });
