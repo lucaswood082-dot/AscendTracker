@@ -85,35 +85,45 @@
 </div>
 
 <!-- BOTTOM NAVIGATION -->
-<button data-page="dashboard" onclick="location.href='dashboard.html'">
-  <span class="icon">
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="nav-icon">
-      <path d="M11.47 3.841a.75.75 0 0 1 1.06 0l8.69 8.69a.75.75 0 1 0 1.06-1.061l-8.689-8.69a2.25 2.25 0 0 0-3.182 0l-8.69 8.69a.75.75 0 1 0 1.061 1.06l8.69-8.689Z" />
-      <path d="m12 5.432 8.159 8.159c.03.03.06.058.091.086v6.198c0 1.035-.84 1.875-1.875 1.875H15a.75.75 0 0 1-.75-.75v-4.5a.75.75 0 0 0-.75-.75h-3a.75.75 0 0 0-.75.75V21a.75.75 0 0 1-.75.75H5.625a1.875 1.875 0 0 1-1.875-1.875v-6.198a2.29 2.29 0 0 0 .091-.086L12 5.432Z" />
-    </svg>
-  </span>
-  <span class="label">Home</span>
-</button>
-
-  <button data-page="view" onclick="location.href='view.html'">
-    <span class="icon"><img src="/icons/workout.png" class="nav-icon"></span>
-    <span class="label">Workouts</span>
+<nav class="bottom-nav" style="position: fixed; bottom: 0; left: 0; right: 0; height: 60px; background: #111827; display: flex; justify-content: space-around; align-items: center; border-top: 1px solid #1f2937; z-index: 1000;">
+  
+  <button data-page="dashboard" onclick="location.href='dashboard.html'" style="background: none; border: none; display: flex; flex-direction: column; align-items: center; justify-content: center; color: #9ca3af;">
+    <span class="icon">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24" width="24" height="24">
+        <path d="M11.47 3.841a.75.75 0 0 1 1.06 0l8.69 8.69a.75.75 0 1 0 1.06-1.061l-8.689-8.69a2.25 2.25 0 0 0-3.182 0l-8.69 8.69a.75.75 0 1 0 1.061 1.06l8.69-8.689Z" />
+        <path d="m12 5.432 8.159 8.159c.03.03.06.058.091.086v6.198c0 1.035-.84 1.875-1.875 1.875H15a.75.75 0 0 1-.75-.75v-4.5a.75.75 0 0 0-.75-.75h-3a.75.75 0 0 0-.75.75V21a.75.75 0 0 1-.75.75H5.625a1.875 1.875 0 0 1-1.875-1.875v-6.198a2.29 2.29 0 0 0 .091-.086L12 5.432Z" />
+      </svg>
+    </span>
+    <span class="label" style="font-size: 0.75rem; margin-top: 2px;">Home</span>
   </button>
 
-  <button data-page="workout" class="create-btn" onclick="location.href='workout.html'">
-    <span class="icon">＋</span>
+  <button data-page="view" onclick="location.href='view.html'" style="background: none; border: none; display: flex; flex-direction: column; align-items: center; justify-content: center; color: #9ca3af;">
+    <span class="icon">
+      <!-- SVG for Workouts here -->
+    </span>
+    <span class="label" style="font-size: 0.75rem; margin-top: 2px;">Workouts</span>
   </button>
 
-  <button data-page="analytics" onclick="location.href='analytics.html'">
-    <span class="icon"><img src="/icons/analytics.png" class="nav-icon"></span>
-    <span class="label">Analytics</span>
+  <button data-page="workout" onclick="location.href='workout.html'" style="background: #38bdf8; border: none; border-radius: 50%; width: 48px; height: 48px; display: flex; align-items: center; justify-content: center; color: #020617; font-size: 1.5rem;">
+    ＋
   </button>
 
-  <button data-page="profile" disabled>
-    <span class="icon"><img src="/icons/profile.png" class="nav-icon"></span>
-    <span class="label">Profile</span>
+  <button data-page="analytics" onclick="location.href='analytics.html'" style="background: none; border: none; display: flex; flex-direction: column; align-items: center; justify-content: center; color: #9ca3af;">
+    <span class="icon">
+      <!-- SVG for Analytics here -->
+    </span>
+    <span class="label" style="font-size: 0.75rem; margin-top: 2px;">Analytics</span>
   </button>
+
+  <button data-page="profile" disabled style="background: none; border: none; display: flex; flex-direction: column; align-items: center; justify-content: center; color: #9ca3af;">
+    <span class="icon">
+      <!-- SVG for Profile here -->
+    </span>
+    <span class="label" style="font-size: 0.75rem; margin-top: 2px;">Profile</span>
+  </button>
+
 </nav>
+
 
 <script>
 window.addEventListener("DOMContentLoaded", () => {
