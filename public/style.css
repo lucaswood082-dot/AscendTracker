@@ -1004,47 +1004,52 @@ input, select {
   align-items: center;
   justify-content: center;
 }
-/* ===== OVERRIDE BOTTOM NAV POSITIONING ONLY ===== */
+/* ===== FULL CONTROL OVERRIDE FOR BOTTOM NAV ===== */
 body .bottom-nav {
-  position: fixed !important;
-  bottom: 10px !important;       /* move nav up a bit */
+  position: fixed !important;     /* stick to bottom */
+  bottom: 10px !important;        /* move entire nav up/down */
   left: 0 !important;
   width: 100% !important;
-  height: 60px !important;
   display: flex !important;
-  justify-content: space-between !important; /* better control than space-evenly */
-  align-items: center !important;
-  padding: 0 25px !important;   /* adds spacing from edges for even visual balance */
+  justify-content: space-between !important; /* horizontal spacing */
+  align-items: center !important; /* vertical alignment inside nav */
+  padding: 0 20px !important;     /* spacing from left/right edges */
   z-index: 100 !important;
 }
 
-/* Ensure all buttons are centered in their space */
+/* Individual buttons */
 body .bottom-nav button {
   display: flex !important;
-  flex-direction: column !important;
+  flex-direction: column !important; /* icon above label */
   align-items: center !important;
   justify-content: center !important;
-  padding: 0 !important;
-  flex: none !important;
+  flex: none !important;             /* prevent stretching */
+  margin: 0 !important;              /* reset any default spacing */
+  transform: translateY(0) !important; /* vertical move of specific button */
 }
 
-/* Create Workout button slightly bigger and raised */
+/* Raise or lower a specific button (example: create button) */
 body .bottom-nav .create-btn {
   width: 60px !important;
   height: 60px !important;
-  margin-top: -10px !important; /* raise above nav slightly */
-  display: flex !important;
-  align-items: center !important;
-  justify-content: center !important;
+  transform: translateY(-10px) !important; /* move up */
 }
 
-/* Icon sizing */
+/* Move any button individually */
+body .bottom-nav button[data-page="analytics"] {
+  transform: translateY(-2px) !important; /* slightly up */
+}
+body .bottom-nav button[data-page="profile"] {
+  transform: translateY(-2px) !important;
+}
+
+/* Icon sizing control */
 body .bottom-nav .icon svg {
   width: 24px !important;
   height: 24px !important;
 }
 
 body .bottom-nav .create-btn svg {
-  width: 32px !important;
+  width: 32px !important;  /* bigger create icon */
   height: 32px !important;
 }
