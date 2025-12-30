@@ -1023,7 +1023,7 @@ input, select {
   position: fixed;
   bottom: 0;
   width: 100%;
-  height: 100px; /* Desired nav height */
+  height: 120px; /* Desired nav height */
   display: flex;
   justify-content: space-around; /* evenly space buttons */
   align-items: center; /* vertical center */
