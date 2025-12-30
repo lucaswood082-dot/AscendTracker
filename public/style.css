@@ -995,7 +995,7 @@ input, select {
 
 /* Individually nudge entire button content */
 .bottom-nav button[data-page="dashboard"] {
-  left: 100px;  /* move right: positive, left: negative */
+  left: -50px;  /* move right: positive, left: negative */
   top: 0px;   /* move down: positive, up: negative */
 }
 
