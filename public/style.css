@@ -1004,7 +1004,7 @@ input, select {
   align-items: center;
   justify-content: center;
 }
-/* ===== OVERRIDE BOTTOM NAV ===== */
+/* ===== OVERRIDE BOTTOM NAV POSITIONING ONLY ===== */
 body .bottom-nav {
   position: fixed !important;
   bottom: 0 !important;
@@ -1014,54 +1014,36 @@ body .bottom-nav {
   display: flex !important;
   justify-content: space-around !important; /* evenly space all buttons */
   align-items: center !important;
-  background: #111827 !important;
-  border-top: 1px solid #1f2937 !important;
   z-index: 100 !important;
 }
 
-/* All nav buttons */
+/* Ensure all buttons are centered in their space */
 body .bottom-nav button {
   flex: 1 !important;
   display: flex !important;
   flex-direction: column !important;
   align-items: center !important;
   justify-content: center !important;
-  border: none !important;
-  background: none !important;
-  color: #38bdf8 !important;
-  font-size: 0.75rem !important;
   padding: 0 !important;
-  cursor: pointer !important;
 }
 
-/* Create Workout button bigger */
+/* Create Workout button slightly bigger and raised */
 body .bottom-nav .create-btn {
   width: 60px !important;
   height: 60px !important;
-  margin-top: -15px !important; /* pop it above the nav */
-  border-radius: 50% !important;
-  background: #38bdf8 !important;
-  color: #020617 !important;
+  margin-top: -15px !important; /* pop above nav */
+  flex: none !important;
   display: flex !important;
   align-items: center !important;
   justify-content: center !important;
-  font-size: 1.5rem !important;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.25) !important;
-  transition: transform 0.2s !important;
 }
 
-/* Hover effect for create button */
-body .bottom-nav .create-btn:hover {
-  transform: scale(1.1) !important;
-}
-
-/* Icon sizing */
+/* Icon sizing (optional, purely layout) */
 body .bottom-nav .icon svg {
   width: 24px !important;
   height: 24px !important;
 }
 
-/* Create button icon bigger */
 body .bottom-nav .create-btn svg {
   width: 32px !important;
   height: 32px !important;
