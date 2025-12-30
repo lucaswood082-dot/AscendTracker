@@ -247,8 +247,17 @@ saveWorkoutBtn?.addEventListener("click", () => {
   });
 
   const users = JSON.parse(localStorage.getItem("users")) || [];
-  const currentUser = users[0] || { username: "Lucas", workouts: [] };
-  if (!currentUser.workouts) currentUser.workouts = [];
+
+let currentUser;
+if (users.length > 0) {
+  currentUser = users[0];
+  if (!Array.isArray(currentUser.workouts)) {
+    currentUser.workouts = [];
+  }
+} else {
+  currentUser = { username: "Lucas", workouts: [] };
+  users.push(currentUser);
+}
 
   const workoutObj = {
     name: document.getElementById("workoutName")?.value || "Unnamed Workout",
