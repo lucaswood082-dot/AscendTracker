@@ -988,28 +988,38 @@ input, select {
   width: 24px;
   height: 24px;
 }
-/* Individual icon adjustment using transform */
-.bottom-nav button[data-page="dashboard"] .icon {
-  transform: translateX(100px); /* adjust left/right */
+/* Make bottom nav buttons position relative so we can nudge icons */
+.bottom-nav button {
+  position: relative;
 }
 
-.bottom-nav button[data-page="view"] .icon {
-  transform: translateX(0px);
+/* Individually nudge icons (SVGs inside buttons) */
+.bottom-nav button[data-page="dashboard"] svg {
+  position: relative;
+  left: 0px; /* move right: positive, left: negative */
+  top: 0px;  /* move down: positive, up: negative */
 }
 
-.bottom-nav button[data-page="workout"] .icon {
-  transform: translateX(0px);
+.bottom-nav button[data-page="view"] svg {
+  position: relative;
+  left: 0px;
+  top: 0px;
 }
 
-.bottom-nav button[data-page="analytics"] .icon {
-  transform: translateX(0px);
+.bottom-nav button[data-page="workout"] svg {
+  position: relative;
+  left: 0px;
+  top: 0px;
 }
 
-.bottom-nav button[data-page="profile"] .icon {
-  transform: translateX(0px);
+.bottom-nav button[data-page="analytics"] svg {
+  position: relative;
+  left: 0px;
+  top: 0px;
 }
 
-/* Optional: nudge up/down too */
-.bottom-nav button[data-page="dashboard"] .icon {
-  transform: translate(0px, 0px); /* X = left/right, Y = up/down */
+.bottom-nav button[data-page="profile"] svg {
+  position: relative;
+  left: 0px;
+  top: 0px;
 }
