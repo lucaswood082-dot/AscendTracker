@@ -933,33 +933,48 @@ button:not(.bottom-nav button):hover {
 .workout-box.swipe-left, .workout-box.swipe-right {
   box-shadow: 0 0 20px rgba(0,0,0,0.2);
 }
-/* ===== ICON BUTTON ===== */
-.icon-btn {
+/* ===== GLOBAL WORKOUT PAGE BUTTON STYLE OVERRIDE ===== */
+.workout-page button, /* target buttons on workout page */
+#addExercise,
+#saveWorkout,
+#clearAll,
+.add-set-btn,
+.exercise-btn {
   background: #111827;          /* dark background matching theme */
+  color: #38bdf8;               /* accent text color */
   border: none;
-  border-radius: 12px;
-  padding: 0.5rem;
+  border-radius: 10px;          /* slightly rounded square */
+  padding: 0.6rem 1rem;
+  font-size: 0.95rem;
+  font-weight: 600;
   cursor: pointer;
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  gap: 0.5rem;
   transition: all 0.2s ease-in-out;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.3); /* subtle shadow */
+  box-shadow: 0 2px 6px rgba(0,0,0,0.25);
+  user-select: none;
 }
 
-.icon-btn img {
-  width: 24px;
-  height: 24px;
-  display: block;
+.workout-page button img {
+  width: 20px;
+  height: 20px;
 }
 
-.icon-btn:hover {
+.workout-page button:hover {
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0,0,0,0.35); /* hover shadow */
-  filter: brightness(1.2); /* slightly brighter on hover */
+  box-shadow: 0 4px 12px rgba(0,0,0,0.35);
+  filter: brightness(1.2);
 }
 
-.icon-btn:active {
+.workout-page button:active {
   transform: translateY(0);
-  box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+  box-shadow: 0 2px 6px rgba(0,0,0,0.25);
+}
+
+/* Optional: Make add exercise / set buttons uniform size */
+#addExercise, .add-set-btn {
+  min-width: 100px;
+  text-align: center;
 }
