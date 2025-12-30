@@ -184,15 +184,12 @@ addExerciseBtn.addEventListener("click", () => {
   exerciseList.appendChild(createExerciseElement(newExercise));
   saveDraft();
 });
-/* ---------------- CLEAR ALL ---------------- */
-const clearAllBtn = document.getElementById("clearAll");
-
 clearAllBtn.addEventListener("click", () => {
-  if (confirm("Are you sure you want to clear all exercises?")) {
+  showClearConfirm(() => {
     exercises = [];
     exerciseList.innerHTML = "";
-    saveDraft(); // also clear draft
-  }
+    saveDraft();
+  });
 });
 
 /* ---------------- SAVE WORKOUT ---------------- */
@@ -252,4 +249,28 @@ document.addEventListener("input", saveDraft);
 
 /* ---------------- INIT ---------------- */
 loadDraft();
+function showClearConfirm(onConfirm) {
+  const overlay = document.getElementById("uiConfirm");
+  const cancelBtn = document.getElementById("uiCancel");
+  const confirmBtn = document.getElementById("uiConfirmYes");
+
+  // If modal doesn't exist, fallback safely
+  if (!overlay || !cancelBtn || !confirmBtn) {
+    if (confirm("Are you sure you want to clear this workout?")) {
+      onConfirm();
+    }
+    return;
+  }
+
+  overlay.classList.remove("hidden");
+
+  cancelBtn.onclick = () => {
+    overlay.classList.add("hidden");
+  };
+
+  confirmBtn.onclick = () => {
+    overlay.classList.add("hidden");
+    onConfirm();
+  };
+}
 
