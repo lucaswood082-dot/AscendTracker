@@ -833,3 +833,27 @@ h1, h2, h3 {
 .metric {
   padding: 0.35rem 0;
 }
+:root {
+  --radius-card: 16px;
+  --radius-btn: 14px;
+  --radius-input: 12px;
+}
+button {
+  background: #0ea5e9;
+  color: #020617;
+  border-radius: 14px;
+  font-weight: 600;
+}
+
+button:active {
+  transform: scale(0.98);
+}
+.workout-box {
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}
+:root {
+  --accent: #38bdf8;
+  --bg: #020617;
+  --card: #111827;
+  --muted: #9ca3af;
+}
