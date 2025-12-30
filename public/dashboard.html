@@ -1,17 +1,19 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Dashboard</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Status bar / browser UI colour -->
   <meta name="theme-color" content="#111827">
+
+  <!-- iOS PWA status bar -->
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-capable" content="yes">
 
-  <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <title>Dashboard</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="style.css" />
 
   <style>
-    /* ===== TOP NAV ===== */
     .top-nav {
       position: sticky;
       top: 0;
@@ -24,69 +26,10 @@
       color: #38bdf8;
       font-size: 1.2rem;
     }
-
-    /* ===== PAGE CONTAINER ===== */
-    .page {
-      padding: 1rem;
-      padding-bottom: 140px;
-    }
-
-    .container {
-      max-width: 480px;
-      margin: 0 auto;
-    }
-
-    /* ===== WELCOME BANNER ===== */
-    .welcome-banner {
-      background: #38bdf8;
-      color: #111827;
-      border-radius: 12px;
-      padding: 1.5rem;
-      margin-bottom: 1rem;
-      text-align: center;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-    }
-    .welcome-banner h2 {
-      margin: 0 0 0.25rem 0;
-      font-size: 1.5rem;
-    }
-    .welcome-banner p {
-      margin: 0;
-      font-size: 0.95rem;
-      color: #1f2937;
-    }
-
-    /* ===== DASHBOARD GRID ===== */
-    .dashboard-grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 0.75rem;
-    }
-
-    .dashboard-card {
-      background: #111827;
-      color: #f9fafb;
-      border-radius: 12px;
-      padding: 1.25rem;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      font-weight: 600;
-      text-align: center;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.15);
-      transition: transform 0.15s ease, box-shadow 0.15s ease;
-      cursor: pointer;
-    }
-    .dashboard-card:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 6px 16px rgba(0,0,0,0.2);
-    }
-
-    /* ===== BUTTONS ===== */
-    #logoutBtn {
+    .page { padding-top: 1rem; }
+    .back-btn, .logout-btn {
       display: inline-block;
-      margin: 0.5rem auto 1rem auto;
+      margin-top: 0.5rem;
       padding: 0.5rem 1rem;
       border-radius: 10px;
       border: none;
@@ -95,131 +38,144 @@
       font-weight: 600;
       cursor: pointer;
       font-size: 0.9rem;
-      text-align: center;
-      display: block;
+      margin-right: 5px;
     }
-    #logoutBtn:hover { opacity: 0.85; }
-
-    /* ===== RESPONSIVE ===== */
-    @media (max-width: 400px) {
-      .dashboard-grid {
-        grid-template-columns: 1fr;
-      }
-    }
+    .back-btn:hover, .logout-btn:hover { opacity: 0.85; }
   </style>
 </head>
-
 <body>
-  <div class="top-nav">Ascend</div>
 
-  <div class="page">
-    <div class="container">
+<div class="top-nav">Ascend</div>
 
-      <!-- WELCOME BANNER -->
-      <div class="welcome-banner">
-        <h2 id="dashboardTitle">Welcome!</h2>
-        <p>Here’s your progress today</p>
+<div style="text-align:center;">
+  <button id="logoutBtn">Logout</button>
+</div>
+
+<div class="page">
+  <div class="container">
+    <div class="card">
+      <h2 id="dashboardTitle">Dashboard</h2>
+
+   
+    <!-- Planner Preview Card -->
+    <div class="card planner-card">
+      <div class="planner-header">
+        <h3>Planner</h3>
       </div>
 
-      <!-- LOGOUT -->
-      <button id="logoutBtn">Logout</button>
-
-      <!-- DASHBOARD GRID -->
-      <div class="dashboard-grid">
-
-        <div class="dashboard-card" onclick="location.href='planner.html'">
-          <h3>Planner</h3>
-          <p id="todayWorkout">Loading...</p>
-        </div>
-
-        <div class="dashboard-card" onclick="location.href='view.html'">
-          <h3>Workouts</h3>
-        </div>
-
-        <div class="dashboard-card" onclick="location.href='analytics.html'">
-          <h3>Analytics</h3>
-        </div>
-
-        <div class="dashboard-card" onclick="location.href='profile.html'">
-          <h3>Profile</h3>
-        </div>
-
+      <div class="card">
+        <h3>Today's Workout</h3>
+        <p id="todayWorkout">Loading...</p>
       </div>
+
+      <button class="planner-link" onclick="location.href='planner.html'">
+        Show more
+      </button>
     </div>
   </div>
+</div>
 
-  <!-- BOTTOM NAVIGATION -->
-  <nav class="bottom-nav">
-    <button data-page="dashboard" onclick="location.href='dashboard.html'">
-      <span class="icon"><img src="/icons/home.png" class="nav-icon"></span>
-      <span class="label">Home</span>
-    </button>
+<!-- BOTTOM NAVIGATION -->
+<nav class="bottom-nav">
+  <button data-page="dashboard" onclick="location.href='dashboard.html'">
+    <span class="icon"><img src="/icons/home.png" class="nav-icon"></span>
+    <span class="label">Home</span>
+  </button>
 
-    <button data-page="view" onclick="location.href='view.html'">
-      <span class="icon"><img src="/icons/workout.png" class="nav-icon"></span>
-      <span class="label">Workouts</span>
-    </button>
+  <button data-page="view" onclick="location.href='view.html'">
+    <span class="icon"><img src="/icons/workout.png" class="nav-icon"></span>
+    <span class="label">Workouts</span>
+  </button>
 
-    <button data-page="workout" class="create-btn" onclick="location.href='workout.html'">
-      <span class="icon">＋</span>
-    </button>
+  <button data-page="workout" class="create-btn" onclick="location.href='workout.html'">
+    <span class="icon">＋</span>
+  </button>
 
-    <button data-page="analytics" onclick="location.href='analytics.html'">
-      <span class="icon"><img src="/icons/analytics.png" class="nav-icon"></span>
-      <span class="label">Analytics</span>
-    </button>
+  <button data-page="analytics" onclick="location.href='analytics.html'">
+    <span class="icon"><img src="/icons/analytics.png" class="nav-icon"></span>
+    <span class="label">Analytics</span>
+  </button>
 
-    <button data-page="profile" disabled>
-      <span class="icon"><img src="/icons/profile.png" class="nav-icon"></span>
-      <span class="label">Profile</span>
-    </button>
-  </nav>
+  <button data-page="profile" disabled>
+    <span class="icon"><img src="/icons/profile.png" class="nav-icon"></span>
+    <span class="label">Profile</span>
+  </button>
+</nav>
 
-  <script>
-    window.addEventListener("DOMContentLoaded", () => {
-      // AUTH
-      const currentUser = JSON.parse(localStorage.getItem("currentUser"));
-      if (!currentUser) {
-        setTimeout(() => window.location.href = "index.html", 50);
-        return;
-      }
+<script>
+window.addEventListener("DOMContentLoaded", () => {
+  // AUTH
+  const currentUser = JSON.parse(localStorage.getItem("currentUser"));
+  if (!currentUser) {
+    setTimeout(() => window.location.href = "index.html", 50);
+    return;
+  }
 
-      document.getElementById("dashboardTitle").textContent =
-        `Welcome, ${currentUser.username}`;
+  document.getElementById("dashboardTitle").textContent =
+    `Welcome, ${currentUser.username}`;
 
-      // LOGOUT
-      document.getElementById("logoutBtn").addEventListener("click", () => {
-        localStorage.removeItem("currentUser");
-        window.location.href = "index.html";
+  // LOGOUT
+  document.getElementById("logoutBtn").addEventListener("click", () => {
+    localStorage.removeItem("currentUser");
+    window.location.href = "index.html";
+  });
+
+  // ACTIVE NAV
+  const current = location.pathname.split("/").pop().replace(".html", "");
+  document.querySelectorAll(".bottom-nav button").forEach(btn => {
+    if (btn.dataset.page === current) btn.classList.add("active");
+  });
+
+  // ===== FIXED PLANNER PREVIEW =====
+  const users = JSON.parse(localStorage.getItem("users")) || [];
+  const user = users[0];
+  const planner = user?.planner || {};
+
+  // LOCAL DATE (NO UTC BUG)
+  const now = new Date();
+  const todayKey =
+    `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2,'0')}-${String(now.getDate()).padStart(2,'0')}`;
+
+  const todayWorkoutEl = document.getElementById("todayWorkout");
+
+  if (planner[todayKey]) {
+    todayWorkoutEl.textContent =
+      typeof planner[todayKey] === "string"
+        ? planner[todayKey]
+        : planner[todayKey].name;
+  } else {
+    todayWorkoutEl.textContent = "No workout planned for today";
+  }
+});
+</script>
+<script>
+  document.querySelectorAll('.bottom-nav button:not([disabled])')
+    .forEach(btn => {
+
+      // instant tap feedback
+      btn.addEventListener('touchstart', () => {
+        btn.classList.add('tap-active');
+        navigator.vibrate?.(12);
       });
 
-      // ACTIVE NAV
-      const current = location.pathname.split("/").pop().replace(".html", "");
-      document.querySelectorAll(".bottom-nav button").forEach(btn => {
-        if (btn.dataset.page === current) btn.classList.add("active");
+      btn.addEventListener('touchend', () => {
+        btn.classList.remove('tap-active');
       });
 
-      // ===== FIXED PLANNER PREVIEW =====
-      const users = JSON.parse(localStorage.getItem("users")) || [];
-      const user = users[0];
-      const planner = user?.planner || {};
+      btn.addEventListener('touchcancel', () => {
+        btn.classList.remove('tap-active');
+      });
 
-      // LOCAL DATE (NO UTC BUG)
-      const now = new Date();
-      const todayKey =
-        `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2,'0')}-${String(now.getDate()).padStart(2,'0')}`;
+      // desktop fallback
+      btn.addEventListener('mousedown', () => {
+        btn.classList.add('tap-active');
+      });
 
-      const todayWorkoutEl = document.getElementById("todayWorkout");
-
-      if (planner[todayKey]) {
-        todayWorkoutEl.textContent =
-          typeof planner[todayKey] === "string"
-            ? planner[todayKey]
-            : planner[todayKey].name;
-      } else {
-        todayWorkoutEl.textContent = "No workout planned for today";
-      }
+      btn.addEventListener('mouseup', () => {
+        btn.classList.remove('tap-active');
+      });
     });
-  </script>
+</script>
+
 </body>
 </html>
