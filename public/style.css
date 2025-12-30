@@ -777,3 +777,33 @@ body.analytics-page .bottom-nav button[data-page="analytics"] {
 .ui-confirm-actions button {
   flex: 1;
 }
+/* ==============================
+   GLOBAL BUTTON HOVER EFFECT
+   ============================== */
+
+button {
+  transition:
+    box-shadow 0.25s ease,
+    transform 0.2s ease,
+    background-color 0.2s ease;
+}
+
+/* Hover (desktop / cursor) */
+button:hover {
+  box-shadow:
+    0 10px 25px rgba(0, 0, 0, 0.45),
+    0 0 0 1px rgba(255, 255, 255, 0.04);
+  transform: translateY(-2px);
+}
+
+/* Pressed */
+button:active {
+  transform: translateY(0);
+  box-shadow:
+    0 5px 15px rgba(0, 0, 0, 0.4);
+}
+button:not(.create-btn):hover {
+  box-shadow:
+    0 10px 25px rgba(0,0,0,0.45);
+  transform: translateY(-2px);
+}
