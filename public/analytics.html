@@ -1,102 +1,105 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Analytics</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>Analytics</title>
 
-  <meta name="theme-color" content="#111827">
-  <meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="theme-color" content="#111827">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-capable" content="yes">
 
-  <link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="style.css">
 
-  <style>
-    .top-nav {
-      position: sticky;
-      top: 0;
-      z-index: 100;
-      background: #111827;
-      border-bottom: 1px solid #1f2937;
-      padding: 1rem;
-      text-align: center;
-      font-weight: 600;
-      color: #38bdf8;
-      font-size: 1.2rem;
-    }
+<style>
+/* ===== TOP NAV ===== */
+.top-nav {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: #111827;
+  border-bottom: 1px solid #1f2937;
+  padding: 1rem;
+  font-weight: 600;
+  color: #38bdf8;
+  font-size: 1.2rem;
+  text-align: center;
+}
 
-    .page {
-      padding: 1rem;
-    }
+/* ===== PAGE ===== */
+.page {
+  padding: 1rem;
+  min-height: 100vh;
+  padding-bottom: 140px;
+}
 
-    .stat-card {
-      background: #1f2937;
-      border-radius: 14px;
-      padding: 1rem;
-      margin-bottom: 1rem;
-      color: #e5e7eb;
-    }
+.container {
+  max-width: 480px;
+  margin: 0 auto;
+}
 
-    .stat-card h3 {
-      color: #38bdf8;
-      margin-bottom: 0.25rem;
-    }
+/* ===== CARD ===== */
+.card {
+  background: #111827;
+  border-radius: 14px;
+  padding: 1.25rem;
+  margin-bottom: 1rem;
+  border: 1px solid #1f2937;
+}
 
-    /* SWIPE CONTAINER */
-    .workout-carousel {
-      display: flex;
-      gap: 1rem;
-      overflow-x: auto;
-      scroll-snap-type: x mandatory;
-      -webkit-overflow-scrolling: touch;
-      padding-bottom: 1rem;
-    }
+/* ===== WORKOUT VIEW ===== */
+.workout-box {
+  background: #020617;
+  border: 1px solid #1f2937;
+  border-radius: 12px;
+  padding: 1rem;
+  transition: transform 0.3s cubic-bezier(0.22,1,0.36,1);
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+}
 
-    .workout-carousel::-webkit-scrollbar {
-      display: none;
-    }
+.workout-title {
+  font-weight: 600;
+  color: #38bdf8;
+  margin-bottom: 0.25rem;
+}
 
-    .workout-card {
-      flex: 0 0 85%;
-      scroll-snap-align: center;
-      background: #020617;
-      border: 1px solid #1f2937;
-      border-radius: 16px;
-      padding: 1rem;
-      color: #e5e7eb;
-    }
+.workout-date {
+  font-size: 0.85rem;
+  color: #9ca3af;
+  margin-bottom: 0.75rem;
+}
 
-    .workout-card h4 {
-      color: #38bdf8;
-      margin-bottom: 0.25rem;
-    }
+.metric {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 0.4rem;
+  font-size: 0.95rem;
+  color: #e5e7eb;
+}
 
-    .workout-date {
-      font-size: 0.8rem;
-      opacity: 0.7;
-      margin-bottom: 0.75rem;
-    }
-
-    .metric {
-      display: flex;
-      justify-content: space-between;
-      margin-bottom: 0.4rem;
-      font-size: 0.95rem;
-    }
-  </style>
+/* ===== SWIPE STATES ===== */
+.workout-box.swipe-left { transform: translateX(-100%); }
+.workout-box.swipe-right { transform: translateX(100%); }
+.workout-box.swipe-reset { transform: translateX(0); }
+</style>
 </head>
-<body>
 
-  <div class="top-nav">Ascend</div>
+<body class="analytics-page">
 
-  <div class="page">
+<div class="top-nav">Ascend</div>
+
+<div class="page">
+  <div class="container">
 
     <!-- OVERALL STATS -->
-    <div class="stat-card">
-      <h3>Total Tonnage</h3>
-      <p id="overallTonnage" style="font-size:1.5rem;font-weight:600;">0 kg</p>
-    </div>
-
-    <div class="stat-card">
+    <div class="card">
+      <h3>Total Volume</h3>
+      <div class="metric">
+        <span>Tonnage</span>
+        <span id="overallTonnage">0 kg</span>
+      </div>
       <div class="metric">
         <span>Total Sets</span>
         <span id="totalSets">0</span>
@@ -107,46 +110,84 @@
       </div>
     </div>
 
-    <!-- SWIPEABLE WORKOUTS -->
-    <div class="workout-carousel" id="analyticsList"></div>
+    <!-- SINGLE WORKOUT VIEW -->
+    <div class="card">
+      <h3>Workout</h3>
+      <div id="workoutView"></div>
+    </div>
 
   </div>
+</div>
 
-  <!-- BOTTOM NAV -->
-  <nav class="bottom-nav">
-    <button data-page="dashboard" onclick="location.href='dashboard.html'">
-      <span class="icon"><img src="/icons/home.png" class="nav-icon"></span>
-      <span class="label">Home</span>
-    </button>
+<!-- BOTTOM NAV -->
+<nav class="bottom-nav">
+  <button onclick="location.href='dashboard.html'">
+    <span class="icon"><img src="/icons/home.png" class="nav-icon"></span>
+    <span class="label">Home</span>
+  </button>
 
-    <button data-page="view" onclick="location.href='view.html'">
-      <span class="icon"><img src="/icons/workout.png" class="nav-icon"></span>
-      <span class="label">Workouts</span>
-    </button>
+  <button onclick="location.href='view.html'">
+    <span class="icon"><img src="/icons/workout.png" class="nav-icon"></span>
+    <span class="label">Workouts</span>
+  </button>
 
-    <button data-page="workout" class="create-btn" onclick="location.href='workout.html'">
-      <span class="icon">＋</span>
-    </button>
+  <button class="create-btn" onclick="location.href='workout.html'">
+    <span class="icon">＋</span>
+  </button>
 
-    <button data-page="analytics" disabled>
-      <span class="icon"><img src="/icons/analytics.png" class="nav-icon"></span>
-      <span class="label">Analytics</span>
-    </button>
+  <button disabled>
+    <span class="icon"><img src="/icons/analytics.png" class="nav-icon"></span>
+    <span class="label">Analytics</span>
+  </button>
 
-    <button data-page="profile" disabled>
-      <span class="icon"><img src="/icons/profile.png" class="nav-icon"></span>
-      <span class="label">Profile</span>
-    </button>
-  </nav>
+  <button disabled>
+    <span class="icon"><img src="/icons/profile.png" class="nav-icon"></span>
+    <span class="label">Profile</span>
+  </button>
+</nav>
 
-  <script src="analytics.js"></script>
+<script src="analytics.js"></script>
 
-  <script>
-    const current = location.pathname.split("/").pop().replace(".html","");
-    document.querySelectorAll(".bottom-nav button").forEach(btn => {
-      if (btn.dataset.page === current) btn.classList.add("active");
-    });
-  </script>
+<script>
+/* ===== SWIPE LOGIC (MATCHES PLANNER) ===== */
+const view = document.getElementById("workoutView");
+let index = 0;
+let startX = 0;
+
+function renderWorkout(workout) {
+  if (!workout) {
+    view.innerHTML = `<div class="workout-box swipe-reset"><span class="empty">No workouts</span></div>`;
+    return;
+  }
+
+  view.innerHTML = `
+    <div class="workout-box swipe-reset">
+      <div class="workout-title">${workout.name}</div>
+      <div class="workout-date">${workout.date}</div>
+
+      <div class="metric"><span>Tonnage</span><span>${workout.tonnage} kg</span></div>
+      <div class="metric"><span>Sets</span><span>${workout.sets}</span></div>
+      <div class="metric"><span>Reps</span><span>${workout.reps}</span></div>
+    </div>
+  `;
+
+  const box = view.querySelector(".workout-box");
+
+  box.addEventListener("touchstart", e => startX = e.touches[0].clientX);
+  box.addEventListener("touchend", e => {
+    const dx = e.changedTouches[0].clientX - startX;
+    if (dx < -50) showNext();
+    if (dx > 50) showPrev();
+  });
+}
+
+/* These functions should be called by analytics.js */
+window.analyticsUI = {
+  renderWorkout,
+  setIndex: i => index = i,
+  getIndex: () => index
+};
+</script>
 
 </body>
 </html>
