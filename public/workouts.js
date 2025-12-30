@@ -1,12 +1,15 @@
+document.addEventListener("DOMContentLoaded", () => {
+
 console.log("workouts.js loaded");
 
 const exerciseList = document.getElementById("exerciseList");
 const addExerciseBtn = document.getElementById("addExercise");
 const saveWorkoutBtn = document.getElementById("saveWorkout");
+const clearAllBtn = document.getElementById("clearAll"); // FIX: define this
 
 const DRAFT_KEY = "activeWorkoutDraft";
-
 let exercises = [];
+
 // Custom styled confirm without DOM dependencies
 window.confirm = function (message) {
   const result = prompt(
@@ -16,10 +19,10 @@ window.confirm = function (message) {
   return result === "CLEAR";
 };
 
-
 /* ---------------- POPUP ---------------- */
 function showPopup(message) {
   const popup = document.getElementById("saveToast");
+  if (!popup) return;
   popup.textContent = message;
   popup.classList.add("show");
   popup.classList.remove("hidden");
@@ -30,7 +33,7 @@ function showPopup(message) {
   }, 2000);
 }
 
-/* ---------------- LOCAL DATE (FIXED) ---------------- */
+/* ---------------- LOCAL DATE ---------------- */
 function getLocalDateString() {
   const now = new Date();
   const year = now.getFullYear();
@@ -42,13 +45,13 @@ function getLocalDateString() {
 /* ---------------- SAVE DRAFT ---------------- */
 function saveDraft() {
   const draft = {
-    workoutName: document.getElementById("workoutName").value || "",
+    workoutName: document.getElementById("workoutName")?.value || "",
     exercises: []
   };
 
   document.querySelectorAll(".exercise-item").forEach(li => {
-    const name = li.querySelector(".exercise-name").value;
-    const unilateral = li.querySelector(".unilateral-toggle").checked;
+    const name = li.querySelector(".exercise-name")?.value || "";
+    const unilateral = li.querySelector(".unilateral-toggle")?.checked || false;
 
     const sets = [];
     li.querySelectorAll(".sets-list li").forEach(setLi => {
@@ -125,7 +128,7 @@ function createSetElement(isUnilateral, weightValue = "") {
     `;
   }
 
-  setLi.querySelector(".remove-set").addEventListener("click", () => {
+  setLi.querySelector(".remove-set")?.addEventListener("click", () => {
     setLi.remove();
     saveDraft();
   });
@@ -164,17 +167,17 @@ function createExerciseElement(exercise) {
 
   body.style.display = "block";
 
-  arrow.addEventListener("click", () => {
+  arrow?.addEventListener("click", () => {
     body.style.display = body.style.display === "none" ? "block" : "none";
     arrow.classList.toggle("open");
   });
 
-  addSetBtn.addEventListener("click", () => {
+  addSetBtn?.addEventListener("click", () => {
     setsList.appendChild(createSetElement(unilateralToggle.checked));
     saveDraft();
   });
 
-  unilateralToggle.addEventListener("change", () => {
+  unilateralToggle?.addEventListener("change", () => {
     [...setsList.children].forEach(oldSet => {
       const weight = oldSet.querySelector(".set-weight")?.value || "";
       const newSet = createSetElement(unilateralToggle.checked, weight);
@@ -187,13 +190,15 @@ function createExerciseElement(exercise) {
 }
 
 /* ---------------- ADD EXERCISE ---------------- */
-addExerciseBtn.addEventListener("click", () => {
+addExerciseBtn?.addEventListener("click", () => {
   const newExercise = { name: "", sets: [], unilateral: false };
   exercises.push(newExercise);
   exerciseList.appendChild(createExerciseElement(newExercise));
   saveDraft();
 });
-clearAllBtn.addEventListener("click", () => {
+
+/* ---------------- CLEAR ALL ---------------- */
+clearAllBtn?.addEventListener("click", () => {
   showClearConfirm(() => {
     exercises = [];
     exerciseList.innerHTML = "";
@@ -202,25 +207,25 @@ clearAllBtn.addEventListener("click", () => {
 });
 
 /* ---------------- SAVE WORKOUT ---------------- */
-saveWorkoutBtn.addEventListener("click", () => {
+saveWorkoutBtn?.addEventListener("click", () => {
   exercises = [];
 
   document.querySelectorAll(".exercise-item").forEach(li => {
-    const name = li.querySelector(".exercise-name").value;
-    const unilateral = li.querySelector(".unilateral-toggle").checked;
+    const name = li.querySelector(".exercise-name")?.value || "";
+    const unilateral = li.querySelector(".unilateral-toggle")?.checked || false;
 
     const sets = [];
     li.querySelectorAll(".sets-list li").forEach(setLi => {
       if (unilateral) {
         sets.push({
-          leftReps: parseInt(setLi.querySelector(".set-left").value) || 0,
-          rightReps: parseInt(setLi.querySelector(".set-right").value) || 0,
-          weight: parseFloat(setLi.querySelector(".set-weight").value) || 0
+          leftReps: parseInt(setLi.querySelector(".set-left")?.value) || 0,
+          rightReps: parseInt(setLi.querySelector(".set-right")?.value) || 0,
+          weight: parseFloat(setLi.querySelector(".set-weight")?.value) || 0
         });
       } else {
         sets.push({
-          reps: parseInt(setLi.querySelector(".set-reps").value) || 0,
-          weight: parseFloat(setLi.querySelector(".set-weight").value) || 0
+          reps: parseInt(setLi.querySelector(".set-reps")?.value) || 0,
+          weight: parseFloat(setLi.querySelector(".set-weight")?.value) || 0
         });
       }
     });
@@ -230,11 +235,10 @@ saveWorkoutBtn.addEventListener("click", () => {
 
   const users = JSON.parse(localStorage.getItem("users")) || [];
   const currentUser = users[0] || { username: "Lucas", workouts: [] };
-
   if (!currentUser.workouts) currentUser.workouts = [];
-
+  
   const workoutObj = {
-    name: document.getElementById("workoutName").value || "Unnamed Workout",
+    name: document.getElementById("workoutName")?.value || "Unnamed Workout",
     exercises,
     date: getLocalDateString()
   };
@@ -244,8 +248,7 @@ saveWorkoutBtn.addEventListener("click", () => {
   if (!users.length) users.push(currentUser);
   localStorage.setItem("users", JSON.stringify(users));
 
-  localStorage.removeItem(DRAFT_KEY); // ✅ clear draft ONLY on save
-
+  localStorage.removeItem(DRAFT_KEY); // clear draft only on save
   showPopup("Workout Saved!");
 
   document.getElementById("workoutName").value = "";
@@ -258,12 +261,20 @@ document.addEventListener("input", saveDraft);
 
 /* ---------------- INIT ---------------- */
 loadDraft();
+
+/* ---------------- CUSTOM CLEAR CONFIRM ---------------- */
 function showClearConfirm(onConfirm) {
   const overlay = document.getElementById("uiConfirm");
   const cancelBtn = document.getElementById("uiCancel");
   const confirmBtn = document.getElementById("uiConfirmYes");
 
-
+  if (!overlay || !cancelBtn || !confirmBtn) {
+    // fallback
+    if (confirm("Are you sure you want to clear all exercises?")) {
+      onConfirm();
+    }
+    return;
+  }
 
   overlay.classList.remove("hidden");
 
@@ -277,3 +288,4 @@ function showClearConfirm(onConfirm) {
   };
 }
 
+});
