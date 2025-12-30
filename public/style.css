@@ -1000,7 +1000,7 @@ input, select {
 }
 
 .bottom-nav button[data-page="view"] {
-  left: -10px;
+  left: -12px;
   top: -4px;
 }
 
@@ -1010,7 +1010,7 @@ input, select {
 }
 
 .bottom-nav button[data-page="analytics"] {
-  left: -50px;
+  left: -48px;
   top: -4px;
 }
 
