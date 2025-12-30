@@ -976,103 +976,15 @@ input, select {
   color: #38bdf8; /* blue on hover/active */
   transform: scale(1.1);
 }
-.bottom-nav .icon {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 28px;
-  height: 28px;
-}
-
-.bottom-nav .icon svg {
-  width: 24px;
-  height: 24px;
-  display: block; /* important so SVG fills the space */
-  color: #9ca3af; /* default grey */
-  transition: color 0.2s ease, transform 0.2s ease;
-}
-
-.bottom-nav button.active .icon svg,
-.bottom-nav button:hover .icon svg {
-  color: #38bdf8;
-  transform: scale(1.1);
-}
-
-.bottom-nav button {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-}
-/* ===== BOTTOM NAV - MOBILE FRIENDLY ===== */
-.bottom-nav {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  display: flex;
-  justify-content: space-between; /* even spacing */
-  align-items: center;
-  padding: 0 16px;
-  height: 56px; /* slightly smaller than before */
-  background: #111827;
-  border-top: 1px solid #1f2937;
-  box-sizing: border-box;
-  z-index: 100;
-}
-
-/* All buttons */
-.bottom-nav button {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  flex: 1; /* equal width for all except create-btn */
-  height: 100%;
-  background: transparent;
-  border: none;
-  padding: 0;
-  margin: 0;
-  cursor: pointer;
-}
-
-/* Icons inside buttons */
+/* Make all bottom nav icons slightly smaller without touching layout */
 .bottom-nav button .icon svg {
-  width: 20px; /* slightly smaller */
+  width: 20px; /* or whatever size you want */
   height: 20px;
   display: block;
 }
 
-/* Labels inside buttons */
-.bottom-nav button .label {
-  font-size: 10px; /* mobile-friendly */
-  margin-top: 2px;
-  color: #e5e7eb;
-}
-
-/* Create button special */
-.bottom-nav .create-btn {
-  flex: 0; /* don't stretch like others */
-  width: 56px;
-  height: 56px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin: 0 8px; /* small gap between neighbors */
-  background: #38bdf8;
-  color: #020617;
-}
-
-.bottom-nav .create-btn svg {
+/* Make the create button icon a bit bigger */
+.bottom-nav .create-btn .icon svg {
   width: 24px;
   height: 24px;
-}
-
-/* Optional: adjust spacing of first/last icons to match symmetry */
-.bottom-nav button:first-child {
-  margin-left: 0;
-}
-.bottom-nav button:last-child {
-  margin-right: 0;
 }
