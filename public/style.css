@@ -988,3 +988,28 @@ input, select {
   width: 24px;
   height: 24px;
 }
+/* Individual icon adjustment using transform */
+.bottom-nav button[data-page="dashboard"] .icon {
+  transform: translateX(10px); /* adjust left/right */
+}
+
+.bottom-nav button[data-page="view"] .icon {
+  transform: translateX(0px);
+}
+
+.bottom-nav button[data-page="workout"] .icon {
+  transform: translateX(0px);
+}
+
+.bottom-nav button[data-page="analytics"] .icon {
+  transform: translateX(0px);
+}
+
+.bottom-nav button[data-page="profile"] .icon {
+  transform: translateX(0px);
+}
+
+/* Optional: nudge up/down too */
+.bottom-nav button[data-page="dashboard"] .icon {
+  transform: translate(0px, 0px); /* X = left/right, Y = up/down */
+}
