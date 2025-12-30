@@ -857,3 +857,22 @@ button:active {
   --card: #111827;
   --muted: #9ca3af;
 }
+body {
+  font-family: 'Inter', 'Roboto', sans-serif;
+  line-height: 1.5;
+  font-size: 16px;
+  background-color: var(--secondary-color);
+  color: var(--text-color);
+  padding: 0;
+  margin: 0;
+}
+.container {
+  padding: 16px;
+}
+.card {
+  padding: 20px;
+  margin-bottom: 16px;
+}
+.card, button {
+  border-radius: 12px;
+}
