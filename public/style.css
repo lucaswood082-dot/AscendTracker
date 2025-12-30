@@ -978,8 +978,8 @@ input, select {
 }
 /* Make all bottom nav icons slightly smaller without touching layout */
 .bottom-nav button .icon svg {
-  width: 18px; /* or whatever size you want */
-  height: 18px;
+  width: 19px; /* or whatever size you want */
+  height: 19px;
   display: block;
 }
 
@@ -1023,7 +1023,7 @@ input, select {
   position: fixed !important;
   bottom: 0 !important;
   width: 100% !important;
-  height: 75px !important;       /* Set your desired nav height */
+  height: 78px !important;       /* Set your desired nav height */
   display: flex !important;
   justify-content: space-around !important;
   align-items: center !important;
