@@ -149,6 +149,7 @@ function createExerciseElement(exercise) {
     <path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
   </svg>
 </span>
+
     </div>
     <div class="exercise-body">
       <div style="display:flex; align-items:center; gap:8px; margin-bottom:0.75rem;">
