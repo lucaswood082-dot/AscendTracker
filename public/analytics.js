@@ -1,7 +1,6 @@
 console.log("analytics.js loaded");
 
 document.addEventListener("DOMContentLoaded", () => {
-
   // -------------------- LOAD USER WORKOUTS --------------------
   const users = JSON.parse(localStorage.getItem("users")) || [];
   const currentUser = users[0] || { username: "Lucas", workouts: [] };
@@ -45,10 +44,24 @@ document.addEventListener("DOMContentLoaded", () => {
     li.style.padding = "1rem";
     li.style.marginBottom = "0.75rem";
 
+    // Render exercises exactly as they were saved
+    let exercisesHTML = "";
+    workout.exercises.forEach(ex => {
+      exercisesHTML += `<strong>${ex.name}</strong><br>`;
+      ex.sets.forEach((set, i) => {
+        if (ex.unilateral) {
+          exercisesHTML += `Set ${i + 1}: Left ${set.leftReps} | Right ${set.rightReps} | Weight: ${set.weight} kg<br>`;
+        } else {
+          exercisesHTML += `Set ${i + 1}: Reps ${set.reps} | Weight: ${set.weight} kg<br>`;
+        }
+      });
+      exercisesHTML += "<br>";
+    });
+
     li.innerHTML = `
-      <strong style="color:#38bdf8;">${workout.name}</strong> (${workout.date})<br>
-      Tonnage: ${tonnage} kg<br>
-      Sets: ${sets} | Reps: ${reps}
+      <div style="color:#38bdf8; font-weight:600; margin-bottom:0.25rem;">${workout.name} (${workout.date})</div>
+      ${exercisesHTML}
+      <div>Tonnage: ${tonnage} kg | Sets: ${sets} | Reps: ${reps}</div>
     `;
 
     analyticsList.appendChild(li);
