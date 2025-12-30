@@ -184,16 +184,21 @@ addExerciseBtn.addEventListener("click", () => {
   exerciseList.appendChild(createExerciseElement(newExercise));
   saveDraft();
 });
-/* ---------------- CLEAR ALL ---------------- */
-const clearAllBtn = document.getElementById("clearAll");
+const overlay = document.getElementById("uiConfirm");
+const cancelBtn = document.getElementById("uiCancel");
+const confirmBtn = document.getElementById("uiConfirmYes");
 
-clearAllBtn.addEventListener("click", () => {
-  if (confirm("Are you sure you want to clear all exercises?")) {
-    exercises = [];
-    exerciseList.innerHTML = "";
-    saveDraft(); // also clear draft
-  }
-});
+overlay.classList.remove("hidden");
+
+cancelBtn.onclick = () => {
+  overlay.classList.add("hidden");
+};
+
+confirmBtn.onclick = () => {
+  overlay.classList.add("hidden");
+  clearWorkout(); // <-- call your existing clear logic
+};
+
 
 /* ---------------- SAVE WORKOUT ---------------- */
 saveWorkoutBtn.addEventListener("click", () => {

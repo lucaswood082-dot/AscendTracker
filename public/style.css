@@ -744,3 +744,36 @@ body.analytics-page .bottom-nav button[data-page="analytics"] {
 .hidden {
   display: none;
 }
+.ui-confirm {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+}
+
+.ui-confirm.hidden {
+  display: none;
+}
+
+.ui-confirm-box {
+  background: #020617;
+  border-radius: 16px;
+  padding: 1.2rem;
+  width: 90%;
+  max-width: 320px;
+  text-align: center;
+  border: 1px solid #1f2937;
+}
+
+.ui-confirm-actions {
+  display: flex;
+  gap: 0.6rem;
+  margin-top: 1rem;
+}
+
+.ui-confirm-actions button {
+  flex: 1;
+}
