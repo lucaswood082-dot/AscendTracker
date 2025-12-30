@@ -995,7 +995,7 @@ input, select {
 
 /* Individually nudge entire button content */
 .bottom-nav button[data-page="dashboard"] {
-  left: 18px;  /* move right: positive, left: negative */
+  left: 14px;  /* move right: positive, left: negative */
   top: 0px;   /* move down: positive, up: negative */
 }
 
@@ -1015,7 +1015,7 @@ input, select {
 }
 
 .bottom-nav button[data-page="profile"] {
-  left: -26px;
+  left: -30px;
   top: 0px;
 }
 /* ================= OVERRIDE: Make bottom nav taller ================= */
