@@ -7,6 +7,15 @@ const saveWorkoutBtn = document.getElementById("saveWorkout");
 const DRAFT_KEY = "activeWorkoutDraft";
 
 let exercises = [];
+// Custom styled confirm without DOM dependencies
+window.confirm = function (message) {
+  const result = prompt(
+    message + "\n\nType CLEAR to confirm",
+    ""
+  );
+  return result === "CLEAR";
+};
+
 
 /* ---------------- POPUP ---------------- */
 function showPopup(message) {
@@ -254,13 +263,7 @@ function showClearConfirm(onConfirm) {
   const cancelBtn = document.getElementById("uiCancel");
   const confirmBtn = document.getElementById("uiConfirmYes");
 
-  // If modal doesn't exist, fallback safely
-  if (!overlay || !cancelBtn || !confirmBtn) {
-    if (confirm("Are you sure you want to clear this workout?")) {
-      onConfirm();
-    }
-    return;
-  }
+
 
   overlay.classList.remove("hidden");
 
