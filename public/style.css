@@ -1015,7 +1015,7 @@ input, select {
 }
 
 .bottom-nav button[data-page="profile"] {
-  left: -30px;
+  left: -22px;
   top: 0px;
 }
 /* ================= OVERRIDE: Make bottom nav taller ================= */
