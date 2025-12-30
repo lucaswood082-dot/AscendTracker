@@ -1006,50 +1006,58 @@ input, select {
 }
 /* ===== FULL CONTROL OVERRIDE FOR BOTTOM NAV ===== */
 body .bottom-nav {
-  position: fixed !important;     /* stick to bottom */
-  bottom: 10px !important;        /* move entire nav up/down */
+  position: fixed !important;
+  bottom: 10px !important;   /* move entire nav up/down */
   left: 0 !important;
   width: 100% !important;
   display: flex !important;
-  justify-content: space-between !important; /* horizontal spacing */
-  align-items: center !important; /* vertical alignment inside nav */
-  padding: 0 20px !important;     /* spacing from left/right edges */
+  justify-content: center !important; /* start in middle */
+  align-items: center !important;
   z-index: 100 !important;
 }
 
-/* Individual buttons */
+/* Make all buttons flex vertically */
 body .bottom-nav button {
   display: flex !important;
   flex-direction: column !important; /* icon above label */
   align-items: center !important;
   justify-content: center !important;
-  flex: none !important;             /* prevent stretching */
-  margin: 0 !important;              /* reset any default spacing */
-  transform: translateY(0) !important; /* vertical move of specific button */
+  margin: 0 5px !important;          /* base horizontal spacing */
 }
 
-/* Raise or lower a specific button (example: create button) */
+/* Individually move buttons left/right with translateX */
+body .bottom-nav button[data-page="dashboard"] {
+  transform: translateX(-30px) !important; /* move left */
+}
+body .bottom-nav button[data-page="view"] {
+  transform: translateX(-15px) !important;
+}
+body .bottom-nav .create-btn {
+  transform: translateX(0) !important;   /* center */
+}
+body .bottom-nav button[data-page="analytics"] {
+  transform: translateX(15px) !important;
+}
+body .bottom-nav button[data-page="profile"] {
+  transform: translateX(30px) !important; /* move right */
+}
+
+/* Individual vertical tweaks if needed */
+body .bottom-nav button {
+  transform: translateY(0) !important;  /* default */
+}
+
+/* Bigger create button */
 body .bottom-nav .create-btn {
   width: 60px !important;
   height: 60px !important;
-  transform: translateY(-10px) !important; /* move up */
 }
 
-/* Move any button individually */
-body .bottom-nav button[data-page="analytics"] {
-  transform: translateY(-2px) !important; /* slightly up */
-}
-body .bottom-nav button[data-page="profile"] {
-  transform: translateY(-2px) !important;
-}
-
-/* Icon sizing control */
-body .bottom-nav .icon svg {
+body .bottom-nav button .icon svg {
   width: 24px !important;
   height: 24px !important;
 }
-
 body .bottom-nav .create-btn svg {
-  width: 32px !important;  /* bigger create icon */
+  width: 32px !important;
   height: 32px !important;
 }
