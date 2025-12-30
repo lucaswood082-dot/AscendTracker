@@ -1,8 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Analytics</title>
 
-    <style>
+  <meta name="theme-color" content="#111827">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+
+  <link rel="stylesheet" href="style.css">
+
+  <style>
     .top-nav {
       position: sticky;
       top: 0;
@@ -15,196 +24,96 @@
       color: #38bdf8;
       font-size: 1.2rem;
     }
-    .page { padding-top: 1rem; }
-    .back-btn, .logout-btn {
-      display: inline-block;
-      margin-top: 0.5rem;
-      padding: 0.5rem 1rem;
-      border-radius: 10px;
-      border: none;
-      background: #38bdf8;
-      color: #020617;
-      font-weight: 600;
-      cursor: pointer;
-      font-size: 0.9rem;
-      margin-right: 5px;
+
+    .page { padding: 1rem; }
+    .card {
+      background: #1f2937;
+      color: #e5e7eb;
+      padding: 1rem;
+      margin-bottom: 1rem;
+      border-radius: 0.5rem;
     }
-    .back-btn:hover, .logout-btn:hover { opacity: 0.85; }
+
+    .workout-item {
+      background: #111827;
+      padding: 0.75rem;
+      margin-bottom: 0.5rem;
+      border-radius: 0.5rem;
+    }
+
+    h2, h3 {
+      color: #38bdf8;
+    }
+
+    ul { padding-left: 1rem; list-style: none; }
   </style>
+</head>
+<body>
+
   <div class="top-nav">Ascend</div>
 
-    <meta name="theme-color" content="#111827">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-capable" content="yes">
+  <div class="page">
 
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Analytics</title>
-
-  <link rel="stylesheet" href="style.css">
-</head>
-
-
- 
-</div>
-
-
-<div class="page">
-
-    <div class="container">
-
-      <div class="card">
-        <h3>Total Session Tonnage</h3>
-        <p id="totalTonnage" style="font-size: 1.6rem; font-weight: 600;">
-          0 kg
-        </p>
-      </div>
-
-      <div class="card">
-        <h3>Total Sets</h3>
-        <p id="totalSets">0</p>
-      </div>
-
-      <div class="card">
-        <h3>Total Reps</h3>
-        <p id="totalReps">0</p>
-      </div>
-
+    <!-- OVERALL STATS -->
+    <div class="card">
+      <h3>Overall Total Tonnage</h3>
+      <p id="overallTonnage" style="font-size: 1.5rem; font-weight: 600;">0 kg</p>
     </div>
+
+    <div class="card">
+      <h3>Total Sets</h3>
+      <p id="totalSets">0</p>
+    </div>
+
+    <div class="card">
+      <h3>Total Reps</h3>
+      <p id="totalReps">0</p>
+    </div>
+
+    <!-- PER WORKOUT ANALYTICS -->
+    <div class="card">
+      <h3>Workouts</h3>
+      <ul id="analyticsList"></ul>
+    </div>
+
   </div>
 
-  <script src="analytics.js"></script>
+  <!-- BOTTOM NAV -->
   <nav class="bottom-nav">
-  <button data-page="dashboard" onclick="location.href='dashboard.html'">
-    <span class="icon">
-      <img src="/icons/home.png" class="nav-icon">
-    </span>
-    <span class="label">Home</span>
-  </button>
+    <button data-page="dashboard" onclick="location.href='dashboard.html'">
+      <span class="icon"><img src="/icons/home.png" class="nav-icon"></span>
+      <span class="label">Home</span>
+    </button>
 
-  <button data-page="view" onclick="location.href='view.html'">
-    <span class="icon">
-      <img src="/icons/workout.png" class="nav-icon">
-    </span>
-    <span class="label">Workouts</span>
-  </button>
+    <button data-page="view" onclick="location.href='view.html'">
+      <span class="icon"><img src="/icons/workout.png" class="nav-icon"></span>
+      <span class="label">Workouts</span>
+    </button>
 
-  <button
-    data-page="workout"
-    class="create-btn"
-    onclick="location.href='workout.html'"
-  >
-    <span class="icon">＋</span>
-  </button>
+    <button data-page="workout" class="create-btn" onclick="location.href='workout.html'">
+      <span class="icon">＋</span>
+    </button>
 
-  <button data-page="analytics" onclick="location.href='analytics.html'">
-    <span class="icon">
-      <img src="/icons/analytics.png" class="nav-icon">
-    </span>
-    <span class="label">Analytics</span>
-  </button>
+    <button data-page="analytics" disabled>
+      <span class="icon"><img src="/icons/analytics.png" class="nav-icon"></span>
+      <span class="label">Analytics</span>
+    </button>
 
-  <button data-page="profile"
-     class="icon">
-      <img src="/icons/profile.png" class="nav-icon">
-    </span>
-    <span class="label">Profile</span>
-  </button>
-  
-  <button data-page="analytics">
-  <span class="icon">
-    <img src="/icons/analytics.png" class="nav-icon">
-  </span>
-  <span class="label">Analytics</span>
-</button>
+    <button data-page="profile" disabled>
+      <span class="icon"><img src="/icons/profile.png" class="nav-icon"></span>
+      <span class="label">Profile</span>
+    </button>
+  </nav>
 
-</nav>
-<script>
-  const currentPage = location.pathname.split("/").pop().replace(".html", "");
+  <script src="analytics.js"></script>
 
-  document.querySelectorAll(".bottom-nav button").forEach(btn => {
-    if (btn.dataset.page === currentPage) {
-      btn.classList.add("active");
-    }
-  });
-</script>
-<!-- BOTTOM NAVIGATION -->
-<nav class="bottom-nav">
-  <button data-page="dashboard" onclick="location.href='dashboard.html'">
-    <span class="icon">
-      <img src="/icons/home.png" alt="Home" class="nav-icon">
-    </span>
-    <span class="label">Home</span>
-  </button>
-
-  <button data-page="view" onclick="location.href='view.html'">
-    <span class="icon">
-      <img src="/icons/workout.png" alt="Workouts" class="nav-icon">
-    </span>
-    <span class="label">Workouts</span>
-  </button>
-
-  <button data-page="workout" class="create-btn" onclick="location.href='workout.html'">
-    <span class="icon">＋</span>
-  </button>
-
-  <button data-page="analytics" disabled>
-    <span class="icon">
-      <img src="/icons/analytics.png" alt="Analytics" class="nav-icon">
-    </span>
-    <span class="label">Analytics</span>
-  </button>
-
-  <button data-page="profile" disabled>
-    <span class="icon">
-      <img src="/icons/profile.png" alt="Profile" class="nav-icon">
-    </span>
-    <span class="label">Profile</span>
-  </button>
-</nav>
-
-<script>
-  const current = location.pathname.split("/").pop().replace(".html", "");
-  document.querySelectorAll(".bottom-nav button").forEach(btn => {
-    if (btn.dataset.page === current) {
-      btn.classList.add("active");
-    }
-  });
-</script>
-<script>
-  document.querySelectorAll('.bottom-nav button:not([disabled])')
-    .forEach(btn => {
-
-      // instant tap feedback
-      btn.addEventListener('touchstart', () => {
-        btn.classList.add('tap-active');
-        navigator.vibrate?.(12);
-      });
-
-      btn.addEventListener('touchend', () => {
-        btn.classList.remove('tap-active');
-      });
-
-      btn.addEventListener('touchcancel', () => {
-        btn.classList.remove('tap-active');
-      });
-
-      // desktop fallback
-      btn.addEventListener('mousedown', () => {
-        btn.classList.add('tap-active');
-      });
-
-      btn.addEventListener('mouseup', () => {
-        btn.classList.remove('tap-active');
-      });
+  <script>
+    // Highlight current nav
+    const currentPage = location.pathname.split("/").pop().replace(".html","");
+    document.querySelectorAll(".bottom-nav button").forEach(btn => {
+      if(btn.dataset.page === currentPage) btn.classList.add("active");
     });
-</script>
-<div>
-  <h2>My Workouts</h2>
-  <div id="overallTonnage"></div>
-  <ul id="analyticsList"></ul>
-</div>
+  </script>
 
 </body>
-<body class="analytics-page"></body>
 </html>
