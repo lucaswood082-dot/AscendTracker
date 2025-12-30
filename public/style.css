@@ -1040,3 +1040,10 @@ input, select {
   justify-content: center !important;
   padding: 0 !important;
 }
+/* Remove default outline/focus/box around create button */
+.create-btn {
+  outline: none !important;
+  box-shadow: none !important;
+  border: none !important;
+  background-clip: padding-box !important; /* ensures no extra borders */
+}
