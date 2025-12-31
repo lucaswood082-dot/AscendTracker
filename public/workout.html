@@ -323,4 +323,15 @@ input:checked + .slider::after {
     </div>
   </div>
 </div>
+<script>
+  // Highlight the active bottom nav button
+  const currentPage = location.pathname.split("/").pop();
+
+  document.querySelectorAll(".bottom-nav button").forEach(btn => {
+    // btn.dataset.page should match the filename without .html
+    if (btn.dataset.page + ".html" === currentPage) {
+      btn.classList.add("active");
+    }
+  });
+</script>
 
