@@ -1,5 +1,30 @@
 <!DOCTYPE html>
 <html lang="en">
+ <style>
+  /* FORCE CLEAR MODAL BUTTON SIZE – FINAL OVERRIDE */
+
+  #clearModal #cancelClear,
+  #clearModal #confirmClear {
+    width: 100% !important;
+    min-height: 60px !important;
+
+    padding: 18px !important;
+    font-size: 16px !important;
+    font-weight: 600 !important;
+
+    border-radius: 12px !important;
+
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+  }
+
+  #clearModal .modal-actions {
+    display: flex !important;
+    gap: 16px !important;
+  }
+</style>
+ 
 <head>
   <!-- Status bar / browser UI colour -->
   <meta name="theme-color" content="#111827">
@@ -245,6 +270,24 @@
     </div>
   </div>
 </div>
+<div id="confirmOverlay" class="confirm-overlay hidden">
+  <div class="confirm-box">
+    <p>Clear this workout?</p>
+    <div class="confirm-actions">
+      <button id="confirmCancel">Cancel</button>
+      <button id="confirmClear">Clear</button>
+    </div>
+  </div>
+</div>
+<script>
+  const fixClearButtons = () => {
+    document.getElementById('cancelClear')?.style.setProperty('min-height', '60px', 'important');
+    document.getElementById('confirmClear')?.style.setProperty('min-height', '60px', 'important');
+  };
+
+  fixClearButtons();
+  document.addEventListener('click', fixClearButtons);
+</script>
 
 </body>
 </html>

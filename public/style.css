@@ -1127,6 +1127,432 @@ button:active {
   visibility: hidden;
   transition: opacity 0.4s ease, visibility 0.4s ease;
 }
+/* FIX clear confirmation button size */
+.clear-confirm,
+.clear-confirm button {
+  font-size: 16px !important;
+  padding: 12px 16px !important;
+  border-radius: 12px !important;
+  min-height: 44px !important;
+  transform: none !important;
+}
+/* FIX save button stuck enlarged */
+#saveWorkout {
+  transition: transform 0.15s ease !important;
+}
+
+#saveWorkout:active {
+  transform: scale(0.96);
+}
+
+#saveWorkout:not(:active) {
+  transform: scale(1);
+}
+/* Make exercise name match all other inputs */
+.exercise-name,
+input[type="text"],
+input[type="number"] {
+  background: rgba(255,255,255,0.05) !important;
+  border: 1px solid rgba(255,255,255,0.15) !important;
+  border-radius: 12px !important;
+  padding: 12px 14px !important;
+  font-size: 16px !important;
+  color: #fff !important;
+  height: 44px !important;
+}
+/* FORCE clear confirmation to normal size */
+.clear-confirm,
+.clear-confirm * {
+  font-size: 16px !important;
+  line-height: 1.2 !important;
+  padding: 12px 16px !important;
+  min-height: 44px !important;
+  transform: none !important;
+}
+
+.clear-confirm button {
+  width: 100% !important;
+  border-radius: 12px !important;
+}
+/* FORCE workout name + exercise name to be identical */
+#workoutName,
+.exercise-name,
+.exercise-name input {
+  font-size: 16px !important;
+  font-weight: 500 !important;
+  height: 48px !important;
+  padding: 12px 14px !important;
+  border-radius: 12px !important;
+  line-height: normal !important;
+}
+/* ===============================
+   FIX: CLEAR CONFIRM CONFIRMATION SIZE
+   =============================== */
+
+.confirm-box {
+  padding: 1.5rem !important;
+}
+
+.confirm-box h3 {
+  font-size: 1.1rem !important;
+}
+
+.confirm-box p {
+  font-size: 0.95rem !important;
+}
+
+.confirm-actions {
+  gap: 1rem !important;
+}
+
+.confirm-actions button {
+  font-size: 16px !important;
+  padding: 14px 16px !important;
+  min-height: 48px !important;
+  border-radius: 14px !important;
+  transform: none !important;
+}
+/* ===============================
+   FIX: Exercise name input mismatch
+   =============================== */
+
+.workout-name,
+.exercise-name input {
+  height: 48px !important;
+  padding: 12px 14px !important;
+  font-size: 16px !important;
+  font-weight: 400 !important;
+  line-height: normal !important;
+
+  background: #020617 !important;
+  border: 1px solid #1f2937 !important;
+  border-radius: 12px !important;
+  color: #e5e7eb !important;
+}
+/* ===============================
+   FORCE ALL INPUTS TO MATCH EXACTLY
+   Workout name, Exercise name, Reps, Weight
+   =============================== */
+
+#workoutName,
+.exercise-name input,
+.set-row input,
+input[type="text"],
+input[type="number"] {
+  height: 48px !important;
+  padding: 12px 14px !important;
+
+  font-size: 16px !important;
+  font-weight: 400 !important;
+  line-height: normal !important;
+
+  background: #020617 !important;
+  color: #e5e7eb !important;
+
+  border: 1px solid #1f2937 !important;
+  border-radius: 12px !important;
+
+  box-shadow: none !important;
+  appearance: none !important;
+}
+/* =====================================================
+   INPUT FOCUS + HAPTIC PRESS (OVERRIDE — KEEP AT BOTTOM)
+   ===================================================== */
+
+/* Blue focus ring (all inputs identical) */
+#workoutName:focus,
+.exercise-name input:focus,
+.set-row input:focus,
+input[type="text"]:focus,
+input[type="number"]:focus,
+textarea:focus,
+select:focus {
+  outline: none !important;
+  border-color: #38bdf8 !important;
+
+  box-shadow:
+    0 0 0 2px rgba(56, 189, 248, 0.35),
+    inset 0 0 0 1px rgba(56, 189, 248, 0.15) !important;
+
+  background: #020617 !important;
+}
+
+/* Haptic-style press animation */
+#workoutName,
+.exercise-name input,
+.set-row input,
+input[type="text"],
+input[type="number"],
+textarea,
+select {
+  transition:
+    transform 0.08s ease-out,
+    box-shadow 0.15s ease,
+    border-color 0.15s ease,
+    background-color 0.15s ease;
+}
+
+/* Pressed (tap/click) state */
+#workoutName:active,
+.exercise-name input:active,
+.set-row input:active,
+input[type="text"]:active,
+input[type="number"]:active,
+textarea:active,
+select:active {
+  transform: scale(0.985);
+}
+/* =====================================================
+   REMOVE NATIVE NUMBER ARROWS (ALL BROWSERS)
+   ===================================================== */
+
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type="number"] {
+  appearance: textfield;
+}
+/* =====================================================
+   CUSTOM +/- NUMBER CONTROLS
+   ===================================================== */
+
+.number-control {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.number-control input {
+  text-align: center;
+}
+
+/* +/- buttons */
+.num-btn {
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  border: 1px solid rgba(100, 150, 255, 0.35);
+  background: rgba(40, 70, 130, 0.25);
+  color: #cfe0ff;
+  font-size: 20px;
+  font-weight: 600;
+  line-height: 1;
+  cursor: pointer;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  transition: transform 0.12s ease, background 0.2s ease;
+}
+
+/* Press (haptic-style) */
+.num-btn:active {
+  transform: scale(0.9);
+  background: rgba(80, 120, 220, 0.35);
+}
+/* =====================================================
+   HARD OVERRIDE — CLEAR WORKOUT CONFIRM BUTTONS
+   ===================================================== */
+
+/* Target any confirmation-style container */
+.confirm-buttons,
+.confirm-actions,
+.clear-confirm,
+.modal-actions,
+.dialog-actions {
+  display: flex !important;
+  gap: 18px !important;
+}
+
+/* Force buttons BIG */
+.confirm-buttons button,
+.confirm-actions button,
+.clear-confirm button,
+.modal-actions button,
+.dialog-actions button {
+  width: 100% !important;
+  height: 56px !important;
+  min-height: 56px !important;
+
+  padding: 0 24px !important;
+  font-size: 18px !important;
+  font-weight: 700 !important;
+
+  border-radius: 14px !important;
+
+  transform: none !important;
+  scale: 1 !important;
+  line-height: 1 !important;
+}
+
+/* Mobile: even bigger */
+@media (max-width: 480px) {
+  .confirm-buttons button,
+  .confirm-actions button,
+  .clear-confirm button,
+  .modal-actions button,
+  .dialog-actions button {
+    height: 60px !important;
+    font-size: 19px !important;
+  }
+}
+/* =====================================================
+   HARD OVERRIDE — CLEAR WORKOUT CONFIRM BUTTONS
+   ===================================================== */
+
+/* Target any confirmation-style container */
+.confirm-buttons,
+.confirm-actions,
+.clear-confirm,
+.modal-actions,
+.dialog-actions {
+  display: flex !important;
+  gap: 18px !important;
+}
+
+/* Force buttons BIG */
+.confirm-buttons button,
+.confirm-actions button,
+.clear-confirm button,
+.modal-actions button,
+.dialog-actions button {
+  width: 100% !important;
+  height: 56px !important;
+  min-height: 56px !important;
+
+  padding: 0 24px !important;
+  font-size: 18px !important;
+  font-weight: 700 !important;
+
+  border-radius: 14px !important;
+
+  transform: none !important;
+  scale: 1 !important;
+  line-height: 1 !important;
+}
+
+/* Mobile: even bigger */
+@media (max-width: 480px) {
+  .confirm-buttons button,
+  .confirm-actions button,
+  .clear-confirm button,
+  .modal-actions button,
+  .dialog-actions button {
+    height: 60px !important;
+    font-size: 19px !important;
+  }
+}
+/* =====================================================
+   ABSOLUTE OVERRIDE — CONFIRM / CLEAR WORKOUT BUTTONS
+   RECTANGULAR + LARGE
+   ===================================================== */
+
+/* Catch ANY modal / confirm button */
+button {
+  box-sizing: border-box;
+}
+
+/* Strongest possible selector for confirms */
+body button.confirm,
+body button.cancel,
+body .confirm button,
+body .confirm-actions button,
+body .dialog button,
+body .modal button,
+body .clear-confirm button,
+body .confirm-buttons button {
+  all: unset; /* wipe EVERYTHING */
+  box-sizing: border-box;
+
+  display: block;
+  width: 100%;
+  height: 56px;
+
+  padding: 0 20px;
+
+  font-size: 18px;
+  font-weight: 600;
+  text-align: center;
+
+  border-radius: 8px; /* RECTANGULAR (not pill) */
+
+  cursor: pointer;
+}
+
+/* Container spacing */
+body .confirm,
+body .confirm-actions,
+body .confirm-buttons,
+body .dialog-actions,
+body .modal-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+/* Mobile: slightly taller */
+@media (max-width: 480px) {
+  body button.confirm,
+  body button.cancel,
+  body .confirm button,
+  body .confirm-actions button,
+  body .dialog button,
+  body .modal button,
+  body .clear-confirm button,
+  body .confirm-buttons button {
+    height: 60px;
+    font-size: 19px;
+  }
+}
+/* ===== FORCE BIG CLEAR WORKOUT BUTTONS ===== */
+#clearModal .modal-actions {
+  display: flex;
+  gap: 14px;
+  margin-top: 1.5rem;
+}
+
+#clearModal .modal-actions button {
+  flex: 1;
+  min-height: 52px;
+  padding: 0.9rem 1.2rem;
+
+  font-size: 1rem;
+  font-weight: 600;
+
+  border-radius: 12px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+/* ===== ABSOLUTE FORCE: CLEAR WORKOUT MODAL BUTTON SIZE ===== */
+
+#cancelClear,
+#confirmClear {
+  width: 100% !important;
+  height: 56px !important;
+
+  padding: 16px !important;
+  font-size: 16px !important;
+  font-weight: 600 !important;
+
+  border-radius: 12px !important;
+
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+#clearModal .modal-actions {
+  display: flex !important;
+  gap: 16px !important;
+}
+
+
 
 
 
