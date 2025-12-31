@@ -199,6 +199,17 @@ loadWorkouts();
     </span>
     <span class="label" style="font-size: 0.75rem; margin-top: 2px;">Settings</span>
   </button>
+<script>
+  // Highlight the active bottom nav button
+  const currentPage = location.pathname.split("/").pop();
+
+  document.querySelectorAll(".bottom-nav button").forEach(btn => {
+    // btn.dataset.page should match the filename without .html
+    if (btn.dataset.page + ".html" === currentPage) {
+      btn.classList.add("active");
+    }
+  });
+</script>
 
 </nav>
 

@@ -1982,6 +1982,11 @@ select:active {
 .bottom-nav button.active .label {
   color: #38bdf8; /* or another shade if desired */
 }
+/* Active bottom nav button styling */
+.bottom-nav button.active .icon,
+.bottom-nav button.active .label {
+  color: #38bdf8; /* highlight color */
+}
 
 
 
