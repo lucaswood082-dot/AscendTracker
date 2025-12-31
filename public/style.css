@@ -1931,19 +1931,19 @@ select:active {
 
 /* -------------------------- MANUAL POSITIONING -------------------------- */
 .bottom-nav button[data-page="dashboard"] {
-  top: -2px; left: 10px;
+  top: -3px; left: 10px;
 }
 .bottom-nav button[data-page="view"] {
-  top: -2px; left: 10px;
+  top: -3px; left: 10px;
 }
 .bottom-nav button[data-page="workout"] {
-  top: -2px; left: 3px;
+  top: -3px; left: 2px;
 }
 .bottom-nav button[data-page="analytics"] {
-  top: -2px; left: -5px;
+  top: -3px; left: -5px;
 }
 .bottom-nav button[data-page="settings"] {
-  top: -2px; left: -10px;
+  top: -3px; left: -10px;
 }
 
 
