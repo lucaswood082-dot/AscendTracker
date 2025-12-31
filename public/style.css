@@ -1931,16 +1931,16 @@ select:active {
 
 /* -------------------------- MANUAL POSITIONING -------------------------- */
 .bottom-nav button[data-page="dashboard"] {
-  top: 0px; left: 20px;
+  top: 0px; left: 15px;
 }
 .bottom-nav button[data-page="view"] {
   top: 0px; left: 15px;
 }
 .bottom-nav button[data-page="workout"] {
-  top: 0px; left: 30px;
+  top: 0px; left: 20px;
 }
 .bottom-nav button[data-page="analytics"] {
-  top: 0px; left: 5px;
+  top: 0px; left: 0px;
 }
 .bottom-nav button[data-page="settings"] {
   top: 0px; left: -10px;
