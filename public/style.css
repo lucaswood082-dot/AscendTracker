@@ -1937,7 +1937,7 @@ select:active {
   top: -8px; left: 10px;
 }
 .bottom-nav button[data-page="workout"] {
-  top: -8px; left: 3px;
+  top: -8px; left: 4px;
 }
 .bottom-nav button[data-page="analytics"] {
   top: -8px; left: -7px;
@@ -1968,6 +1968,19 @@ select:active {
 /* Move Settings icon */
 .bottom-nav button[data-page="settings"] .icon {
   transform: translateX(0px);
+}
+/* Active bottom nav button */
+.bottom-nav button.active {
+  color: #38bdf8; /* sets both icon and label color to blue */
+}
+
+/* Optional: if you want just the icon to be blue, keep label another color */
+.bottom-nav button.active .icon {
+  color: #38bdf8;
+}
+
+.bottom-nav button.active .label {
+  color: #38bdf8; /* or another shade if desired */
 }
 
 
