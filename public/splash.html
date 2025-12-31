@@ -12,12 +12,13 @@
 
   <link rel="stylesheet" href="style.css" />
   <style>
+    /* Fix white flash by setting background at html level */
     html, body {
       margin: 0;
       padding: 0;
       height: 100%;
       width: 100%;
-      background: #111827;
+      background-color: #111827 !important; /* overrides default */
       font-family: sans-serif;
       color: #38bdf8;
       overflow: hidden;
@@ -31,7 +32,7 @@
       height: 100%;
       width: 100%;
       text-align: center;
-      transition: opacity 0.4s ease, visibility 0.4s ease;
+      transition: opacity 0.3s ease, visibility 0.3s ease;
     }
 
     #splash.hidden {
@@ -42,7 +43,7 @@
     .splash-logo {
       font-size: 2rem;
       font-weight: 600;
-      margin-bottom: 2rem;
+      margin-bottom: 1.5rem;
     }
 
     .spinner {
@@ -51,7 +52,7 @@
       border-radius: 50%;
       width: 50px;
       height: 50px;
-      animation: spin 1s linear infinite;
+      animation: spin 0.6s linear infinite; /* faster spin */
     }
 
     @keyframes spin {
@@ -74,9 +75,9 @@
 
       // Wait for fade-out transition before redirect
       setTimeout(() => {
-        window.location.href = "index.html"; // or "dashboard.html" if already logged in
-      }, 400); // match transition duration
-    }, 2500);
+        window.location.href = "login.html"; // or "dashboard.html" if already logged in
+      }, 300); // matches new transition duration
+    }, 2000); // slightly faster splash display
   </script>
 </body>
 </html>
