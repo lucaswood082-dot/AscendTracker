@@ -1937,13 +1937,13 @@ select:active {
   top: 0px; left: 15px;
 }
 .bottom-nav button[data-page="workout"] {
-  top: 0px; left: 10px;
+  top: 0px; left: 30px;
 }
 .bottom-nav button[data-page="analytics"] {
   top: 0px; left: 5px;
 }
 .bottom-nav button[data-page="settings"] {
-  top: 0px; left: -20px;
+  top: 0px; left: 20px;
 }
 
 
