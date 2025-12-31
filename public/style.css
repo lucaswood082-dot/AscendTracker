@@ -1947,7 +1947,7 @@ select:active {
 }
 /* Move Home icon */
 .bottom-nav button[data-page="dashboard"] .icon {
-  transform: translateX(-5px); /* negative = left, positive = right */
+  transform: translateX(0px); /* negative = left, positive = right */
 }
 
 /* Move Workouts icon */
@@ -1957,7 +1957,7 @@ select:active {
 
 /* Move Create Workout icon */
 .bottom-nav button[data-page="workout"] .icon {
-  transform: translateX(0px); /* default position */
+  transform: translateX(-2px); /* default position */
 }
 
 /* Move Analytics icon */
@@ -1967,7 +1967,7 @@ select:active {
 
 /* Move Settings icon */
 .bottom-nav button[data-page="settings"] .icon {
-  transform: translateX(-2px);
+  transform: translateX(0px);
 }
 
 
