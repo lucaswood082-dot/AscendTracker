@@ -1940,14 +1940,14 @@ select:active {
   top: -4px; left: 2px;
 }
 .bottom-nav button[data-page="analytics"] {
-  top: -4px; left: -5px;
+  top: -4px; left: -7px;
 }
 .bottom-nav button[data-page="settings"] {
-  top: -4px; left: -10px;
+  top: -4px; left: -12px;
 }
 /* Move Home icon */
 .bottom-nav button[data-page="dashboard"] .icon {
-  transform: translateX(0px); /* negative = left, positive = right */
+  transform: translateX(2px); /* negative = left, positive = right */
 }
 
 /* Move Workouts icon */
