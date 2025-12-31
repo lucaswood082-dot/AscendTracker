@@ -1875,7 +1875,7 @@ select:active {
 }
 /* -------------------------- BOTTOM NAV OVERRIDE -------------------------- */
 :root {
-  --bottom-nav-height: 90px;
+  --bottom-nav-height: 95px;
 }
 
 .bottom-nav {
@@ -1931,19 +1931,19 @@ select:active {
 
 /* -------------------------- MANUAL POSITIONING -------------------------- */
 .bottom-nav button[data-page="dashboard"] {
-  top: -4px; left: 10px;
+  top: -8px; left: 10px;
 }
 .bottom-nav button[data-page="view"] {
-  top: -4px; left: 10px;
+  top: -8px; left: 10px;
 }
 .bottom-nav button[data-page="workout"] {
-  top: -4px; left: 2px;
+  top: -8px; left: 3px;
 }
 .bottom-nav button[data-page="analytics"] {
-  top: -4px; left: -7px;
+  top: -8px; left: -7px;
 }
 .bottom-nav button[data-page="settings"] {
-  top: -4px; left: -12px;
+  top: -8px; left: -12px;
 }
 /* Move Home icon */
 .bottom-nav button[data-page="dashboard"] .icon {
