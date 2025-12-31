@@ -1937,7 +1937,7 @@ select:active {
   top: 0px; left: 10px;
 }
 .bottom-nav button[data-page="workout"] {
-  top: 0px; left: 0px;
+  top: 0px; left: 5px;
 }
 .bottom-nav button[data-page="analytics"] {
   top: 0px; left: -5px;
