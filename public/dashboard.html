@@ -50,7 +50,7 @@
   </style>
 </head>
 <body>
-<div id="splash">
+<div id="splash" class="hidden">
   <div class="splash-content">
     <h1>Ascend</h1>
     <div class="loader"></div>
@@ -234,13 +234,24 @@ window.addEventListener("DOMContentLoaded", () => {
     });
 </script>
 <script>
-  window.addEventListener("load", () => {
+ 
+</script>
+<script>
+  window.addEventListener("DOMContentLoaded", () => {
     const splash = document.getElementById("splash");
-    setTimeout(() => {
-      splash.classList.add("hidden");
-    }, 400);
+    const fromIndex = sessionStorage.getItem("fromIndex");
+
+    if (fromIndex) {
+      splash.classList.remove("hidden");
+
+      setTimeout(() => {
+        splash.classList.add("hidden");
+        sessionStorage.removeItem("fromIndex");
+      }, 350); // fast, clean, intentional
+    }
   });
 </script>
+
 
 </body>
 </html>

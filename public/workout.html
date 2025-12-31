@@ -258,36 +258,14 @@
     </div>
   </div>
 </div>
-<!-- Custom confirm popup -->
-<div id="uiConfirm" class="ui-confirm hidden">
-  <div class="ui-confirm-box">
-    <h3>Clear workout?</h3>
-    <p>This will remove all exercises and sets.</p>
+<div id="clearModal" class="hidden">
+  <div class="modal-box">
+    <p>Clear all exercises?</p>
 
-    <div class="ui-confirm-actions">
-      <button id="uiCancel" class="secondary">Cancel</button>
-      <button id="uiConfirmYes" class="red-btn">Clear</button>
-    </div>
-  </div>
-</div>
-<div id="confirmOverlay" class="confirm-overlay hidden">
-  <div class="confirm-box">
-    <p>Clear this workout?</p>
-    <div class="confirm-actions">
-      <button id="confirmCancel">Cancel</button>
+    <div class="modal-actions">
+      <button id="cancelClear">Cancel</button>
       <button id="confirmClear">Clear</button>
     </div>
   </div>
 </div>
-<script>
-  const fixClearButtons = () => {
-    document.getElementById('cancelClear')?.style.setProperty('min-height', '60px', 'important');
-    document.getElementById('confirmClear')?.style.setProperty('min-height', '60px', 'important');
-  };
 
-  fixClearButtons();
-  document.addEventListener('click', fixClearButtons);
-</script>
-
-</body>
-</html>

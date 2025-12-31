@@ -5,19 +5,14 @@ console.log("workouts.js loaded");
 const exerciseList = document.getElementById("exerciseList");
 const addExerciseBtn = document.getElementById("addExercise");
 const saveWorkoutBtn = document.getElementById("saveWorkout");
-const clearAllBtn = document.getElementById("clearAll"); // FIX: define this
+const clearAllBtn = document.getElementById("clearAll");
+
+const clearModal = document.getElementById("clearModal");
+const cancelClearBtn = document.getElementById("cancelClear");
+const confirmClearBtn = document.getElementById("confirmClear");
 
 const DRAFT_KEY = "activeWorkoutDraft";
 let exercises = [];
-
-// Custom styled confirm without DOM dependencies
-window.confirm = function (message) {
-  const result = prompt(
-    message + "\n\nType CLEAR to confirm",
-    ""
-  );
-  return result === "CLEAR";
-};
 
 /* ---------------- POPUP ---------------- */
 function showPopup(message) {
@@ -106,34 +101,32 @@ function loadDraft() {
   });
 }
 
-/* ---------------- CREATE SET ELEMENT ---------------- */
+/* ---------------- CREATE SET ---------------- */
 function createSetElement(isUnilateral, weightValue = "") {
-  const setLi = document.createElement("li");
-  setLi.style.display = "flex";
-  setLi.style.flexDirection = "column";
-  setLi.style.marginBottom = "1rem";
+  const li = document.createElement("li");
+  li.style.display = "flex";
+  li.style.flexDirection = "column";
+  li.style.marginBottom = "1rem";
 
-  if (isUnilateral) {
-    setLi.innerHTML = `
+  li.innerHTML = isUnilateral
+    ? `
       <input type="number" placeholder="Left Reps" class="set-left reps-input" />
       <input type="number" placeholder="Right Reps" class="set-right reps-input" />
       <input type="number" placeholder="Weight" class="set-weight weight-input" value="${weightValue}" />
       <button class="remove-set remove-btn">Remove</button>
-    `;
-  } else {
-    setLi.innerHTML = `
+    `
+    : `
       <input type="number" placeholder="Reps" class="set-reps reps-input" />
       <input type="number" placeholder="Weight" class="set-weight weight-input" value="${weightValue}" />
       <button class="remove-set remove-btn">Remove</button>
     `;
-  }
 
-  setLi.querySelector(".remove-set")?.addEventListener("click", () => {
-    setLi.remove();
+  li.querySelector(".remove-set").addEventListener("click", () => {
+    li.remove();
     saveDraft();
   });
 
-  return setLi;
+  return li;
 }
 
 /* ---------------- CREATE EXERCISE ---------------- */
@@ -143,46 +136,37 @@ function createExerciseElement(exercise) {
 
   li.innerHTML = `
     <div class="exercise-header">
-      <input type="text" placeholder="Exercise Name" class="exercise-name" value="${exercise.name}" />
-<span class="arrow">
-  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-  </svg>
-</span>
-
+      <input class="exercise-name" placeholder="Exercise Name" value="${exercise.name}" />
+      <span class="arrow">⌄</span>
     </div>
+
     <div class="exercise-body">
-      <div style="display:flex; align-items:center; gap:8px; margin-bottom:0.75rem;">
-        <label class="toggle-switch">
-          <input type="checkbox" class="unilateral-toggle" ${exercise.unilateral ? "checked" : ""}>
-          <span class="slider"></span>
-        </label>
-        <span style="font-size:0.9rem;">Unilateral</span>
-      </div>
-      <button class="add-set" style="margin-bottom:0.75rem;">Add Set</button>
+      <label>
+        <input type="checkbox" class="unilateral-toggle" ${exercise.unilateral ? "checked" : ""}>
+        Unilateral
+      </label>
+
+      <button class="add-set">Add Set</button>
       <ul class="sets-list"></ul>
     </div>
   `;
 
   const body = li.querySelector(".exercise-body");
   const arrow = li.querySelector(".arrow");
-  const addSetBtn = li.querySelector(".add-set");
   const setsList = li.querySelector(".sets-list");
+  const addSetBtn = li.querySelector(".add-set");
   const unilateralToggle = li.querySelector(".unilateral-toggle");
 
-  body.style.display = "block";
-
-  arrow?.addEventListener("click", () => {
+  arrow.addEventListener("click", () => {
     body.style.display = body.style.display === "none" ? "block" : "none";
-    arrow.classList.toggle("open");
   });
 
-  addSetBtn?.addEventListener("click", () => {
+  addSetBtn.addEventListener("click", () => {
     setsList.appendChild(createSetElement(unilateralToggle.checked));
     saveDraft();
   });
 
-  unilateralToggle?.addEventListener("change", () => {
+  unilateralToggle.addEventListener("change", () => {
     [...setsList.children].forEach(oldSet => {
       const weight = oldSet.querySelector(".set-weight")?.value || "";
       const newSet = createSetElement(unilateralToggle.checked, weight);
@@ -195,56 +179,61 @@ function createExerciseElement(exercise) {
 }
 
 /* ---------------- ADD EXERCISE ---------------- */
-addExerciseBtn?.addEventListener("click", () => {
-  const newExercise = { name: "", sets: [], unilateral: false };
-  exercises.push(newExercise);
-  exerciseList.appendChild(createExerciseElement(newExercise));
+addExerciseBtn.addEventListener("click", () => {
+  const ex = { name: "", sets: [], unilateral: false };
+  exercises.push(ex);
+  exerciseList.appendChild(createExerciseElement(ex));
   saveDraft();
 });
 
-/* ---------------- CLEAR ALL ---------------- */
-clearAllBtn?.addEventListener("click", () => {
-  showClearConfirm(() => {
-    exercises = [];
-    exerciseList.innerHTML = "";
-    saveDraft();
-  });
+/* ---------------- CLEAR ALL (CUSTOM MODAL) ---------------- */
+clearAllBtn.addEventListener("click", () => {
+  clearModal.classList.remove("hidden");
+});
+
+cancelClearBtn.addEventListener("click", () => {
+  clearModal.classList.add("hidden");
+});
+
+confirmClearBtn.addEventListener("click", () => {
+  exercises = [];
+  exerciseList.innerHTML = "";
+  saveDraft();
+  clearModal.classList.add("hidden");
 });
 
 /* ---------------- SAVE WORKOUT ---------------- */
-saveWorkoutBtn?.addEventListener("click", () => {
+saveWorkoutBtn.addEventListener("click", () => {
   exercises = [];
 
-  let workoutTonnage = 0;
+  let tonnage = 0;
   let totalSets = 0;
   let totalReps = 0;
 
   document.querySelectorAll(".exercise-item").forEach(li => {
-    const name = li.querySelector(".exercise-name")?.value || "";
-    const unilateral = li.querySelector(".unilateral-toggle")?.checked || false;
-
+    const name = li.querySelector(".exercise-name").value;
+    const unilateral = li.querySelector(".unilateral-toggle").checked;
     const sets = [];
+
     li.querySelectorAll(".sets-list li").forEach(setLi => {
       totalSets++;
 
       if (unilateral) {
-        const left = parseInt(setLi.querySelector(".set-left")?.value) || 0;
-        const right = parseInt(setLi.querySelector(".set-right")?.value) || 0;
-        const weight = parseFloat(setLi.querySelector(".set-weight")?.value) || 0;
+        const l = +setLi.querySelector(".set-left").value || 0;
+        const r = +setLi.querySelector(".set-right").value || 0;
+        const w = +setLi.querySelector(".set-weight").value || 0;
+        const reps = l + r;
 
-        const reps = left + right;
         totalReps += reps;
-        workoutTonnage += reps * weight;
-
-        sets.push({ leftReps: left, rightReps: right, weight });
+        tonnage += reps * w;
+        sets.push({ leftReps: l, rightReps: r, weight: w });
       } else {
-        const reps = parseInt(setLi.querySelector(".set-reps")?.value) || 0;
-        const weight = parseFloat(setLi.querySelector(".set-weight")?.value) || 0;
+        const reps = +setLi.querySelector(".set-reps").value || 0;
+        const w = +setLi.querySelector(".set-weight").value || 0;
 
         totalReps += reps;
-        workoutTonnage += reps * weight;
-
-        sets.push({ reps, weight });
+        tonnage += reps * w;
+        sets.push({ reps, weight: w });
       }
     });
 
@@ -252,71 +241,30 @@ saveWorkoutBtn?.addEventListener("click", () => {
   });
 
   const users = JSON.parse(localStorage.getItem("users")) || [];
-
-let currentUser;
-if (users.length > 0) {
-  currentUser = users[0];
-  if (!Array.isArray(currentUser.workouts)) {
-    currentUser.workouts = [];
-  }
-} else {
-  currentUser = { username: "Lucas", workouts: [] };
-  users.push(currentUser);
-}
-
-  const workoutObj = {
-    name: document.getElementById("workoutName")?.value || "Unnamed Workout",
+  const user = users[0] || { username: "Lucas", workouts: [] };
+  user.workouts.push({
+    name: document.getElementById("workoutName").value || "Workout",
     date: getLocalDateString(),
     exercises,
-    tonnage: workoutTonnage,
+    tonnage,
     totalSets,
     totalReps
-  };
+  });
 
-  currentUser.workouts.push(workoutObj);
-
-  if (!users.length) users.push(currentUser);
+  if (!users.length) users.push(user);
   localStorage.setItem("users", JSON.stringify(users));
-
   localStorage.removeItem(DRAFT_KEY);
-  showPopup("Workout Saved!");
 
+  showPopup("Workout Saved!");
   document.getElementById("workoutName").value = "";
   exerciseList.innerHTML = "";
   exercises = [];
 });
-
 
 /* ---------------- AUTO SAVE ---------------- */
 document.addEventListener("input", saveDraft);
 
 /* ---------------- INIT ---------------- */
 loadDraft();
-
-/* ---------------- CUSTOM CLEAR CONFIRM ---------------- */
-function showClearConfirm(onConfirm) {
-  const overlay = document.getElementById("uiConfirm");
-  const cancelBtn = document.getElementById("uiCancel");
-  const confirmBtn = document.getElementById("uiConfirmYes");
-
-  if (!overlay || !cancelBtn || !confirmBtn) {
-    // fallback
-    if (confirm("Are you sure you want to clear all exercises?")) {
-      onConfirm();
-    }
-    return;
-  }
-
-  overlay.classList.remove("hidden");
-
-  cancelBtn.onclick = () => {
-    overlay.classList.add("hidden");
-  };
-
-  confirmBtn.onclick = () => {
-    overlay.classList.add("hidden");
-    onConfirm();
-  };
-}
 
 });
