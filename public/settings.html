@@ -1,147 +1,194 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Settings</title>
-<link rel="stylesheet" href="style.css">
-<style>
-body {
-  background: #111827;
-  color: #fff;
-  font-family: sans-serif;
-  margin: 0;
-  padding-bottom: 80px; /* leave room for bottom nav */
-  overflow-y: auto; /* vertical scrolling */
-}
-.container {
-  padding: 1rem;
-  max-width: 600px;
-  margin: 0 auto;
-}
-h2 {
-  color: #38bdf8;
-  margin-bottom: 1rem;
-}
-.section {
-  background: #1f2937;
-  border-radius: 12px;
-  padding: 1rem;
-  margin-bottom: 1rem;
-}
-.section label {
-  display: block;
-  margin: 0.5rem 0 0.2rem 0;
-}
-.section input, .section select {
-  width: 100%;
-  padding: 0.5rem;
-  border-radius: 6px;
-  border: none;
-  margin-bottom: 0.5rem;
-  background: #111827;
-  color: #fff;
-}
-button {
-  background: #38bdf8;
-  color: #020617;
-  border: none;
-  border-radius: 10px;
-  padding: 0.5rem 1rem;
-  cursor: pointer;
-  font-weight: 600;
-  margin-top: 0.5rem;
-}
-button.danger {
-  background: #ef4444;
-}
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Settings</title>
+  <button data-page="settings" onclick="location.href='settings.html'">
+  <span class="icon"> ...svg... </span>
+  <span class="label">Settings</span>
+</button>
 
-/* Custom Modal */
-.modal-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0,0,0,0.7);
-  display: none;
-  align-items: center;
-  justify-content: center;
-  z-index: 9999;
-}
-.modal {
-  background: #1f2937;
-  padding: 1.5rem;
-  border-radius: 12px;
-  max-width: 400px;
-  width: 90%;
-  text-align: center;
-}
-.modal p {
-  margin-bottom: 1rem;
-}
-.modal button {
-  margin: 0 0.5rem;
-}
-</style>
+
+  <!-- MAIN APP STYLES -->
+  <link rel="stylesheet" href="style.css" />
+
+  <!-- PAGE-SPECIFIC STYLES ONLY -->
+  <style>
+    body.settings-page {
+      background: #111827;
+      color: #fff;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+      margin: 0;
+      padding-bottom: 100px; /* space for bottom nav */
+    }
+
+    .container {
+      padding: 1rem;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    h2 {
+      color: #38bdf8;
+      margin-bottom: 1rem;
+    }
+
+    .section {
+      background: #1f2937;
+      border-radius: 14px;
+      padding: 1rem;
+      margin-bottom: 1rem;
+    }
+
+    .section h3 {
+      margin-top: 0;
+      margin-bottom: 0.75rem;
+    }
+
+    label {
+      display: block;
+      margin: 0.5rem 0 0.25rem;
+      font-size: 0.9rem;
+      color: #d1d5db;
+    }
+
+    input,
+    select {
+      width: 100%;
+      padding: 0.6rem;
+      border-radius: 8px;
+      border: none;
+      background: #111827;
+      color: #fff;
+      margin-bottom: 0.5rem;
+    }
+
+    button {
+      background: #38bdf8;
+      color: #020617;
+      border: none;
+      border-radius: 10px;
+      padding: 0.55rem 1rem;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    button.danger {
+      background: #ef4444;
+      color: #fff;
+    }
+
+    button + button {
+      margin-left: 0.5rem;
+    }
+
+    /* MODAL */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.7);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 5000;
+    }
+
+    .modal {
+      background: #1f2937;
+      padding: 1.25rem;
+      border-radius: 14px;
+      max-width: 400px;
+      width: 90%;
+      text-align: center;
+    }
+
+    .modal p {
+      margin-bottom: 1rem;
+    }
+
+    /* TOAST */
+    #toast {
+      position: fixed;
+      bottom: 100px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #38bdf8;
+      color: #020617;
+      padding: 0.5rem 1rem;
+      border-radius: 12px;
+      display: none;
+      font-weight: 600;
+      z-index: 6000;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+    }
+  </style>
 </head>
-<body>
 
-<div class="container">
-  <h2>Settings</h2>
+<body class="settings-page">
 
-  <!-- Account Management -->
-  <div class="section">
-    <h3>Account</h3>
-    <label for="username">Username</label>
-    <input type="text" id="username" placeholder="Enter new username">
-    <label for="password">Password</label>
-    <input type="password" id="password" placeholder="Enter new password">
-    <button id="saveAccountBtn">Save Account</button>
+  <div class="container">
+    <h2>Settings</h2>
+
+    <!-- ACCOUNT -->
+    <div class="section">
+      <h3>Account</h3>
+      <label for="username">Username</label>
+      <input id="username" type="text" placeholder="Enter new username" />
+
+      <label for="password">Password</label>
+      <input id="password" type="password" placeholder="Enter new password" />
+
+      <button id="saveAccountBtn">Save Account</button>
+    </div>
+
+    <!-- UNITS -->
+    <div class="section">
+      <h3>Units</h3>
+      <label for="unitSelect">Preferred Units</label>
+      <select id="unitSelect">
+        <option value="kg">Kilograms (kg)</option>
+        <option value="lbs">Pounds (lbs)</option>
+      </select>
+
+      <button id="saveUnitsBtn">Save Units</button>
+    </div>
+
+    <!-- LANGUAGE -->
+    <div class="section">
+      <h3>Language</h3>
+      <label for="languageSelect">App Language</label>
+      <select id="languageSelect">
+        <option value="en">English</option>
+        <option value="jp">Japanese</option>
+        <option value="es">Spanish</option>
+        <option value="fr">French</option>
+      </select>
+
+      <button id="saveLanguageBtn">Save Language</button>
+    </div>
+
+    <!-- PRIVACY -->
+    <div class="section">
+      <h3>Privacy & Backup</h3>
+      <button id="exportWorkoutsBtn">Export Workouts (CSV)</button>
+      <button id="clearWorkoutsBtn" class="danger">Clear All Workouts</button>
+    </div>
   </div>
 
-  <!-- Units Preferences -->
-  <div class="section">
-    <h3>Units</h3>
-    <label for="unitSelect">Preferred Units</label>
-    <select id="unitSelect">
-      <option value="kg">Kilograms (kg)</option>
-      <option value="lbs">Pounds (lbs)</option>
-    </select>
-    <button id="saveUnitsBtn">Save Units</button>
+  <!-- MODAL -->
+  <div class="modal-overlay" id="modalOverlay">
+    <div class="modal">
+      <p id="modalText">Message</p>
+      <button id="modalOkBtn">OK</button>
+      <button id="modalCancelBtn" style="display:none;">Cancel</button>
+    </div>
   </div>
 
-  <!-- Language Settings -->
-  <div class="section">
-    <h3>Language</h3>
-    <label for="languageSelect">App Language</label>
-    <select id="languageSelect">
-      <option value="en">English</option>
-      <option value="jp">Japanese</option>
-      <option value="es">Spanish</option>
-      <option value="fr">French</option>
-    </select>
-    <button id="saveLanguageBtn">Save Language</button>
-  </div>
+  <!-- TOAST -->
+  <div id="toast"></div>
 
-  <!-- Privacy & Export -->
-  <div class="section">
-    <h3>Privacy & Backup</h3>
-    <button id="exportWorkoutsBtn">Export Workouts (CSV)</button>
-    <button id="clearWorkoutsBtn" class="danger">Clear All Workouts</button>
-  </div>
-</div>
-
-<!-- Custom Modal -->
-<div class="modal-overlay" id="modalOverlay">
-  <div class="modal" id="modalContent">
-    <p id="modalText">Message here</p>
-    <button id="modalOkBtn">OK</button>
-    <button id="modalCancelBtn" style="display:none;">Cancel</button>
-  </div>
-</div>
-
-<!-- BOTTOM NAVIGATION -->
+ <!-- BOTTOM NAVIGATION -->
 <nav class="bottom-nav" style="position: fixed; bottom: 0; left: 0; right: 0; height: 60px; background: #111827; display: flex; justify-content: space-around; align-items: center; border-top: 1px solid #1f2937; z-index: 1000;">
 
   <!-- Home -->
@@ -194,24 +241,7 @@ button.danger {
     </span>
     <span class="label" style="font-size: 0.75rem; margin-top: 2px;">Settings</span>
   </button>
-</nav>
 
-<script src="settings.js"></script>
+  <script src="settings.js"></script>
 </body>
-<!-- Toast Notification -->
-<div id="toast" style="
-  position: fixed;
-  bottom: 80px;
-  left: 50%;
-  transform: translateX(-50%);
-  background: #38bdf8;
-  color: #020617;
-  padding: 0.5rem 1rem;
-  border-radius: 12px;
-  display: none;
-  font-weight: 600;
-  z-index: 10000;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.3);
-"></div>
-
 </html>
