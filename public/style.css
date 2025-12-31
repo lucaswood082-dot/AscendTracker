@@ -1935,12 +1935,12 @@ select:active {
 /* You can adjust each button individually using these classes */
 .bottom-nav button[data-page="dashboard"] { /* Home */
   top: 0px;    /* adjust vertical */
-  left: 0px;   /* adjust horizontal */
+  left: 10px;   /* adjust horizontal */
 }
 
 .bottom-nav button[data-page="view"] { /* Workouts */
   top: 0px;
-  left: -10px;
+  left: 15px;
 }
 
 .bottom-nav button[data-page="workout"] { /* Create Workout */
