@@ -1875,7 +1875,7 @@ select:active {
 }
 /* -------------------------- BOTTOM NAV OVERRIDE -------------------------- */
 :root {
-  --bottom-nav-height: 85px;
+  --bottom-nav-height: 90px;
 }
 
 .bottom-nav {
@@ -1931,19 +1931,19 @@ select:active {
 
 /* -------------------------- MANUAL POSITIONING -------------------------- */
 .bottom-nav button[data-page="dashboard"] {
-  top: 0px; left: 10px;
+  top: -2px; left: 10px;
 }
 .bottom-nav button[data-page="view"] {
-  top: 0px; left: 10px;
+  top: -2px; left: 10px;
 }
 .bottom-nav button[data-page="workout"] {
-  top: 0px; left: 4px;
+  top: -2px; left: 3px;
 }
 .bottom-nav button[data-page="analytics"] {
-  top: 0px; left: -5px;
+  top: -2px; left: -5px;
 }
 .bottom-nav button[data-page="settings"] {
-  top: 0px; left: -10px;
+  top: -2px; left: -10px;
 }
 
 
