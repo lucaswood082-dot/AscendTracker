@@ -1664,6 +1664,215 @@ body .modal-actions {
   background: #e53935 !important;
   color: #ffffff !important;
 }
+/* ===== SPLASH SCREEN (SCOPED + SAFE) ===== */
+#splash {
+  position: fixed;
+  inset: 0;
+  background: #0f0f0f;
+  z-index: 9999;
+  transition: opacity 0.25s ease;
+}
+
+#splash.splash-hidden {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+/* Prevent splash from affecting layout flow */
+body > #splash {
+  display: block !important;
+}
+/* ==============================
+   FINAL INPUT OVERRIDE — MAKE EVERYTHING MATCH
+   ============================== */
+#workoutName,
+.exercise-name,
+.set-row input,
+input[type="text"],
+input[type="number"],
+textarea,
+select {
+  height: 48px !important;
+  padding: 12px 14px !important;
+  font-size: 16px !important;
+  font-weight: 400 !important;
+  line-height: normal !important;
+  color: #e5e7eb !important;
+  background: #020617 !important;
+  border: 1px solid #1f2937 !important;
+  border-radius: 12px !important;
+  box-shadow: none !important;
+  appearance: none !important;
+  transition: 
+    transform 0.08s ease-out,
+    box-shadow 0.15s ease,
+    border-color 0.15s ease,
+    background-color 0.15s ease !important;
+}
+
+/* Focus effect (all inputs identical) */
+#workoutName:focus,
+.exercise-name:focus,
+.set-row input:focus,
+input[type="text"]:focus,
+input[type="number"]:focus,
+textarea:focus,
+select:focus {
+  outline: none !important;
+  border-color: #38bdf8 !important;
+  box-shadow: 0 0 0 2px rgba(56,189,248,0.35), inset 0 0 0 1px rgba(56,189,248,0.15) !important;
+  background: #020617 !important;
+}
+
+/* Haptic-style press effect */
+#workoutName:active,
+.exercise-name:active,
+.set-row input:active,
+input[type="text"]:active,
+input[type="number"]:active,
+textarea:active,
+select:active {
+  transform: scale(0.985) !important;
+}
+/* ===== FIX: SPACE BETWEEN REPS BOX AND ADD/REMOVE SET BUTTONS ===== */
+.set-row {
+  display: flex;
+  align-items: center;
+  gap: 8px !important; /* space between input and buttons */
+}
+
+.set-row .reps-box {
+  flex: 1; /* reps input takes remaining space */
+  margin-bottom: 0 !important;
+}
+
+.set-row button.add-set,
+.set-row button.remove-set {
+  flex: 0 0 auto; /* buttons stay their size */
+  margin: 0 !important; /* remove any extra margin conflicts */
+}
+/* ===================== ABSOLUTE OVERRIDE: SPACE BETWEEN REPS AND ADD/REMOVE SET BUTTONS ===================== */
+.set-row {
+  display: flex !important;
+  align-items: center !important;
+}
+
+.set-row input,
+.set-row .reps-box {
+  margin-right: 12px !important; /* space between reps input and buttons */
+  flex: 1 !important;
+}
+
+.set-row button.add-set,
+.set-row button.remove-set {
+  margin-left: 0 !important; /* ensure no conflicting left margin */
+  flex: 0 0 auto !important;
+}
+/* ===================== ABSOLUTE OVERRIDE: space below each set row ===================== */
+.set-row {
+  margin-bottom: 12px !important; /* space between this row and next element */
+}
+/* ================== FORCE Add Set BUTTON ON ITS OWN ROW WITH SPACE BELOW ================== */
+.set-row button.add-set {
+  display: block !important;        /* make it take full width of its row */
+  width: 100% !important;
+  margin-top: 8px !important;       /* space above the button */
+  margin-bottom: 16px !important;   /* space below the button */
+}
+/* ===== HAPTIC-STYLE TOGGLE EFFECT ===== */
+.toggle-switch input:active + .slider::before {
+  transform: scale(0.95) translateX(var(--slider-x, 0)); /* slightly smaller on press */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.25);
+  transition: transform 0.12s ease, box-shadow 0.12s ease;
+}
+
+.toggle-switch input + .slider::before {
+  transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1), background-color 0.25s ease, box-shadow 0.25s ease;
+}
+
+.toggle-switch input + .slider {
+  transition: background-color 0.25s ease, color 0.25s ease;
+}
+
+/* Soft glow for ON state */
+.toggle-switch input:checked + .slider::before {
+  box-shadow: 0 0 6px rgba(56, 189, 248, 0.6);
+}
+
+/* Slight scaling effect on the whole slider when tapped */
+.toggle-switch:active .slider {
+  transform: scale(0.97);
+  transition: transform 0.12s ease;
+}
+
+/* Optional: subtle hover glow for desktop users */
+.toggle-switch:hover .slider::before {
+  box-shadow: 0 2px 6px rgba(56, 189, 248, 0.45);
+}
+/* ===== CLASSIC COLLAPSE ARROW RESTORE ===== */
+.exercise-header {
+  position: relative;
+}
+
+.exercise-header .arrow {
+  position: absolute;
+  right: 12px;           /* distance from the right edge */
+  top: 50%;              /* vertical center */
+  transform: translateY(-50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;       /* original size */
+  color: #38bdf8;        /* accent color */
+  cursor: pointer;
+  user-select: none;
+  transition: transform 0.25s ease, opacity 0.25s ease;
+  opacity: 0.9;
+}
+
+.exercise-header .arrow.open {
+  transform: translateY(-50%) rotate(180deg);
+}
+
+/* subtle press animation */
+.exercise-header .arrow:active {
+  transform: translateY(-50%) scale(0.9);
+}
+/* ===== ENHANCED COLLAPSE ARROW ===== */
+.exercise-header .arrow {
+  font-size: 1.3rem;       /* slightly bigger */
+  top: 32%;                /* nudge it slightly up */
+  right: 14px;             /* a bit more space from the edge */
+  transition: transform 0.25s ease, opacity 0.25s ease;
+}
+
+.exercise-header .arrow:active {
+  transform: translateY(-50%) scale(0.9); /* keeps press animation */
+}
+
+.exercise-header .arrow.open {
+  transform: translateY(-50%) rotate(180deg);
+}
+/* ===== OLD SCHOOL COLLAPSE ARROW ===== */
+.exercise-header .arrow {
+  position: absolute;
+  top: 35%;           /* vertically center relative to header */
+  right: 12px;        /* always to the right */
+  transform: translateY(-50%); /* perfect vertical centering */
+  font-size: 1.3rem;  /* slightly bigger */
+  cursor: pointer;
+  color: #38bdf8;
+  user-select: none;
+  transition: transform 0.3s ease; /* smooth rotation only */
+  display: inline-block;  /* ensures rotation doesn't affect layout */
+  line-height: 1;         /* prevent vertical shift */
+}
+
+/* Rotate in place when open */
+.exercise-header .arrow.open {
+  transform: translateY(-50%) rotate(180deg);
+}
 
 
 

@@ -141,10 +141,11 @@ function createExerciseElement(exercise) {
     </div>
 
     <div class="exercise-body">
-      <label>
-        <input type="checkbox" class="unilateral-toggle" ${exercise.unilateral ? "checked" : ""}>
-        Unilateral
-      </label>
+      <label class="toggle-switch">
+  <input type="checkbox" class="unilateral-toggle" ${exercise.unilateral ? "checked" : ""}>
+  <span class="slider"></span>
+</label>
+
 
       <button class="add-set">Add Set</button>
       <ul class="sets-list"></ul>
@@ -184,6 +185,7 @@ addExerciseBtn.addEventListener("click", () => {
   exercises.push(ex);
   exerciseList.appendChild(createExerciseElement(ex));
   saveDraft();
+  
 });
 
 /* ---------------- CLEAR ALL (CUSTOM MODAL) ---------------- */

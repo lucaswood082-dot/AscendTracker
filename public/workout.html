@@ -93,7 +93,72 @@
     .page .icon:not(.create-btn .icon) {
       display: none !important;
     }
+    /* ===================== FORCE VERTICAL GAP FOR ADD SET BUTTON ===================== */
+#exerciseList .add-set {
+  display: block !important;      /* force button onto its own line */
+  margin-top: 8px !important;     /* space above the button */
+  margin-bottom: 16px !important; /* space below the button */
+}
+/* ===== UNILATERAL TOGGLE SLIDER ===== */
+.toggle-switch {
+  position: relative;
+  display: inline-block;
+  width: 60px;
+  height: 28px;
+}
+
+.toggle-switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  inset: 0;
+  background-color: #1f2937; 
+  border-radius: 8px;
+  border: 1px solid #38bdf8;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 4px;
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: #cbd5e1;
+  user-select: none;
+}
+
+.slider::before {
+  content: "";
+  position: absolute;
+  height: 20px;
+  width: 26px;
+  left: 2px;
+  bottom: 3px;
+  background-color: #38bdf8;
+  border-radius: 6px;
+  transition: 0.3s;
+}
+
+input:checked + .slider::before {
+  transform: translateX(28px);
+}
+
+.slider::after {
+  content: "OFF";
+  position: absolute;
+  right: 6px;
+}
+
+input:checked + .slider::after {
+  content: "ON";
+  left: 6px;
+  right: auto;
+}
+
   </style>
+  
 </head>
 <div id="saveToast">Workout saved!</div>
 <body>
