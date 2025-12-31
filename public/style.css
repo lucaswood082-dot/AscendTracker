@@ -1931,20 +1931,45 @@ select:active {
 
 /* -------------------------- MANUAL POSITIONING -------------------------- */
 .bottom-nav button[data-page="dashboard"] {
-  top: -3px; left: 10px;
+  top: -4px; left: 10px;
 }
 .bottom-nav button[data-page="view"] {
-  top: -3px; left: 10px;
+  top: -4px; left: 10px;
 }
 .bottom-nav button[data-page="workout"] {
-  top: -3px; left: 2px;
+  top: -4px; left: 2px;
 }
 .bottom-nav button[data-page="analytics"] {
-  top: -3px; left: -5px;
+  top: -4px; left: -5px;
 }
 .bottom-nav button[data-page="settings"] {
-  top: -3px; left: -10px;
+  top: -4px; left: -10px;
 }
+/* Move Home icon */
+.bottom-nav button[data-page="dashboard"] .icon {
+  transform: translateX(-5px); /* negative = left, positive = right */
+}
+
+/* Move Workouts icon */
+.bottom-nav button[data-page="view"] .icon {
+  transform: translateX(3px);
+}
+
+/* Move Create Workout icon */
+.bottom-nav button[data-page="workout"] .icon {
+  transform: translateX(0px); /* default position */
+}
+
+/* Move Analytics icon */
+.bottom-nav button[data-page="analytics"] .icon {
+  transform: translateX(2px);
+}
+
+/* Move Settings icon */
+.bottom-nav button[data-page="settings"] .icon {
+  transform: translateX(-2px);
+}
+
 
 
 
