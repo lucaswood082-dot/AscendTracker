@@ -1,24 +1,22 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" style="background-color:#111827;"> <!-- inline bg fixes white flash -->
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
   <title>Ascend</title>
 
-  <!-- Theme / PWA -->
   <meta name="theme-color" content="#111827">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-capable" content="yes">
 
   <link rel="stylesheet" href="style.css" />
   <style>
-    /* Fix white flash by setting background at html level */
     html, body {
       margin: 0;
       padding: 0;
       height: 100%;
       width: 100%;
-      background-color: #111827 !important; /* overrides default */
+      background-color: #111827 !important; /* fallback */
       font-family: sans-serif;
       color: #38bdf8;
       overflow: hidden;
@@ -29,7 +27,7 @@
       flex-direction: column;
       justify-content: center;
       align-items: center;
-      height: 100%;
+      height: 100vh; /* ensure full viewport */
       width: 100%;
       text-align: center;
       transition: opacity 0.3s ease, visibility 0.3s ease;
@@ -68,16 +66,15 @@
   </div>
 
   <script>
-    // Fade out splash and go to login/dashboard
     setTimeout(() => {
       const splash = document.getElementById('splash');
       splash.classList.add('hidden');
 
-      // Wait for fade-out transition before redirect
+      // wait for fade-out transition
       setTimeout(() => {
-        window.location.href = "login.html"; // or "dashboard.html" if already logged in
-      }, 300); // matches new transition duration
-    }, 2000); // slightly faster splash display
+        window.location.href = "dashboard.html"; // index.html splash redirects to dashboard
+      }, 300);
+    }, 2000); // 2s splash duration
   </script>
 </body>
 </html>
