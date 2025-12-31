@@ -1915,8 +1915,8 @@ select:active {
 }
 
 .bottom-nav button.create-btn .icon {
-  width: 34px !important;
-  height: 34px !important;
+  width: 38px !important;
+  height: 38px !important;
 }
 
 .bottom-nav button .label {
@@ -1931,10 +1931,10 @@ select:active {
 
 /* -------------------------- MANUAL POSITIONING -------------------------- */
 .bottom-nav button[data-page="dashboard"] {
-  top: 0px; left: 15px;
+  top: 0px; left: 10px;
 }
 .bottom-nav button[data-page="view"] {
-  top: 0px; left: 15px;
+  top: 0px; left: 10px;
 }
 .bottom-nav button[data-page="workout"] {
   top: 0px; left: 0px;
