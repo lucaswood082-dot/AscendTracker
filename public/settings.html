@@ -1,110 +1,150 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="theme-color" content="#111827">
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Settings</title>
-  <link rel="stylesheet" href="style.css">
-  <style>
-    body {
-      background: #020617;
-      color: #f0f0f0;
-      font-family: sans-serif;
-      padding-bottom: 70px; /* bottom nav space */
-    }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Settings</title>
+<link rel="stylesheet" href="style.css">
+<style>
+body {
+  background: #111827;
+  color: #fff;
+  font-family: sans-serif;
+  margin: 0;
+  padding-bottom: 80px; /* leave room for bottom nav */
+  overflow-y: auto; /* vertical scrolling */
+}
+.container {
+  padding: 1rem;
+  max-width: 600px;
+  margin: 0 auto;
+}
+h2 {
+  color: #38bdf8;
+  margin-bottom: 1rem;
+}
+.section {
+  background: #1f2937;
+  border-radius: 12px;
+  padding: 1rem;
+  margin-bottom: 1rem;
+}
+.section label {
+  display: block;
+  margin: 0.5rem 0 0.2rem 0;
+}
+.section input, .section select {
+  width: 100%;
+  padding: 0.5rem;
+  border-radius: 6px;
+  border: none;
+  margin-bottom: 0.5rem;
+  background: #111827;
+  color: #fff;
+}
+button {
+  background: #38bdf8;
+  color: #020617;
+  border: none;
+  border-radius: 10px;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  font-weight: 600;
+  margin-top: 0.5rem;
+}
+button.danger {
+  background: #ef4444;
+}
 
-    .top-nav {
-      position: sticky;
-      top: 0;
-      background: #111827;
-      border-bottom: 1px solid #1f2937;
-      padding: 1rem;
-      font-weight: 600;
-      color: #38bdf8;
-      text-align: center;
-      z-index: 100;
-    }
-
-    .container {
-      padding: 1rem;
-      display: flex;
-      flex-direction: column;
-      gap: 1rem;
-    }
-
-    h2 {
-      color: #38bdf8;
-      margin-bottom: 0.5rem;
-    }
-
-    .section {
-      background: #111827;
-      border: 1px solid #1f2937;
-      border-radius: 12px;
-      padding: 1rem;
-    }
-
-    label {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 0.5rem;
-    }
-
-    input[type="checkbox"] {
-      transform: scale(1.2);
-    }
-
-    button {
-      background: #38bdf8;
-      border: none;
-      padding: 0.5rem 1rem;
-      border-radius: 10px;
-      font-weight: 600;
-      cursor: pointer;
-      color: #020617;
-      margin-top: 0.5rem;
-    }
-
-    button:hover {
-      opacity: 0.85;
-    }
-  </style>
+/* Custom Modal */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.7);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+}
+.modal {
+  background: #1f2937;
+  padding: 1.5rem;
+  border-radius: 12px;
+  max-width: 400px;
+  width: 90%;
+  text-align: center;
+}
+.modal p {
+  margin-bottom: 1rem;
+}
+.modal button {
+  margin: 0 0.5rem;
+}
+</style>
 </head>
 <body>
 
-<div class="top-nav">Settings</div>
-
 <div class="container">
+  <h2>Settings</h2>
+
+  <!-- Account Management -->
   <div class="section">
-    <h2>Theme</h2>
-    <label>
-      Dark Mode
-      <input type="checkbox" id="darkModeToggle">
-    </label>
+    <h3>Account</h3>
+    <label for="username">Username</label>
+    <input type="text" id="username" placeholder="Enter new username">
+    <label for="password">Password</label>
+    <input type="password" id="password" placeholder="Enter new password">
+    <button id="saveAccountBtn">Save Account</button>
   </div>
 
+  <!-- Units Preferences -->
   <div class="section">
-    <h2>Account</h2>
-    <label>
-      Username:
-      <span id="usernameDisplay">Lucas</span>
-    </label>
-    <button id="logoutBtn">Logout</button>
+    <h3>Units</h3>
+    <label for="unitSelect">Preferred Units</label>
+    <select id="unitSelect">
+      <option value="kg">Kilograms (kg)</option>
+      <option value="lbs">Pounds (lbs)</option>
+    </select>
+    <button id="saveUnitsBtn">Save Units</button>
   </div>
 
+  <!-- Language Settings -->
   <div class="section">
-    <h2>Data</h2>
-    <button id="clearWorkoutsBtn" style="background:#ef4444; color:white;">Clear All Workouts</button>
+    <h3>Language</h3>
+    <label for="languageSelect">App Language</label>
+    <select id="languageSelect">
+      <option value="en">English</option>
+      <option value="jp">Japanese</option>
+      <option value="es">Spanish</option>
+      <option value="fr">French</option>
+    </select>
+    <button id="saveLanguageBtn">Save Language</button>
+  </div>
+
+  <!-- Privacy & Export -->
+  <div class="section">
+    <h3>Privacy & Backup</h3>
+    <button id="exportWorkoutsBtn">Export Workouts (CSV)</button>
+    <button id="clearWorkoutsBtn" class="danger">Clear All Workouts</button>
+  </div>
+</div>
+
+<!-- Custom Modal -->
+<div class="modal-overlay" id="modalOverlay">
+  <div class="modal" id="modalContent">
+    <p id="modalText">Message here</p>
+    <button id="modalOkBtn">OK</button>
+    <button id="modalCancelBtn" style="display:none;">Cancel</button>
   </div>
 </div>
 
 <!-- BOTTOM NAVIGATION -->
 <nav class="bottom-nav" style="position: fixed; bottom: 0; left: 0; right: 0; height: 60px; background: #111827; display: flex; justify-content: space-around; align-items: center; border-top: 1px solid #1f2937; z-index: 1000;">
-  
+
+  <!-- Home -->
   <button data-page="dashboard" onclick="location.href='dashboard.html'" style="background: none; border: none; display: flex; flex-direction: column; align-items: center; justify-content: center; color: #9ca3af;">
     <span class="icon">
       <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24" width="24" height="24">
@@ -115,6 +155,7 @@
     <span class="label" style="font-size: 0.75rem; margin-top: 2px;">Home</span>
   </button>
 
+  <!-- Workouts -->
   <button data-page="view" onclick="location.href='view.html'" style="background: none; border: none; display: flex; flex-direction: column; align-items: center; justify-content: center; color: #9ca3af;">
     <span class="icon">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="24" height="24">
@@ -125,7 +166,8 @@
     <span class="label" style="font-size: 0.75rem; margin-top: 2px;">Workouts</span>
   </button>
 
-  <button data-page="workout" class="create-btn" onclick="location.href='workout.html'" style="background: none; border: none; display: flex; flex-direction: column; align-items: center; justify-content: center; color: #38bdf8;">
+  <!-- Create Workout -->
+  <button data-page="workout" onclick="location.href='workout.html'" style="background: none; border: none; display: flex; flex-direction: column; align-items: center; justify-content: center; color: #38bdf8;">
     <span class="icon">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="32" height="32">
         <path fill-rule="evenodd" d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25ZM12.75 9a.75.75 0 0 0-1.5 0v2.25H9a.75.75 0 0 0 0 1.5h2.25V15a.75.75 0 0 0 1.5 0v-2.25H15a.75.75 0 0 0 0-1.5h-2.25V9Z" clip-rule="evenodd" />
@@ -133,6 +175,7 @@
     </span>
   </button>
 
+  <!-- Analytics -->
   <button data-page="analytics" onclick="location.href='analytics.html'" style="background: none; border: none; display: flex; flex-direction: column; align-items: center; justify-content: center; color: #9ca3af;">
     <span class="icon">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="24" height="24">
@@ -142,7 +185,8 @@
     <span class="label" style="font-size: 0.75rem; margin-top: 2px;">Analytics</span>
   </button>
 
-  <button data-page="settings" disabled style="background: none; border: none; display: flex; flex-direction: column; align-items: center; justify-content: center; color: #9ca3af;">
+  <!-- Settings -->
+  <button data-page="settings" onclick="location.href='settings.html'" style="background: none; border: none; display: flex; flex-direction: column; align-items: center; justify-content: center; color: #9ca3af;">
     <span class="icon">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="24" height="24">
         <path fill-rule="evenodd" d="M18.685 19.097A9.723 9.723 0 0 0 21.75 12c0-5.385-4.365-9.75-9.75-9.75S2.25 6.615 2.25 12a9.723 9.723 0 0 0 3.065 7.097A9.716 9.716 0 0 0 12 21.75a9.716 9.716 0 0 0 6.685-2.653Zm-12.54-1.285A7.486 7.486 0 0 1 12 15a7.486 7.486 0 0 1 5.855 2.812A8.224 8.224 0 0 1 12 20.25a8.224 8.224 0 0 1-5.855-2.438ZM15.75 9a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0Z" clip-rule="evenodd" />
@@ -152,36 +196,22 @@
   </button>
 </nav>
 
-<script>
-  // Dark mode toggle
-  const darkToggle = document.getElementById('darkModeToggle');
-  darkToggle.checked = localStorage.getItem('darkMode') === 'true';
-
-  darkToggle.addEventListener('change', () => {
-    document.body.style.background = darkToggle.checked ? '#020617' : '#f8f8f8';
-    document.body.style.color = darkToggle.checked ? '#f0f0f0' : '#111';
-    localStorage.setItem('darkMode', darkToggle.checked);
-  });
-
-  // Clear all workouts
-  const clearBtn = document.getElementById('clearWorkoutsBtn');
-  clearBtn.addEventListener('click', () => {
-    const users = JSON.parse(localStorage.getItem('users')) || [];
-    const user = users.find(u => u.username === 'Lucas');
-    if (user) {
-      user.workouts = [];
-      localStorage.setItem('users', JSON.stringify(users));
-      alert('All workouts cleared!');
-    }
-  });
-
-  // Logout button (simply removes user locally)
-  document.getElementById('logoutBtn').addEventListener('click', () => {
-    alert('Logging out...');
-    // For now, just reload page
-    window.location.href = 'dashboard.html';
-  });
-</script>
-
+<script src="settings.js"></script>
 </body>
+<!-- Toast Notification -->
+<div id="toast" style="
+  position: fixed;
+  bottom: 80px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #38bdf8;
+  color: #020617;
+  padding: 0.5rem 1rem;
+  border-radius: 12px;
+  display: none;
+  font-weight: 600;
+  z-index: 10000;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+"></div>
+
 </html>

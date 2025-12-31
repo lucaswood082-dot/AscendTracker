@@ -1,108 +1,110 @@
-// ===== SETTINGS.JS =====
+document.addEventListener("DOMContentLoaded", () => {
+  const users = JSON.parse(localStorage.getItem("users")) || [];
+  const user = users[0] || { username: "Lucas", workouts: [], units: "kg", language: "en" };
 
-// Grab elements
-const darkModeToggle = document.getElementById("darkModeToggle");
-const hapticsToggle = document.getElementById("hapticsToggle");
-const animationsToggle = document.getElementById("animationsToggle");
-const autoSaveToggle = document.getElementById("autoSaveToggle");
-const defaultRestTime = document.getElementById("defaultRestTime");
-const unitsSelect = document.getElementById("unitsSelect");
-const exportDataBtn = document.getElementById("exportData");
-const clearDataBtn = document.getElementById("clearData");
-
-// ===== LOAD SETTINGS =====
-function loadSettings() {
-  if (localStorage.getItem("darkMode") === "true") {
-    darkModeToggle.checked = true;
-    document.body.classList.add("dark-mode");
-  }
-
-  if (localStorage.getItem("haptics") === "true") {
-    hapticsToggle.checked = true;
-  }
-
-  if (localStorage.getItem("animations") === "true") {
-    animationsToggle.checked = true;
-  }
-
-  if (localStorage.getItem("autoSaveDrafts") === "true") {
-    autoSaveToggle.checked = true;
-  }
-
-  if (localStorage.getItem("defaultRestTime")) {
-    defaultRestTime.value = localStorage.getItem("defaultRestTime");
-  }
-
-  if (localStorage.getItem("units")) {
-    unitsSelect.value = localStorage.getItem("units");
-  }
+  function showToast(message, duration = 2000) {
+  const toast = document.getElementById("toast");
+  toast.textContent = message;
+  toast.style.display = "block";
+  toast.style.opacity = "1";
+  setTimeout(() => {
+    toast.style.transition = "opacity 0.5s ease";
+    toast.style.opacity = "0";
+    setTimeout(() => {
+      toast.style.display = "none";
+      toast.style.transition = "";
+    }, 500);
+  }, duration);
 }
 
-// ===== SAVE SETTINGS =====
-function saveSetting(key, value) {
-  localStorage.setItem(key, value);
-}
+  // Pre-fill fields
+  document.getElementById("username").value = user.username;
+  document.getElementById("unitSelect").value = user.units || "kg";
+  document.getElementById("languageSelect").value = user.language || "en";
 
-// ===== DARK MODE =====
-darkModeToggle.addEventListener("change", () => {
-  if (darkModeToggle.checked) {
-    document.body.classList.add("dark-mode");
-    saveSetting("darkMode", "true");
-  } else {
-    document.body.classList.remove("dark-mode");
-    saveSetting("darkMode", "false");
+  const modalOverlay = document.getElementById("modalOverlay");
+  const modalText = document.getElementById("modalText");
+  const modalOkBtn = document.getElementById("modalOkBtn");
+  const modalCancelBtn = document.getElementById("modalCancelBtn");
+
+  function showModal(message, options = {}) {
+    modalText.textContent = message;
+    modalOverlay.style.display = "flex";
+    modalOkBtn.textContent = options.okText || "OK";
+    modalCancelBtn.style.display = options.showCancel ? "inline-block" : "none";
+    return new Promise(resolve => {
+      modalOkBtn.onclick = () => { modalOverlay.style.display = "none"; resolve(true); };
+      modalCancelBtn.onclick = () => { modalOverlay.style.display = "none"; resolve(false); };
+    });
   }
-});
 
-// ===== HAPTICS =====
-hapticsToggle.addEventListener("change", () => {
-  saveSetting("haptics", hapticsToggle.checked ? "true" : "false");
-});
-
-// ===== ANIMATIONS =====
-animationsToggle.addEventListener("change", () => {
-  saveSetting("animations", animationsToggle.checked ? "true" : "false");
-});
-
-// ===== AUTO-SAVE DRAFTS =====
-autoSaveToggle.addEventListener("change", () => {
-  saveSetting("autoSaveDrafts", autoSaveToggle.checked ? "true" : "false");
-});
-
-// ===== DEFAULT REST TIME =====
-defaultRestTime.addEventListener("change", () => {
-  let val = parseInt(defaultRestTime.value);
-  if (isNaN(val) || val < 10) val = 10;
-  if (val > 300) val = 300;
-  defaultRestTime.value = val;
-  saveSetting("defaultRestTime", val);
-});
-
-// ===== UNITS =====
-unitsSelect.addEventListener("change", () => {
-  saveSetting("units", unitsSelect.value);
-});
-
-// ===== EXPORT DATA =====
-exportDataBtn.addEventListener("click", () => {
-  const workoutsData = localStorage.getItem("workouts") || "[]";
-  const blob = new Blob([workoutsData], { type: "application/json" });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement("a");
-  a.href = url;
-  a.download = "workouts.json";
-  a.click();
-  URL.revokeObjectURL(url);
-  alert("Workouts exported!");
-});
-
-// ===== CLEAR DATA =====
-clearDataBtn.addEventListener("click", () => {
-  if (confirm("Are you sure you want to clear all workouts and settings? This cannot be undone.")) {
-    localStorage.clear();
-    location.reload();
+  function saveUser() {
+    if (!users.length) users.push(user);
+    localStorage.setItem("users", JSON.stringify(users));
   }
-});
 
-// ===== INITIALIZE =====
-loadSettings();
+  // Save Account
+  document.getElementById("saveAccountBtn").addEventListener("click", async () => {
+    user.username = document.getElementById("username").value.trim() || user.username;
+    const newPassword = document.getElementById("password").value;
+    if (newPassword) user.password = newPassword;
+    saveUser();
+    document.getElementById("password").value = "";
+  showToast("Account updated successfully!");
+  });
+
+  // Save Units
+  document.getElementById("saveUnitsBtn").addEventListener("click", async () => {
+    user.units = document.getElementById("unitSelect").value;
+    saveUser();
+    await showModal(`Units saved as ${user.units.toUpperCase()}`);
+  });
+
+  // Save Language
+  document.getElementById("saveLanguageBtn").addEventListener("click", async () => {
+    user.language = document.getElementById("languageSelect").value;
+    saveUser();
+    await showModal(`Language saved as ${user.language.toUpperCase()}`);
+  });
+
+  // Export workouts as CSV
+  document.getElementById("exportWorkoutsBtn").addEventListener("click", () => {
+    if (!user.workouts || !user.workouts.length) {
+      showModal("No workouts to export!");
+      return;
+    }
+
+    let csvContent = "data:text/csv;charset=utf-8,";
+    csvContent += "Workout Name,Date,Exercise,Unilateral,Reps Left,Reps Right,Reps,Weight\n";
+
+    user.workouts.forEach(w => {
+      w.exercises.forEach(e => {
+        e.sets.forEach(s => {
+          if (e.unilateral) {
+            csvContent += `${w.name},${w.date},${e.name},Yes,${s.leftReps},${s.rightReps},,${s.weight}${user.units}\n`;
+          } else {
+            csvContent += `${w.name},${w.date},${e.name},No,, ,${s.reps},${s.weight}${user.units}\n`;
+          }
+        });
+      });
+    });
+
+    const encodedUri = encodeURI(csvContent);
+    const link = document.createElement("a");
+    link.setAttribute("href", encodedUri);
+    link.setAttribute("download", "workouts_export.csv");
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  });
+
+  // Clear all workouts
+  document.getElementById("clearWorkoutsBtn").addEventListener("click", async () => {
+    const confirmClear = await showModal("Are you sure you want to delete all workouts?", { showCancel: true });
+    if (confirmClear) {
+      user.workouts = [];
+      saveUser();
+      showModal("All workouts cleared!");
+    }
+  });
+});
