@@ -1,7 +1,7 @@
 document.addEventListener("DOMContentLoaded", () => {
 
   console.log("workouts.js loaded");
-
+  
   const exerciseList = document.getElementById("exerciseList");
   const addExerciseBtn = document.getElementById("addExercise");
   const saveWorkoutBtn = document.getElementById("saveWorkout");
@@ -265,6 +265,8 @@ saveWorkoutBtn.addEventListener("click", () => {
   document.getElementById("exerciseList").innerHTML = "";
   document.getElementById("workoutName").value = "";
 });
+localStorage.removeItem(DRAFT_KEY);
+
 
   /* ---------------- AUTO SAVE ---------------- */
   document.addEventListener("input", saveDraft);

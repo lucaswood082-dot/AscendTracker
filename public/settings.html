@@ -1,94 +1,85 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <!-- Prefetch other pages to make navigation faster -->
-<link rel="prefetch" href="dashboard.html">
-<link rel="prefetch" href="view.html">
-<link rel="prefetch" href="workout.html">
-<link rel="prefetch" href="analytics.html">
-<link rel="prefetch" href="settings.html">
-<link rel="prefetch" href="planner.html">
-
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Settings</title>
-  <button data-page="settings" onclick="location.href='settings.html'">
-  <span class="icon"> ...svg... </span>
-  <span class="label">Settings</span>
-</button>
 
-
-  <!-- MAIN APP STYLES -->
   <link rel="stylesheet" href="style.css" />
 
-  <!-- PAGE-SPECIFIC STYLES ONLY -->
   <style>
+    /* === PAGE STYLING === */
     body.settings-page {
       background: #111827;
       color: #fff;
       font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
       margin: 0;
-      padding-bottom: 100px; /* space for bottom nav */
+      padding: 1rem;
+      min-height: 100vh;
+      overflow-y: auto;
+      display: flex;
+      justify-content: center;
     }
 
-    .container {
-      padding: 1rem;
-      max-width: 600px;
-      margin: 0 auto;
+    .settings-container {
+      width: 100%;
+      max-width: 480px;
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
     }
 
     h2 {
       color: #38bdf8;
       margin-bottom: 1rem;
-    }
-
-    .section {
-      background: #1f2937;
-      border-radius: 14px;
-      padding: 1rem;
-      margin-bottom: 1rem;
-    }
-
-    .section h3 {
-      margin-top: 0;
-      margin-bottom: 0.75rem;
-    }
-
-    label {
-      display: block;
-      margin: 0.5rem 0 0.25rem;
-      font-size: 0.9rem;
-      color: #d1d5db;
-    }
-
-    input,
-    select {
-      width: 100%;
-      padding: 0.6rem;
-      border-radius: 8px;
-      border: none;
-      background: #111827;
-      color: #fff;
-      margin-bottom: 0.5rem;
-    }
-
-    button {
-      background: #38bdf8;
-      color: #020617;
-      border: none;
-      border-radius: 10px;
-      padding: 0.55rem 1rem;
+      font-size: 1.8rem;
       font-weight: 600;
-      cursor: pointer;
+      text-align: center;
     }
 
-    button.danger {
-      background: #ef4444;
+    /* EACH ROW IS NOW A CLICKABLE BUTTON */
+    .setting-row {
+      background: #1f2937;
+      border-radius: 10px;
+      padding: 0.75rem 1rem;
+      cursor: pointer;
+      font-size: 1rem;
+      font-weight: 500;
+      color: #d1d5db;
+      border: 1px solid transparent;
+      transition: 0.2s ease;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .setting-row:hover {
+      border-color: #38bdf8;
+      background: #272f3b;
       color: #fff;
     }
 
-    button + button {
-      margin-left: 0.5rem;
+    .setting-row .label {
+      flex: 1;
+    }
+
+    .setting-row .arrow {
+      font-size: 1rem;
+      color: #9ca3af;
+      transition: 0.2s ease;
+    }
+
+    .setting-row:hover .arrow {
+      color: #38bdf8;
+    }
+
+    /* HEADER ROWS */
+    .settings-header {
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: #38bdf8;
+      margin-top: 1.5rem;
+      margin-bottom: 0.5rem;
     }
 
     /* MODAL */
@@ -105,7 +96,7 @@
     .modal {
       background: #1f2937;
       padding: 1.25rem;
-      border-radius: 14px;
+      border-radius: 12px;
       max-width: 400px;
       width: 90%;
       text-align: center;
@@ -115,10 +106,9 @@
       margin-bottom: 1rem;
     }
 
-    /* TOAST */
     #toast {
       position: fixed;
-      bottom: 100px;
+      bottom: 80px;
       left: 50%;
       transform: translateX(-50%);
       background: #38bdf8;
@@ -134,54 +124,66 @@
 </head>
 
 <body class="settings-page">
-
-  <div class="container">
+  <div class="settings-container">
     <h2>Settings</h2>
 
-    <!-- ACCOUNT -->
-    <div class="section">
-      <h3>Account</h3>
-      <label for="username">Username</label>
-      <input id="username" type="text" placeholder="Enter new username" />
-
-      <label for="password">Password</label>
-      <input id="password" type="password" placeholder="Enter new password" />
-
-      <button id="saveAccountBtn">Save Account</button>
+    <!-- ACCOUNT SECTION -->
+    <div class="settings-header">Account</div>
+    <div class="setting-row" id="resetPasswordBtn">
+      <span class="label">Reset Password</span>
+      <span class="arrow">›</span>
+    </div>
+    <div class="setting-row" id="changeEmailBtn">
+      <span class="label">Change Email</span>
+      <span class="arrow">›</span>
+    </div>
+    <div class="setting-row" id="profilePictureBtn">
+      <span class="label">Profile Picture</span>
+      <span class="arrow">›</span>
+    </div>
+    <div class="setting-row" id="deleteAccountBtn">
+      <span class="label">Delete Account</span>
+      <span class="arrow">›</span>
+    </div>
+    <div class="setting-row" id="twoFactorBtn">
+      <span class="label">Two-Factor Authentication</span>
+      <span class="arrow">›</span>
     </div>
 
-    <!-- UNITS -->
-    <div class="section">
-      <h3>Units</h3>
-      <label for="unitSelect">Preferred Units</label>
-      <select id="unitSelect">
-        <option value="kg">Kilograms (kg)</option>
-        <option value="lbs">Pounds (lbs)</option>
-      </select>
-
-      <button id="saveUnitsBtn">Save Units</button>
+    <!-- PREFERENCES SECTION -->
+    <div class="settings-header">Preferences</div>
+    <div class="setting-row" id="unitsBtn">
+      <span class="label">Preferred Units</span>
+      <span class="arrow">›</span>
+    </div>
+    <div class="setting-row" id="languageBtn">
+      <span class="label">App Language</span>
+      <span class="arrow">›</span>
+    </div>
+    <div class="setting-row" id="themeBtn">
+      <span class="label">Theme / Color Scheme</span>
+      <span class="arrow">›</span>
     </div>
 
-    <!-- LANGUAGE -->
-    <div class="section">
-      <h3>Language</h3>
-      <label for="languageSelect">App Language</label>
-      <select id="languageSelect">
-        <option value="en">English</option>
-        <option value="jp">Japanese</option>
-        <option value="es">Spanish</option>
-        <option value="fr">French</option>
-      </select>
-
-      <button id="saveLanguageBtn">Save Language</button>
+    <!-- APP INFO / UTILITIES SECTION -->
+    <div class="settings-header">App Info & Utilities</div>
+    <div class="setting-row" id="workoutHistoryBtn">
+      <span class="label">Workout History</span>
+      <span class="arrow">›</span>
+    </div>
+    <div class="setting-row" id="exportWorkoutsBtn">
+      <span class="label">Export Workouts</span>
+      <span class="arrow">›</span>
+    </div>
+    <div class="setting-row" id="termsBtn">
+      <span class="label">Terms of Service / Privacy Policy</span>
+      <span class="arrow">›</span>
+    </div>
+    <div class="setting-row" id="helpBtn">
+      <span class="label">Help & Support / FAQ</span>
+      <span class="arrow">›</span>
     </div>
 
-    <!-- PRIVACY -->
-    <div class="section">
-      <h3>Privacy & Backup</h3>
-      <button id="exportWorkoutsBtn">Export Workouts (CSV)</button>
-      <button id="clearWorkoutsBtn" class="danger">Clear All Workouts</button>
-    </div>
   </div>
 
   <!-- MODAL -->
@@ -192,77 +194,75 @@
       <button id="modalCancelBtn" style="display:none;">Cancel</button>
     </div>
   </div>
+  <style>
+/* MODAL - CENTERED LOWER RECTANGLE */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.3); /* semi-transparent */
+  display: none;
+  align-items: flex-end;       /* align lower */
+  justify-content: center;     /* center horizontally */
+  z-index: 5000;
+  padding-bottom: 10vh;        /* distance from bottom */
+}
+
+.modal {
+  background: #1f2937;
+  padding: 1.25rem 1.5rem;
+  border-radius: 12px;
+  width: 90%;
+  max-width: 400px;
+  text-align: center;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.5);
+  transition: transform 0.3s ease, opacity 0.3s ease;
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+.modal.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.modal p {
+  margin-bottom: 1rem;
+}
+
+#modalOkBtn,
+#modalCancelBtn {
+  padding: 0.5rem 1rem;
+  border-radius: 10px;
+  border: none;
+  font-weight: 600;
+  cursor: pointer;
+  margin: 0 0.25rem;
+  min-width: 80px;
+}
+
+#modalOkBtn { background: #38bdf8; color: #020617; }
+#modalCancelBtn { background: #ef4444; color: #fff; }
+
+#toast {
+  position: fixed;
+  bottom: 80px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #38bdf8;
+  color: #020617;
+  padding: 0.5rem 1rem;
+  border-radius: 12px;
+  display: none;
+  font-weight: 600;
+  z-index: 6000;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+}
+</style>
+
 
   <!-- TOAST -->
   <div id="toast"></div>
 
- <!-- BOTTOM NAVIGATION -->
-<nav class="bottom-nav" style="position: fixed; bottom: 0; left: 0; right: 0; height: 60px; background: #111827; display: flex; justify-content: space-around; align-items: center; border-top: 1px solid #1f2937; z-index: 1000;">
-
-  <!-- Home -->
-  <button data-page="dashboard" onclick="location.href='dashboard.html'" style="background: none; border: none; display: flex; flex-direction: column; align-items: center; justify-content: center; color: #9ca3af;">
-    <span class="icon">
-      <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24" width="24" height="24">
-        <path d="M11.47 3.841a.75.75 0 0 1 1.06 0l8.69 8.69a.75.75 0 1 0 1.06-1.061l-8.689-8.69a2.25 2.25 0 0 0-3.182 0l-8.69 8.69a.75.75 0 1 0 1.061 1.06l8.69-8.689Z" />
-        <path d="m12 5.432 8.159 8.159c.03.03.06.058.091.086v6.198c0 1.035-.84 1.875-1.875 1.875H15a.75.75 0 0 1-.75-.75v-4.5a.75.75 0 0 0-.75-.75h-3a.75.75 0 0 0-.75.75V21a.75.75 0 0 1-.75.75H5.625a1.875 1.875 0 0 1-1.875-1.875v-6.198a2.29 2.29 0 0 0 .091-.086L12 5.432Z" />
-      </svg>
-    </span>
-    <span class="label" style="font-size: 0.75rem; margin-top: 2px;">Home</span>
-  </button>
-
-  <!-- Workouts -->
-  <button data-page="view" onclick="location.href='view.html'" style="background: none; border: none; display: flex; flex-direction: column; align-items: center; justify-content: center; color: #9ca3af;">
-    <span class="icon">
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="24" height="24">
-        <path fill-rule="evenodd" d="M7.502 6h7.128A3.375 3.375 0 0 1 18 9.375v9.375a3 3 0 0 0 3-3V6.108c0-1.505-1.125-2.811-2.664-2.94a48.972 48.972 0 0 0-.673-.05A3 3 0 0 0 15 1.5h-1.5a3 3 0 0 0-2.663 1.618c-.225.015-.45.032-.673.05C8.662 3.295 7.554 4.542 7.502 6ZM13.5 3A1.5 1.5 0 0 0 12 4.5h4.5A1.5 1.5 0 0 0 15 3h-1.5Z" clip-rule="evenodd" />
-        <path fill-rule="evenodd" d="M3 9.375C3 8.339 3.84 7.5 4.875 7.5h9.75c1.036 0 1.875.84 1.875 1.875v11.25c0 1.035-.84 1.875-1.875 1.875h-9.75A1.875 1.875 0 0 1 3 20.625V9.375Zm9.586 4.594a.75.75 0 0 0-1.172-.938l-2.476 3.096-.908-.907a.75.75 0 0 0-1.06 1.06l1.5 1.5a.75.75 0 0 0 1.116-.062l3-3.75Z" clip-rule="evenodd" />
-      </svg>
-    </span>
-    <span class="label" style="font-size: 0.75rem; margin-top: 2px;">Workouts</span>
-  </button>
-
-  <!-- Create Workout -->
-  <button data-page="workout" onclick="location.href='workout.html'" style="background: none; border: none; display: flex; flex-direction: column; align-items: center; justify-content: center; color: #38bdf8;">
-    <span class="icon">
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="32" height="32">
-        <path fill-rule="evenodd" d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25ZM12.75 9a.75.75 0 0 0-1.5 0v2.25H9a.75.75 0 0 0 0 1.5h2.25V15a.75.75 0 0 0 1.5 0v-2.25H15a.75.75 0 0 0 0-1.5h-2.25V9Z" clip-rule="evenodd" />
-      </svg>
-    </span>
-  </button>
-
-  <!-- Analytics -->
-  <button data-page="analytics" onclick="location.href='analytics.html'" style="background: none; border: none; display: flex; flex-direction: column; align-items: center; justify-content: center; color: #9ca3af;">
-    <span class="icon">
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="24" height="24">
-        <path fill-rule="evenodd" d="M3 6a3 3 0 0 1 3-3h12a3 3 0 0 1 3 3v12a3 3 0 0 1-3 3H6a3 3 0 0 1-3-3V6Zm4.5 7.5a.75.75 0 0 1 .75.75v2.25a.75.75 0 0 1-1.5 0v-2.25a.75.75 0 0 1 .75-.75Zm3.75-1.5a.75.75 0 0 0-1.5 0v4.5a.75.75 0 0 0 1.5 0V12Zm2.25-3a.75.75 0 0 1 .75.75v6.75a.75.75 0 0 1-1.5 0V9.75A.75.75 0 0 1 13.5 9Zm3.75-1.5a.75.75 0 0 0-1.5 0v9a.75.75 0 0 0 1.5 0v-9Z" clip-rule="evenodd" />
-      </svg>
-    </span>
-    <span class="label" style="font-size: 0.75rem; margin-top: 2px;">Analytics</span>
-  </button>
-
-  <!-- Settings -->
-  <button data-page="settings" onclick="location.href='settings.html'" style="background: none; border: none; display: flex; flex-direction: column; align-items: center; justify-content: center; color: #9ca3af;">
-    <span class="icon">
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="24" height="24">
-        <path fill-rule="evenodd" d="M18.685 19.097A9.723 9.723 0 0 0 21.75 12c0-5.385-4.365-9.75-9.75-9.75S2.25 6.615 2.25 12a9.723 9.723 0 0 0 3.065 7.097A9.716 9.716 0 0 0 12 21.75a9.716 9.716 0 0 0 6.685-2.653Zm-12.54-1.285A7.486 7.486 0 0 1 12 15a7.486 7.486 0 0 1 5.855 2.812A8.224 8.224 0 0 1 12 20.25a8.224 8.224 0 0 1-5.855-2.438ZM15.75 9a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0Z" clip-rule="evenodd" />
-      </svg>
-    </span>
-    <span class="label" style="font-size: 0.75rem; margin-top: 2px;">Settings</span>
-  </button>
-
   <script src="settings.js"></script>
-  
 </body>
-<script>
-  // Highlight the active bottom nav button
-  const currentPage = location.pathname.split("/").pop();
-
-  document.querySelectorAll(".bottom-nav button").forEach(btn => {
-    // btn.dataset.page should match the filename without .html
-    if (btn.dataset.page + ".html" === currentPage) {
-      btn.classList.add("active");
-    }
-  });
-</script>
-
 </html>
