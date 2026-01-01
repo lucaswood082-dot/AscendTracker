@@ -41,30 +41,30 @@ document.addEventListener("DOMContentLoaded", () => {
   function saveDraft() {
     const draft = {
       workoutName: document.getElementById("workoutName")?.value || "",
-      exercises: []
+      exercises: exercises
     };
 
-    document.querySelectorAll(".exercise-item").forEach(li => {
-      const name = li.querySelector(".exercise-name")?.value || "";
+    // Update values from UI before saving
+    document.querySelectorAll(".exercise-item").forEach((li, idx) => {
       const unilateral = li.querySelector(".unilateral-toggle")?.checked || false;
+      exercises[idx].name = li.querySelector(".exercise-name")?.value || "";
+      exercises[idx].unilateral = unilateral;
+      exercises[idx].sets = [];
 
-      const sets = [];
       li.querySelectorAll(".sets-list li").forEach(setLi => {
         if (unilateral) {
-          sets.push({
+          exercises[idx].sets.push({
             leftReps: setLi.querySelector(".set-left")?.value || "",
             rightReps: setLi.querySelector(".set-right")?.value || "",
             weight: setLi.querySelector(".set-weight")?.value || ""
           });
         } else {
-          sets.push({
+          exercises[idx].sets.push({
             reps: setLi.querySelector(".set-reps")?.value || "",
             weight: setLi.querySelector(".set-weight")?.value || ""
           });
         }
       });
-
-      draft.exercises.push({ name, unilateral, sets });
     });
 
     localStorage.setItem(DRAFT_KEY, JSON.stringify(draft));
@@ -197,76 +197,69 @@ document.addEventListener("DOMContentLoaded", () => {
   confirmClearBtn.addEventListener("click", () => {
     exercises = [];
     exerciseList.innerHTML = "";
-    saveDraft();
+    localStorage.removeItem(DRAFT_KEY); // clear draft
     clearModal.classList.add("hidden");
   });
 
   /* ---------------- SAVE WORKOUT ---------------- */
-saveWorkoutBtn.addEventListener("click", () => {
-  const workoutName = document.getElementById("workoutName").value.trim() || "Workout";
+  saveWorkoutBtn.addEventListener("click", () => {
+    const workoutName = document.getElementById("workoutName").value.trim() || "Workout";
 
-  exercises = [];
+    exercises = [];
 
-  let tonnage = 0;
-  let totalSets = 0;
-  let totalReps = 0;
+    let tonnage = 0;
+    let totalSets = 0;
+    let totalReps = 0;
 
-  document.querySelectorAll(".exercise-item").forEach(li => {
-    const name = li.querySelector(".exercise-name").value || "";
-    const unilateral = li.querySelector(".unilateral-toggle").checked;
-    const sets = [];
+    document.querySelectorAll(".exercise-item").forEach(li => {
+      const name = li.querySelector(".exercise-name").value || "";
+      const unilateral = li.querySelector(".unilateral-toggle").checked;
+      const sets = [];
 
-    li.querySelectorAll(".sets-list li").forEach(setLi => {
-      totalSets++;
+      li.querySelectorAll(".sets-list li").forEach(setLi => {
+        totalSets++;
 
-      if (unilateral) {
-        const l = +setLi.querySelector(".set-left").value || 0;
-        const r = +setLi.querySelector(".set-right").value || 0;
-        const w = +setLi.querySelector(".set-weight").value || 0;
-        const reps = l + r;
+        if (unilateral) {
+          const l = +setLi.querySelector(".set-left").value || 0;
+          const r = +setLi.querySelector(".set-right").value || 0;
+          const w = +setLi.querySelector(".set-weight").value || 0;
+          const reps = l + r;
 
-        totalReps += reps;
-        tonnage += reps * w;
-        sets.push({ leftReps: l, rightReps: r, weight: w });
-      } else {
-        const reps = +setLi.querySelector(".set-reps").value || 0;
-        const w = +setLi.querySelector(".set-weight").value || 0;
+          totalReps += reps;
+          tonnage += reps * w;
+          sets.push({ leftReps: l, rightReps: r, weight: w });
+        } else {
+          const reps = +setLi.querySelector(".set-reps").value || 0;
+          const w = +setLi.querySelector(".set-weight").value || 0;
 
-        totalReps += reps;
-        tonnage += reps * w;
-        sets.push({ reps, weight: w });
-      }
+          totalReps += reps;
+          tonnage += reps * w;
+          sets.push({ reps, weight: w });
+        }
+      });
+
+      exercises.push({ name, unilateral, sets });
     });
 
-    exercises.push({ name, unilateral, sets });
+    const storedWorkouts = JSON.parse(localStorage.getItem("workouts") || "[]");
+    storedWorkouts.push({
+      name: workoutName,
+      date: new Date().toISOString().split("T")[0],
+      exercises,
+      tonnage,
+      totalSets,
+      totalReps
+    });
+
+    localStorage.setItem("workouts", JSON.stringify(storedWorkouts));
+    showPopup("Workout Saved!");
+
+    // Clear draft but keep exercises in memory until page reload
+    localStorage.removeItem(DRAFT_KEY);
+    exercises = [];
+    exerciseList.innerHTML = "";
+    document.getElementById("workoutName").value = "";
   });
-
-  // Load existing workouts
-  const storedWorkouts = JSON.parse(localStorage.getItem("workouts") || "[]");
-
-  // Add new workout
-  storedWorkouts.push({
-    name: workoutName,
-    date: new Date().toISOString().split("T")[0],
-    exercises,
-    tonnage,
-    totalSets,
-    totalReps
-  });
-
-  // Save back to localStorage
-  localStorage.setItem("workouts", JSON.stringify(storedWorkouts));
-
-  // Show "Workout Saved!" popup
-  showPopup("Workout Saved!");
-
-  // Reset form
-  exercises = [];
-  document.getElementById("exerciseList").innerHTML = "";
-  document.getElementById("workoutName").value = "";
-});
-localStorage.removeItem(DRAFT_KEY);
-
 
   /* ---------------- AUTO SAVE ---------------- */
   document.addEventListener("input", saveDraft);

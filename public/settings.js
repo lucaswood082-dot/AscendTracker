@@ -61,7 +61,32 @@ function addButtonListener(btn, message) {
   btn.addEventListener("click", () => openModal(message, { showCancel: true, okCallback: () => showToast(message + " OK clicked!") }));
 }
 
-addButtonListener(buttons.resetPasswordBtn, "Reset your password?");
+buttons.resetPasswordBtn.addEventListener("click", () => {
+  openModal("", {
+    showCancel: true,
+    okCallback: () => {
+      const newPassword = document.getElementById("resetPasswordInput").value;
+      if (newPassword) {
+        showToast("Password reset successfully!");
+      } else {
+        showToast("Please enter a new password.");
+      }
+    }
+  });
+
+  // Customize modal content
+  modalText.innerHTML = `
+    <p>Enter your new password below:</p>
+    <input type="password" id="resetPasswordInput" placeholder="New password" style="
+      width: 90%;
+      padding: 0.5rem;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      margin-top: 0.5rem;
+    ">
+  `;
+});
+
 addButtonListener(buttons.changeEmailBtn, "Change your email address?");
 addButtonListener(buttons.profilePictureBtn, "Edit your profile picture?");
 addButtonListener(buttons.deleteAccountBtn, "Delete your account?");
