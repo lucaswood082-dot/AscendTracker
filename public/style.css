@@ -1,3 +1,18 @@
+/* ===== THEME COLORS ===== */
+body.dark-theme {
+  --bg-main: #111827;
+  --bg-card: #1f2937;
+  --text-main: #ffffff;
+  --accent: #38bdf8;
+}
+
+body.light-theme {
+  --bg-main: #eaf2ff;     /* light blue */
+  --bg-card: #ffffff;
+  --text-main: #0f172a;
+  --accent: #2563eb;
+}
+
 /* ===== RESET ===== */
 * {
   box-sizing: border-box;
@@ -1986,6 +2001,252 @@ select:active {
 .bottom-nav button.active .icon,
 .bottom-nav button.active .label {
   color: #38bdf8; /* highlight color */
+}
+/* REMOVE browser default styling completely */
+#newPassword,
+#newUsername {
+  -webkit-appearance: none;
+  appearance: none;
+
+  background-color: #1e1e1e !important;
+  color: #ffffff !important;
+
+  border: 1px solid #333 !important;
+  border-radius: 8px;
+
+  padding: 12px;
+  font-size: 16px;
+  width: 100%;
+  box-sizing: border-box;
+
+  outline: none;
+  box-shadow: none !important;
+  background-clip: padding-box;
+}
+
+/* Remove Safari password inner shadow */
+#newPassword {
+  -webkit-text-security: disc;
+}
+
+/* Placeholder */
+#newPassword::placeholder,
+#newUsername::placeholder {
+  color: #9a9a9a !important;
+}
+
+/* Focus */
+#newPassword:focus,
+#newUsername:focus {
+  border-color: #4caf50 !important;
+  box-shadow: none !important;
+}
+/* THEMES */
+body.dark-theme {
+  background: #111827;
+  color: #ffffff;
+}
+
+body.light-theme {
+  background: #f8fafc;
+  color: #020617;
+}
+
+/* Make cards still look good in light mode */
+body.light-theme .setting-row {
+  background: #ffffff;
+  color: #020617;
+  border: 1px solid #e5e7eb;
+}
+
+body.light-theme .modal {
+  background: #ffffff;
+  color: #020617;
+}
+
+body.light-theme .popup-back-btn {
+  background: #e5e7eb;
+  color: #020617;
+}
+/* LIGHT THEME - GLOBAL */
+body.light-theme {
+  background: #eaf3ff;
+  color: #0f172a;
+}
+
+/* Settings container & modals */
+body.light-theme .settings-container,
+body.light-theme .modal {
+  background: #ffffff;
+  color: #0f172a;
+  border: 1px solid #dbeafe;
+}
+
+/* All popup buttons */
+body.light-theme .popup-action-btn {
+  background: #3b82f6 !important;
+  color: #ffffff !important;
+  border-color: #3b82f6 !important;
+}
+
+body.light-theme .popup-back-btn {
+  background: #e0edff !important;
+  color: #1e3a8a !important;
+  border-color: #3b82f6 !important;
+}
+
+/* Inputs inside modals / forms */
+body.light-theme input,
+body.light-theme .popup-input {
+  background: #f8fbff !important;
+  color: #0f172a !important;
+  border: 1px solid #bfdbfe !important;
+}
+
+/* Labels */
+body.light-theme label {
+  color: #1e3a8a !important;
+}
+
+/* Toast */
+body.light-theme #toast {
+  background: #3b82f6 !important;
+  color: #ffffff !important;
+}
+
+/* Arrow icons in settings rows */
+body.light-theme .setting-row .arrow {
+  color: #1e3a8a !important;
+}
+
+/* Settings row hover for light theme */
+body.light-theme .setting-row:hover {
+  background: #dbeafe !important;
+  color: #1e3a8a !important;
+  border-color: #3b82f6 !important;
+}
+/* =====================================================
+   GLOBAL THEME OVERRIDE (SAFE – DO NOT EDIT ABOVE)
+   ===================================================== */
+
+/* DARK MODE (default – your current look) */
+body.dark-theme {
+  background-color: #0f172a !important;
+  color: #e5e7eb !important;
+}
+
+body.dark-theme .card,
+body.dark-theme .modal-box,
+body.dark-theme .confirm-box,
+body.dark-theme .ui-confirm-box,
+body.dark-theme input,
+body.dark-theme textarea,
+body.dark-theme select {
+  background-color: #020617 !important;
+  color: #e5e7eb !important;
+  border-color: #1f2937 !important;
+}
+
+/* LIGHT MODE (light blue theme) */
+body.light-theme {
+  background-color: #eaf2ff !important;
+  color: #0f172a !important;
+}
+
+body.light-theme .card,
+body.light-theme .modal-box,
+body.light-theme .confirm-box,
+body.light-theme .ui-confirm-box {
+  background-color: #ffffff !important;
+  color: #0f172a !important;
+  border-color: #c7d2fe !important;
+}
+
+body.light-theme input,
+body.light-theme textarea,
+body.light-theme select {
+  background-color: #f8fbff !important;
+  color: #0f172a !important;
+  border-color: #c7d2fe !important;
+}
+
+/* Buttons */
+body.light-theme button:not(.danger):not(.btn-danger) {
+  background-color: #2563eb !important;
+  color: #ffffff !important;
+}
+
+/* Secondary buttons */
+body.light-theme .secondary,
+body.light-theme .btn-secondary {
+  background-color: #e0e7ff !important;
+  color: #1e3a8a !important;
+}
+
+/* Bottom nav */
+body.light-theme .bottom-nav {
+  background-color: #dbeafe !important;
+}
+
+body.light-theme .bottom-nav button {
+  color: #475569 !important;
+}
+
+body.light-theme .bottom-nav button.active {
+  color: #2563eb !important;
+}
+body.dark-theme {
+  background-color: #111827;
+  color: white;
+}
+
+body.light-theme {
+  background-color: #dbeafe; /* LIGHT BLUE */
+  color: #020617;
+}
+/* ===============================
+   LIGHT THEME OVERRIDES (FINAL)
+   =============================== */
+
+body.light-theme {
+  background-color: #eaf2ff !important;
+  color: #020617;
+}
+
+/* Cards */
+body.light-theme .card,
+body.light-theme .exercise,
+body.light-theme .exercise-card,
+body.light-theme .planner-card {
+  background: #ffffff !important;
+  border-color: #c7d2fe;
+}
+
+/* Inputs */
+body.light-theme input,
+body.light-theme textarea,
+body.light-theme select {
+  background: #ffffff !important;
+  color: #020617 !important;
+  border-color: #c7d2fe !important;
+}
+
+/* Nav bars */
+body.light-theme .top-nav,
+body.light-theme .bottom-nav {
+  background: #dbeafe !important;
+  border-color: #c7d2fe;
+}
+
+/* Buttons */
+body.light-theme button {
+  background: #2563eb;
+  color: #ffffff;
+}
+
+body.light-theme button.secondary {
+  background: #e0e7ff;
+  color: #1e3a8a;
 }
 
 
