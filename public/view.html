@@ -81,7 +81,22 @@
 </div>
 
 <script>
-const workoutsList = document.getElementById("workoutsList");
+const UNIT_KEY = "weight_unit";
+
+function getUnit() {
+  return localStorage.getItem(UNIT_KEY) || "kg";
+}
+
+function formatWeight(kg) {
+  const unit = getUnit();
+
+  if (unit === "lb") {
+    return `${(kg * 2.20462).toFixed(1)} lb`;
+  }
+
+  return `${kg} kg`;
+}
+
 
 function loadWorkouts() {
   const workouts = JSON.parse(localStorage.getItem("workouts")) || [];
@@ -137,10 +152,18 @@ function loadWorkouts() {
         const setDiv = document.createElement("div");
         setDiv.classList.add("set-item");
         if (ex.unilateral) {
-          setDiv.innerHTML = `<span>Left: ${s.leftReps}</span> <span>Right: ${s.rightReps}</span> <span>Weight: ${s.weight}kg</span>`;
-        } else {
-          setDiv.innerHTML = `<span>Reps: ${s.reps}</span> <span>Weight: ${s.weight}kg</span>`;
-        }
+  setDiv.innerHTML = `
+    <span>Left: ${s.leftReps}</span>
+    <span>Right: ${s.rightReps}</span>
+    <span>Weight: ${formatWeight(s.weight)}</span>
+  `;
+} else {
+  setDiv.innerHTML = `
+    <span>Reps: ${s.reps}</span>
+    <span>Weight: ${formatWeight(s.weight)}</span>
+  `;
+}
+
         detailsDiv.appendChild(setDiv);
       });
     });
@@ -228,3 +251,4 @@ loadWorkouts();
 
 </body>
 </html>
+<script src="view.js"></script>

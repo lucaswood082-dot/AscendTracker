@@ -27,7 +27,6 @@ body.settings-page {
 h2 {
   color: #38bdf8;
   text-align: center;
-  margin-bottom: 1rem;
 }
 
 .settings-header {
@@ -42,7 +41,6 @@ h2 {
   border-radius: 10px;
   padding: 0.75rem 1rem;
   cursor: pointer;
-  font-size: 1rem;
   font-weight: 500;
   color: #d1d5db;
   border: 1px solid transparent;
@@ -96,7 +94,6 @@ h2 {
 .modal h3 {
   margin: 0;
   color: #38bdf8;
-  font-size: 1.15rem;
 }
 
 .modal p {
@@ -105,35 +102,6 @@ h2 {
   color: #9ca3af;
 }
 
-/* ===== SHARED POPUP FORM (IDENTICAL INPUTS) ===== */
-.popup-form {
-  display: flex;
-  flex-direction: column;
-  gap: 0.6rem;
-}
-
-.popup-form label {
-  font-size: 0.85rem;
-  color: #9ca3af;
-}
-
-.popup-form input {
-  height: 44px;
-  padding: 0 0.75rem;
-  border-radius: 10px;
-  border: 1px solid #374151;
-  background: #111827;
-  color: #fff;
-  font-size: 0.95rem;
-  font-family: inherit;
-}
-
-.popup-form input:focus {
-  outline: none;
-  border-color: #38bdf8;
-}
-
-/* ===== ACTION BUTTONS ===== */
 .popup-actions {
   display: flex;
   gap: 0.75rem;
@@ -156,11 +124,10 @@ h2 {
 }
 
 .popup-action-btn {
-  background: #38bdf8;
+  background: #22c55e;
   color: #020617;
 }
 
-/* ===== TOAST ===== */
 #toast {
   position: fixed;
   bottom: 80px;
@@ -173,7 +140,6 @@ h2 {
   display: none;
   font-weight: 600;
   z-index: 6000;
-  
 }
 </style>
 </head>
@@ -184,23 +150,15 @@ h2 {
   <h2>Settings</h2>
 
   <div class="settings-header">Account</div>
-  <div class="setting-row" id="resetPasswordBtn">
-    <span>Reset Password</span><span class="arrow">›</span>
-  </div>
-  <div class="setting-row" id="changeUsernameBtn">
-    <span>Change Username</span><span class="arrow">›</span>
-  </div>
-  <div class="setting-row" id="deleteAccountBtn">
-    <span>Delete Account</span><span class="arrow">›</span>
-  </div>
+  <div class="setting-row" id="resetPasswordBtn"><span>Reset Password</span><span class="arrow">›</span></div>
+  <div class="setting-row" id="changeUsernameBtn"><span>Change Username</span><span class="arrow">›</span></div>
+  <div class="setting-row" id="deleteAccountBtn"><span>Delete Account</span><span class="arrow">›</span></div>
 
   <div class="settings-header">Preferences</div>
-  <div class="setting-row" id="themeBtn"><span>Theme</span><span class="arrow">›</span></div>
-  <div class="setting-row" id="languageBtn"><span>Language</span><span class="arrow">›</span></div>
+  <div class="setting-row" id="spotifyBtn"><span>Spotify</span><span class="arrow">›</span></div>
   <div class="setting-row" id="unitsBtn"><span>Units</span><span class="arrow">›</span></div>
 
   <div class="settings-header">App Info</div>
-  <div class="setting-row" id="workoutHistoryBtn"><span>Workout History</span><span class="arrow">›</span></div>
   <div class="setting-row" id="exportWorkoutsBtn"><span>Export Workouts</span><span class="arrow">›</span></div>
   <div class="setting-row" id="termsBtn"><span>Terms</span><span class="arrow">›</span></div>
   <div class="setting-row" id="helpBtn"><span>Help</span><span class="arrow">›</span></div>
@@ -213,10 +171,5 @@ h2 {
 <div id="toast"></div>
 
 <script src="settings.js"></script>
-<script src="theme.js"></script>
-<script src="settings.js"></script>
-</body>
-
 </body>
 </html>
-<script src="theme.js"></script>
