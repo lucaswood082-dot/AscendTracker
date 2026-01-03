@@ -1,7 +1,10 @@
 // =======================
-// VIEW.JS (UNITS 100% FIXED)
+// VIEW.JS (EDIT + UNITS WORKING)
 // =======================
 
+const WORKOUTS_KEY = "workouts";
+const VIEW_KEY = "viewWorkout";
+const EDIT_KEY = "editWorkoutIndex";
 const UNIT_KEY = "weight_unit";
 
 /* =======================
@@ -15,9 +18,7 @@ function getUnit() {
 function formatWeight(weightKg) {
   if (weightKg === undefined || weightKg === null) return "";
 
-  const unit = getUnit();
-
-  if (unit === "lb") {
+  if (getUnit() === "lb") {
     return `${(weightKg * 2.20462).toFixed(1)} lb`;
   }
 
@@ -25,21 +26,67 @@ function formatWeight(weightKg) {
 }
 
 /* =======================
+   LOAD DATA
+======================= */
+
+const workouts = JSON.parse(localStorage.getItem(WORKOUTS_KEY)) || [];
+const workout = JSON.parse(localStorage.getItem(VIEW_KEY));
+const container = document.getElementById("workoutContainer");
+
+/* =======================
+   LONG PRESS HELPER
+======================= */
+
+function addLongPress(el, callback, delay = 500) {
+  let timer;
+
+  const start = () => {
+    timer = setTimeout(callback, delay);
+  };
+
+  const cancel = () => {
+    clearTimeout(timer);
+  };
+
+  el.addEventListener("touchstart", start);
+  el.addEventListener("touchend", cancel);
+  el.addEventListener("touchmove", cancel);
+
+  el.addEventListener("mousedown", start);
+  el.addEventListener("mouseup", cancel);
+  el.addEventListener("mouseleave", cancel);
+}
+
+/* =======================
+   EDIT WORKOUT HANDOFF
+======================= */
+
+function startEditWorkout() {
+  const index = workouts.findIndex(w => w.id === workout.id);
+
+  if (index === -1) return;
+
+  localStorage.setItem(EDIT_KEY, index);
+  localStorage.setItem("editingWorkout", JSON.stringify(workouts[index]));
+
+  window.location.href = "workout.html";
+}
+
+/* =======================
    RENDER WORKOUT
 ======================= */
 
-const container = document.getElementById("workoutContainer");
-
 function renderWorkout() {
- localStorage.setItem("workouts", JSON.stringify(workouts));
-
-
   if (!workout || !container) {
     container.innerHTML = "<p>No workout found.</p>";
     return;
   }
 
-  container.innerHTML = `<h2>${workout.name}</h2>`;
+  container.innerHTML = "";
+
+  const title = document.createElement("h2");
+  title.textContent = workout.name;
+  container.appendChild(title);
 
   workout.exercises.forEach(exercise => {
     const exDiv = document.createElement("div");
@@ -61,46 +108,19 @@ function renderWorkout() {
 
     container.appendChild(exDiv);
   });
+
+  // 🔥 LONG PRESS TO EDIT
+  addLongPress(container, startEditWorkout);
 }
-function addLongPress(el, callback, delay = 500) {
-  let timer;
-
-  el.addEventListener("touchstart", () => {
-    timer = setTimeout(callback, delay);
-  });
-
-  el.addEventListener("touchend", () => {
-    clearTimeout(timer);
-  });
-
-  el.addEventListener("touchmove", () => {
-    clearTimeout(timer);
-  });
-
-  // Desktop fallback
-  el.addEventListener("mousedown", () => {
-    timer = setTimeout(callback, delay);
-  });
-
-  el.addEventListener("mouseup", () => {
-    clearTimeout(timer);
-  });
-
-  el.addEventListener("mouseleave", () => {
-    clearTimeout(timer);
-  });
-}
-
 
 /* =======================
-   INITIAL LOAD
+   INIT
 ======================= */
 
 renderWorkout();
 
 /* =======================
-   RE-RENDER WHEN RETURNING
-   FROM SETTINGS
+   RE-RENDER ON UNIT CHANGE
 ======================= */
 
 window.addEventListener("focus", renderWorkout);

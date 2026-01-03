@@ -354,3 +354,45 @@ if (editingWorkout) {
 }
 
 </script>
+<script>
+/* ===========================
+   EDIT WORKOUT PATCH (MINIMAL)
+   =========================== */
+
+const EDIT_INDEX_KEY = "editWorkoutIndex";
+const EDIT_WORKOUT_KEY = "editingWorkout";
+
+const editIndex = localStorage.getItem(EDIT_INDEX_KEY);
+const editingWorkout = JSON.parse(localStorage.getItem(EDIT_WORKOUT_KEY));
+
+if (editingWorkout && editIndex !== null) {
+  // fill workout name
+  const nameInput = document.getElementById("workoutName");
+  if (nameInput) nameInput.value = editingWorkout.name || "";
+
+  // inject exercises into workouts.js state
+  if (Array.isArray(editingWorkout.exercises)) {
+    exercises = editingWorkout.exercises;
+    renderExercises();
+  }
+
+  // override save to overwrite instead of push
+  const originalSave = saveWorkout;
+
+  saveWorkout = function () {
+    const workouts = JSON.parse(localStorage.getItem("workouts")) || [];
+    workouts[editIndex] = {
+      name: workoutName.value,
+      exercises
+    };
+
+    localStorage.setItem("workouts", JSON.stringify(workouts));
+
+    localStorage.removeItem(EDIT_INDEX_KEY);
+    localStorage.removeItem(EDIT_WORKOUT_KEY);
+
+    location.href = "view.html";
+  };
+}
+</script>
+
