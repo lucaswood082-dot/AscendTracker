@@ -1,65 +1,66 @@
+/* ===============================
+   ANALYTICS.JS – FINAL FIXED
+   =============================== */
+
+const WORKOUTS_KEY = "workouts";
+const SETTINGS_KEY = "settings";
+
+/* ---------- SETTINGS ---------- */
+function getUnit() {
+  const settings = JSON.parse(localStorage.getItem(SETTINGS_KEY)) || {};
+  return settings.unit === "lb" ? "lb" : "kg";
+}
+
+/* ---------- DATA ---------- */
+function getWorkouts() {
+  return JSON.parse(localStorage.getItem(WORKOUTS_KEY)) || [];
+}
+
+function saveWorkouts(workouts) {
+  localStorage.setItem(WORKOUTS_KEY, JSON.stringify(workouts));
+}
+
+/* ---------- STATS (KG ONLY) ---------- */
+function calculateWorkoutStats(workout) {
+  let tonnage = 0;
+  let sets = 0;
+  let reps = 0;
+
+  workout.exercises.forEach(ex => {
+    ex.sets.forEach(set => {
+      const weight = parseFloat(set.weight) || 0;
+
+      if (ex.unilateral) {
+        const left = parseInt(set.leftReps) || 0;
+        const right = parseInt(set.rightReps) || 0;
+        const totalReps = left + right;
+
+        reps += totalReps;
+        tonnage += totalReps * weight;
+        sets += 1;
+      } else {
+        const r = parseInt(set.reps) || 0;
+
+        reps += r;
+        tonnage += r * weight;
+        sets += 1;
+      }
+    });
+  });
+
+  return { tonnage, sets, reps };
+}
+
+/* ---------- RENDER ---------- */
 document.addEventListener("DOMContentLoaded", () => {
   const view = document.getElementById("workoutView");
   let startX = 0;
   let index = 0;
 
-  function getUsers() {
-    return JSON.parse(localStorage.getItem("users")) || [];
-  }
-
-  function saveUsers(users) {
-    localStorage.setItem("users", JSON.stringify(users));
-  }
-
-  function getWorkouts() {
-  return JSON.parse(localStorage.getItem("workouts")) || [];
-}
-
-
-  function calculateWorkoutStats(workout) {
-    let tonnage = 0;
-    let sets = 0;
-    let reps = 0;
-
-    workout.exercises.forEach(ex => {
-      ex.sets.forEach(set => {
-        if (ex.unilateral) {
-          const left = parseInt(set.leftReps) || 0;
-          const right = parseInt(set.rightReps) || 0;
-          const totalReps = left + right;
-
-          reps += totalReps;
-          tonnage += totalReps * (parseFloat(set.weight) || 0);
-          sets += 1;
-        } else {
-          const r = parseInt(set.reps) || 0;
-
-          reps += r;
-          tonnage += r * (parseFloat(set.weight) || 0);
-          sets += 1;
-        }
-      });
-    });
-
-    return { tonnage, sets, reps };
-  }
-
-  function persistWorkoutStats(workoutIndex, stats) {
-    const users = getUsers();
-    if (!users[0] || !users[0].workouts[workoutIndex]) return;
-
-    users[0].workouts[workoutIndex].tonnage = stats.tonnage;
-    users[0].workouts[workoutIndex].sets = stats.sets;
-    users[0].workouts[workoutIndex].reps = stats.reps;
-
-    saveUsers(users);
-  }
-
   function renderCurrentWorkout() {
     const workouts = getWorkouts();
 
-    // 🔹 If workouts were deleted in view.html
-    if (workouts.length === 0) {
+    if (!workouts.length) {
       view.innerHTML = `
         <div class="workout-box swipe-reset">
           <span class="empty">No workouts</span>
@@ -68,40 +69,46 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
-    // 🔹 Prevent index breaking if list shrinks
     if (index >= workouts.length) index = workouts.length - 1;
     if (index < 0) index = 0;
 
     const workout = workouts[index];
     const stats = calculateWorkoutStats(workout);
 
-    // 🔹 Persist stats so analytics stays correct on reload
-    persistWorkoutStats(index, stats);
-
-    // 🔹 Send data to EXISTING UI renderer (unchanged)
-    window.analyticsUI?.renderWorkout({
+    // persist raw stats (kg only)
+    workouts[index] = {
       ...workout,
       tonnage: stats.tonnage,
       sets: stats.sets,
       reps: stats.reps
+    };
+
+    saveWorkouts(workouts);
+
+    // ✅ SEND WHAT UI EXPECTS
+    window.analyticsUI?.renderWorkout({
+      ...workout,
+      tonnage: stats.tonnage, // NUMBER
+      sets: stats.sets,
+      reps: stats.reps,
+      unit: getUnit()         // kg or lb
     });
   }
 
+  /* ---------- NAV ---------- */
   function nextWorkout() {
-    const workouts = getWorkouts();
-    if (!workouts.length) return;
-    index = (index + 1) % workouts.length;
+    if (!getWorkouts().length) return;
+    index = (index + 1) % getWorkouts().length;
     renderCurrentWorkout();
   }
 
   function prevWorkout() {
-    const workouts = getWorkouts();
-    if (!workouts.length) return;
-    index = (index - 1 + workouts.length) % workouts.length;
+    if (!getWorkouts().length) return;
+    index = (index - 1 + getWorkouts().length) % getWorkouts().length;
     renderCurrentWorkout();
   }
 
-  // 🔹 Swipe support
+  /* ---------- INPUT ---------- */
   view.addEventListener("touchstart", e => {
     startX = e.touches[0].clientX;
   });
@@ -112,15 +119,17 @@ document.addEventListener("DOMContentLoaded", () => {
     if (dx > 50) prevWorkout();
   });
 
-  // 🔹 Keyboard support
   document.addEventListener("keydown", e => {
     if (e.key === "ArrowRight") nextWorkout();
     if (e.key === "ArrowLeft") prevWorkout();
   });
 
-  // 🔹 Re-sync analytics when workouts are added/deleted elsewhere
-  window.addEventListener("storage", renderCurrentWorkout);
+  /* ---------- LIVE SYNC ---------- */
+  window.addEventListener("storage", e => {
+    if (e.key === WORKOUTS_KEY || e.key === SETTINGS_KEY) {
+      renderCurrentWorkout();
+    }
+  });
 
-  // 🔹 Initial render
   renderCurrentWorkout();
 });

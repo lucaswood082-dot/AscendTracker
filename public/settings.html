@@ -96,10 +96,12 @@ h2 {
   color: #38bdf8;
 }
 
-.modal p {
-  margin: 0;
-  font-size: 0.9rem;
-  color: #9ca3af;
+.modal input {
+  background: #111827;
+  border: 1px solid #374151;
+  border-radius: 10px;
+  padding: 0.6rem;
+  color: #fff;
 }
 
 .popup-actions {
@@ -128,6 +130,31 @@ h2 {
   color: #020617;
 }
 
+.danger {
+  background: #ef4444;
+  color: #020617;
+}
+
+.unit-btns {
+  display: flex;
+  gap: 0.75rem;
+}
+
+.unit-btns button {
+  flex: 1;
+  padding: 0.6rem;
+  border-radius: 10px;
+  border: 2px solid #374151;
+  background: #111827;
+  color: #fff;
+  font-weight: 600;
+}
+
+.unit-btns button.active {
+  border-color: #38bdf8;
+  color: #38bdf8;
+}
+
 #toast {
   position: fixed;
   bottom: 80px;
@@ -150,22 +177,20 @@ h2 {
   <h2>Settings</h2>
 
   <div class="settings-header">Account</div>
-  <div class="setting-row" id="resetPasswordBtn"><span>Reset Password</span><span class="arrow">›</span></div>
-  <div class="setting-row" id="changeUsernameBtn"><span>Change Username</span><span class="arrow">›</span></div>
-  <div class="setting-row" id="deleteAccountBtn"><span>Delete Account</span><span class="arrow">›</span></div>
+  <div class="setting-row" id="resetPasswordBtn">Reset Password <span class="arrow">›</span></div>
+  <div class="setting-row" id="changeUsernameBtn">Change Username <span class="arrow">›</span></div>
+  <div class="setting-row" id="deleteAccountBtn">Delete Account <span class="arrow">›</span></div>
 
   <div class="settings-header">Preferences</div>
-  <div class="setting-row" id="spotifyBtn"><span>Spotify</span><span class="arrow">›</span></div>
-  <div class="setting-row" id="unitsBtn"><span>Units</span><span class="arrow">›</span></div>
+  <div class="setting-row" id="spotifyBtn">Spotify <span class="arrow">›</span></div>
+  <div class="setting-row" id="unitsBtn">Units <span class="arrow">›</span></div>
 
   <div class="settings-header">App Info</div>
-  <div class="setting-row" id="exportWorkoutsBtn"><span>Export Workouts</span><span class="arrow">›</span></div>
-  <div class="setting-row" id="termsBtn"><span>Terms</span><span class="arrow">›</span></div>
-  <div class="setting-row" id="helpBtn"><span>Help</span><span class="arrow">›</span></div>
+  <div class="setting-row" id="exportWorkoutsBtn">Export Workouts <span class="arrow">›</span></div>
 </div>
 
 <div class="modal-overlay" id="modalOverlay">
-  <div class="modal"></div>
+  <div class="modal" id="modal"></div>
 </div>
 
 <div id="toast"></div>

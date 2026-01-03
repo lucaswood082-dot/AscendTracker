@@ -1,38 +1,23 @@
-// =======================
-// SETTINGS.JS (REAL SPOTIFY)
-// =======================
+const UNIT_KEY = "weight_unit";
 
 const modalOverlay = document.getElementById("modalOverlay");
-const modal = modalOverlay.querySelector(".modal");
+const modal = document.getElementById("modal");
 const toast = document.getElementById("toast");
 
-/* 🔴 YOU MUST PUT YOUR REAL CLIENT ID HERE */
-const SPOTIFY_CLIENT_ID = "PASTE_YOUR_CLIENT_ID_HERE";
-const REDIRECT_URI = window.location.origin + "/settings.html";
-const SCOPES = [
-  "user-read-playback-state",
-  "user-modify-playback-state",
-  "user-read-currently-playing"
-].join(" ");
-
-// =======================
-// UTILITIES
-// =======================
+function vibrate() {
+  navigator.vibrate?.(10);
+}
 
 function showToast(msg) {
   toast.textContent = msg;
   toast.style.display = "block";
-  setTimeout(() => toast.style.display = "none", 2500);
+  setTimeout(() => toast.style.display = "none", 2200);
 }
 
-function openModal({ title, description, actionsHTML }) {
-  modal.innerHTML = `
-    <h3>${title}</h3>
-    <p>${description}</p>
-    <div class="popup-actions">${actionsHTML}</div>
-  `;
+function openModal(html) {
+  modal.innerHTML = html;
   modalOverlay.style.display = "flex";
-  requestAnimationFrame(() => modal.classList.add("show"));
+  setTimeout(() => modal.classList.add("show"), 10);
 }
 
 function closeModal() {
@@ -43,120 +28,154 @@ function closeModal() {
   }, 200);
 }
 
-modalOverlay.onclick = e => {
+modalOverlay.addEventListener("click", (e) => {
   if (e.target === modalOverlay) closeModal();
+});
+
+/* ===== ACCOUNT ===== */
+document.getElementById("resetPasswordBtn").onclick = () => {
+  vibrate();
+  openModal(`
+    <h3>Reset Password</h3>
+    <input id="newPass" type="password" placeholder="New password">
+    <div class="popup-actions">
+      <button class="popup-back-btn" onclick="closeModal()">Back</button>
+      <button class="popup-action-btn" onclick="savePassword()">Save</button>
+    </div>
+  `);
 };
 
-// =======================
-// SPOTIFY AUTH
-// =======================
+function savePassword() {
+  const pass = document.getElementById("newPass").value.trim();
+  if (!pass) return showToast("Enter a password");
 
-function connectSpotify() {
-  const authURL =
-    "https://accounts.spotify.com/authorize" +
-    "?client_id=" + SPOTIFY_CLIENT_ID +
-    "&response_type=token" +
-    "&redirect_uri=" + encodeURIComponent(REDIRECT_URI) +
-    "&scope=" + encodeURIComponent(SCOPES);
+  let user = JSON.parse(localStorage.getItem("currentUser"));
+  let users = JSON.parse(localStorage.getItem("users")) || [];
 
-  window.location.href = authURL;
+  users = users.map(u => u.username === user.username ? { ...u, password: pass } : u);
+  user.password = pass;
+
+  localStorage.setItem("users", JSON.stringify(users));
+  localStorage.setItem("currentUser", JSON.stringify(user));
+
+  closeModal();
+  showToast("Password updated");
 }
 
-// Handle token after redirect
-(function handleSpotifyRedirect() {
-  if (window.location.hash.includes("access_token")) {
-    const params = new URLSearchParams(window.location.hash.substring(1));
-    const token = params.get("access_token");
-    localStorage.setItem("spotify_token", token);
-    window.location.hash = "";
-    showToast("Spotify connected");
+document.getElementById("changeUsernameBtn").onclick = () => {
+  vibrate();
+  openModal(`
+    <h3>Change Username</h3>
+    <input id="newUsername" placeholder="New username">
+    <div class="popup-actions">
+      <button class="popup-back-btn" onclick="closeModal()">Back</button>
+      <button class="popup-action-btn" onclick="saveUsername()">Save</button>
+    </div>
+  `);
+};
+
+function saveUsername() {
+  const newName = document.getElementById("newUsername").value.trim();
+  if (!newName) return showToast("Enter username");
+
+  let user = JSON.parse(localStorage.getItem("currentUser"));
+  let users = JSON.parse(localStorage.getItem("users")) || [];
+
+  if (users.some(u => u.username === newName)) {
+    return showToast("Username exists");
   }
-})();
 
-// =======================
-// SPOTIFY BUTTON
-// =======================
+  users = users.map(u => u.username === user.username ? { ...u, username: newName } : u);
+  user.username = newName;
 
+  localStorage.setItem("users", JSON.stringify(users));
+  localStorage.setItem("currentUser", JSON.stringify(user));
+
+  closeModal();
+  showToast("Username updated");
+}
+
+document.getElementById("deleteAccountBtn").onclick = () => {
+  vibrate();
+  openModal(`
+    <h3>Delete Account</h3>
+    <p>This cannot be undone.</p>
+    <div class="popup-actions">
+      <button class="popup-back-btn" onclick="closeModal()">Cancel</button>
+      <button class="popup-action-btn danger" onclick="confirmDelete()">Delete</button>
+    </div>
+  `);
+};
+
+function confirmDelete() {
+  const user = JSON.parse(localStorage.getItem("currentUser"));
+  let users = JSON.parse(localStorage.getItem("users")) || [];
+
+  users = users.filter(u => u.username !== user.username);
+
+  localStorage.setItem("users", JSON.stringify(users));
+  localStorage.removeItem("currentUser");
+  localStorage.removeItem("workouts");
+
+  window.location.href = "index.html";
+}
+
+/* ===== SPOTIFY ===== */
 document.getElementById("spotifyBtn").onclick = () => {
-  const connected = !!localStorage.getItem("spotify_token");
-
-  openModal({
-    title: "Spotify",
-    description: connected
-      ? "Spotify is connected."
-      : "Connect Spotify to control your music during workouts.",
-    actionsHTML: connected
-      ? `
-        <button class="popup-back-btn" id="disconnectSpotify">Disconnect</button>
-        <button class="popup-action-btn" id="closeSpotify">Done</button>
-      `
-      : `
-        <button class="popup-back-btn" id="cancelSpotify">Back</button>
-        <button class="popup-action-btn" id="connectSpotify">Connect</button>
-      `
-  });
-
-  if (!connected) {
-    document.getElementById("cancelSpotify").onclick = closeModal;
-    document.getElementById("connectSpotify").onclick = connectSpotify;
-  } else {
-    document.getElementById("disconnectSpotify").onclick = () => {
-      localStorage.removeItem("spotify_token");
-      showToast("Spotify disconnected");
-      closeModal();
-    };
-    document.getElementById("closeSpotify").onclick = closeModal;
-  }
+  vibrate();
+  openModal(`
+    <h3>Spotify</h3>
+    <p>Open Spotify Web Player</p>
+    <div class="popup-actions">
+      <button class="popup-back-btn" onclick="closeModal()">Back</button>
+      <button class="popup-action-btn" onclick="window.open('https://open.spotify.com','_blank')">Open</button>
+    </div>
+  `);
 };
-// =======================
-// UNITS
-// =======================
 
-const UNIT_KEY = "weight_unit";
+/* ===== EXPORT ===== */
+document.getElementById("exportWorkoutsBtn").onclick = () => {
+  vibrate();
+  showToast("Export coming next");
+};
 
-function getUnit() {
-  return localStorage.getItem(UNIT_KEY) || "kg";
-}
-
-function setUnit(unit) {
-  localStorage.setItem(UNIT_KEY, unit);
-  showToast(`Units set to ${unit.toUpperCase()}`);
-}
-
+/* ===== UNITS (FIXED) ===== */
 document.getElementById("unitsBtn").onclick = () => {
-  const current = getUnit();
-
-  openModal({
-    title: "Units",
-    description: "Choose how weights are displayed",
-    actionsHTML: `
-      <button class="popup-back-btn" id="kgBtn">KG</button>
-      <button class="popup-back-btn" id="lbBtn">LB</button>
-    `
-  });
-
-  document.getElementById("kgBtn").onclick = () => {
-    setUnit("kg");
-    closeModal();
-  };
-
-  document.getElementById("lbBtn").onclick = () => {
-    setUnit("lb");
-    closeModal();
-  };
+  vibrate();
+  openModal(`
+    <h3>Units</h3>
+    <div class="unit-btns">
+      <button id="kgBtn">KG</button>
+      <button id="lbBtn">LBS</button>
+    </div>
+    <div class="popup-actions">
+      <button class="popup-back-btn" onclick="closeModal()">Done</button>
+    </div>
+  `);
+  updateUnitUI();
 };
 
+/* 🔥 THIS IS THE IMPORTANT PART 🔥 */
+document.addEventListener("click", (e) => {
+  if (e.target.id === "kgBtn") {
+    localStorage.setItem(UNIT_KEY, "kg");
+    updateUnitUI();
+    vibrate();
+  }
 
-// =======================
-// PLACEHOLDERS
-// =======================
+  if (e.target.id === "lbBtn") {
+    localStorage.setItem(UNIT_KEY, "lb");
+    updateUnitUI();
+    vibrate();
+  }
+});
 
+function updateUnitUI() {
+  const unit = localStorage.getItem(UNIT_KEY) || "kg";
+  const kg = document.getElementById("kgBtn");
+  const lb = document.getElementById("lbBtn");
+  if (!kg || !lb) return;
 
-document.getElementById("exportWorkoutsBtn").onclick = () =>
-  showToast("Export coming soon");
-
-document.getElementById("termsBtn").onclick = () =>
-  showToast("Terms coming soon");
-
-document.getElementById("helpBtn").onclick = () =>
-  showToast("Help coming soon");
+  kg.classList.toggle("active", unit === "kg");
+  lb.classList.toggle("active", unit === "lb");
+}
