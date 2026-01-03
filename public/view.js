@@ -62,6 +62,35 @@ function renderWorkout() {
     container.appendChild(exDiv);
   });
 }
+function addLongPress(el, callback, delay = 500) {
+  let timer;
+
+  el.addEventListener("touchstart", () => {
+    timer = setTimeout(callback, delay);
+  });
+
+  el.addEventListener("touchend", () => {
+    clearTimeout(timer);
+  });
+
+  el.addEventListener("touchmove", () => {
+    clearTimeout(timer);
+  });
+
+  // Desktop fallback
+  el.addEventListener("mousedown", () => {
+    timer = setTimeout(callback, delay);
+  });
+
+  el.addEventListener("mouseup", () => {
+    clearTimeout(timer);
+  });
+
+  el.addEventListener("mouseleave", () => {
+    clearTimeout(timer);
+  });
+}
+
 
 /* =======================
    INITIAL LOAD

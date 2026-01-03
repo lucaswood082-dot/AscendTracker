@@ -1,3 +1,6 @@
+const editingIndex = localStorage.getItem("editingWorkoutIndex");
+const editingWorkout = JSON.parse(localStorage.getItem("editingWorkout"));
+
 document.addEventListener("DOMContentLoaded", () => {
 
   console.log("workouts.js loaded");
@@ -202,6 +205,18 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   /* ---------------- SAVE WORKOUT ---------------- */
+  const workouts = JSON.parse(localStorage.getItem("workouts")) || [];
+
+if (editingIndex !== null) {
+  // 🔁 EDIT EXISTING
+  workouts[editingIndex] = newWorkout;
+} else {
+  // ➕ NEW WORKOUT
+  workouts.push(newWorkout);
+}
+
+localStorage.setItem("workouts", JSON.stringify(workouts));
+
   saveWorkoutBtn.addEventListener("click", () => {
     const workoutName = document.getElementById("workoutName").value.trim() || "Workout";
 
@@ -260,6 +275,8 @@ document.addEventListener("DOMContentLoaded", () => {
     exerciseList.innerHTML = "";
     document.getElementById("workoutName").value = "";
   });
+localStorage.removeItem("editingWorkoutIndex");
+localStorage.removeItem("editingWorkout");
 
   /* ---------------- AUTO SAVE ---------------- */
   document.addEventListener("input", saveDraft);

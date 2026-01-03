@@ -349,5 +349,8 @@ input:checked + .slider::after {
   <button id="selectAllBtn">Select All</button>
   <button id="exportBtn">Export</button>
 </div>
+if (editingWorkout) {
+  document.querySelector("h1").textContent = "Edit Workout";
+}
 
 </script>
