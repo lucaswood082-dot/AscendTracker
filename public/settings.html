@@ -189,6 +189,75 @@ h2 {
   <div class="setting-row" id="exportWorkoutsBtn">Export Workouts <span class="arrow">›</span></div>
 </div>
 
+
+</style>
+
+<style>
+  .export-row {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 12px;
+  border-radius: 12px;
+  background: rgba(255,255,255,0.04);
+  margin-bottom: 10px;
+}
+
+/* hide native checkbox */
+.export-row input[type="checkbox"] {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 22px;
+  height: 22px;
+  border-radius: 6px;
+  border: 2px solid #666;
+  display: grid;
+  place-content: center;
+  cursor: pointer;
+}
+
+/* checked state */
+.export-row input[type="checkbox"]:checked {
+  background: #38bdf8;
+  border-color: #38bdf8;
+}
+
+/* checkmark */
+.export-row input[type="checkbox"]:checked::after {
+  content: "✓";
+  color: white;
+  font-size: 14px;
+  font-weight: bold;
+  content: "";
+width: 8px;
+height: 4px;
+border-left: 2px solid white;
+border-bottom: 2px solid white;
+transform: rotate(-45deg);
+  
+}
+/* All buttons on settings page get a subtle press animation */
+.settings-page button {
+  transition: transform 0.08s ease; /* smooth shrink */
+}
+
+.settings-page button:active {
+  transform: scale(0.95); /* shrink slightly on press */
+}
+
+
+
+/* CSS only, gives a “tap” feel */
+.export-row input[type="checkbox"] {
+  transition: transform 0.08s ease;
+}
+
+.export-row input[type="checkbox"]:active {
+  transform: scale(0.9); /* shrink slightly on press */
+}
+</style>
+
+
 <div class="modal-overlay" id="modalOverlay">
   <div class="modal" id="modal"></div>
 </div>
@@ -196,5 +265,6 @@ h2 {
 <div id="toast"></div>
 
 <script src="settings.js"></script>
+
 </body>
 </html>

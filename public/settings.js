@@ -1,3 +1,5 @@
+console.log("settings.js loaded");
+
 const UNIT_KEY = "weight_unit";
 
 const modalOverlay = document.getElementById("modalOverlay");
@@ -136,7 +138,7 @@ document.getElementById("spotifyBtn").onclick = () => {
 /* ===== EXPORT ===== */
 document.getElementById("exportWorkoutsBtn").onclick = () => {
   vibrate();
-  showToast("Export coming next");
+  exportWorkouts();
 };
 
 /* ===== UNITS (FIXED) ===== */
@@ -179,3 +181,80 @@ function updateUnitUI() {
   kg.classList.toggle("active", unit === "kg");
   lb.classList.toggle("active", unit === "lb");
 }
+
+function exportWorkouts() {
+  const workouts = JSON.parse(localStorage.getItem("workouts")) || [];
+
+  if (workouts.length === 0) {
+    alert("No workouts to export.");
+    return;
+  }
+
+  let list = workouts.map((w, i) => `
+  <label class="export-row">
+    <input type="checkbox" value="${i}" checked>
+    <span class="custom-checkbox"></span>
+    ${w.name}
+  </label>
+`).join("");
+
+
+  openModal(`
+    <h3>Export Workouts</h3>
+    <div class="export-list">
+      ${list}
+    </div>
+    <div class="popup-actions">
+      <button class="popup-back-btn" onclick="closeModal()">Cancel</button>
+      <button class="popup-action-btn" onclick="exportSelectedWorkouts()">Export</button>
+    </div>
+  `);
+}
+function exportSelectedWorkouts() {
+  const workouts = JSON.parse(localStorage.getItem("workouts")) || [];
+  const checked = [...document.querySelectorAll(".export-list input:checked")];
+
+  if (checked.length === 0) {
+    alert("Select at least one workout.");
+    return;
+  }
+
+  let csv = "Workout,Exercise,Set,Weight,Reps\n";
+
+  checked.forEach(box => {
+    const workout = workouts[box.value];
+
+    workout.exercises.forEach(ex => {
+      ex.sets.forEach((set, i) => {
+        csv += `"${workout.name}","${ex.name}",${i + 1},${set.weight},${set.reps}\n`;
+      });
+    });
+  });
+
+  downloadCSV(csv);
+  closeModal();
+}
+function downloadCSV(csv) {
+  const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+  const url = URL.createObjectURL(blob);
+
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = `workouts-${new Date().toISOString().split("T")[0]}.csv`;
+  document.body.appendChild(a);
+  a.click();
+
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+}
+// Function to trigger light haptic
+function haptic() {
+  if (navigator.vibrate) navigator.vibrate(10); // 10ms light tap
+}
+
+// Apply to all buttons inside settings page
+document.querySelectorAll(".settings-page button").forEach(btn => {
+  btn.addEventListener("click", () => {
+    haptic();
+  });
+});

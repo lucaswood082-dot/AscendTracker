@@ -2566,3 +2566,60 @@ button[id*="edit"]:active {
   transform: scale(0.94) !important;
   box-shadow: 0 4px 12px rgba(56, 189, 248, 0.35) !important;
 }
+.export-list {
+  max-height: 300px;
+  overflow-y: auto;
+  text-align: left;
+}
+
+.export-row {
+  display: flex;
+  gap: 10px;
+  padding: 8px 0;
+  font-size: 15px;
+}
+.export-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 6px;
+  cursor: pointer;
+  color: #fff;
+  font-size: 15px;
+  position: relative;
+}
+
+/* Hide native checkbox */
+.export-row input[type="checkbox"] {
+  display: none;
+}
+
+/* The custom visual box */
+.export-row .custom-checkbox {
+  width: 22px;
+  height: 22px;
+  border-radius: 6px;
+  border: 2px solid rgba(255, 255, 255, 0.4);
+  flex-shrink: 0;
+  transition: all 0.2s ease;
+  position: relative;
+}
+
+/* Checked state */
+.export-row input[type="checkbox"]:checked + .custom-checkbox {
+  background: linear-gradient(135deg, #4ade80, #22c55e);
+  border-color: #22c55e;
+}
+
+/* Checkmark */
+.export-row input[type="checkbox"]:checked + .custom-checkbox::after {
+  content: "";
+  position: absolute;
+  left: 6px;
+  top: 2px;
+  width: 6px;
+  height: 12px;
+  border: solid white;
+  border-width: 0 3px 3px 0;
+  transform: rotate(45deg);
+}
