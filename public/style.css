@@ -2383,7 +2383,7 @@ button.edit-btn + button.danger {
 
 /* MOVE ARROW + WORKOUT NAME + DATE */
 #workoutsList summary .summary-left {
-  margin-left: -200px !important;   /* move RIGHT with + values */
+  margin-left: -212.5px !important;   /* move RIGHT with + values */
   margin-right: 0px !important;  /* move LEFT with + values */
 }
 
@@ -2416,7 +2416,7 @@ button.edit-btn + button.danger {
   /* MANUAL MOVEMENT */
   position: relative;
   top: 0.2px;                   /* move up/down */
-  right: -1px;                 /* move left/right */
+  right: -2px;                 /* move left/right */
 }
 
 .summary-left {
