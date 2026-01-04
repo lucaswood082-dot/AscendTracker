@@ -2321,7 +2321,7 @@ button.edit-btn {
   /* Manual positioning */
   position: relative;              /* allows top/left/right/bottom adjustments */
   top: 0px;                        /* move down/up */
-  left: 105px;                       /* move right/left */
+  left: 108px;                       /* move right/left */
   margin-left: 0.5rem;             /* default spacing from Delete button */
 
   text-align: center;
@@ -2416,7 +2416,7 @@ button.edit-btn + button.danger {
   /* MANUAL MOVEMENT */
   position: relative;
   top: 0.2px;                   /* move up/down */
-  right: -1px;                 /* move left/right */
+  right: -1.5px;                 /* move left/right */
 }
 
 .summary-left {
