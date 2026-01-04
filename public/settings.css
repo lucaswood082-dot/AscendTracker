@@ -865,52 +865,13 @@ body.settings-page::before {
   background: #0f172a;
   z-index: -1;
 }
-/* ===== TOP NAV — ANALYTICS MATCH DASHBOARD ===== */
-body.settings-page .top-nav {
-  background: #0f172a;       /* same as other pages background */
-  border-bottom: 1px solid #1f2937;
-  padding: 1.25rem 1rem;     /* slightly bigger padding */
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
+/* iOS Safe Area Background */
+body {
+  background-color: #0f172a;
+  padding-top: env(safe-area-inset-top);
 }
 
-body.settings-page .top-nav .nav-title,
-body.settings-page .top-nav {
-  font-size: 1.4rem;         /* slightly bigger font */
-  font-weight: 600;
-  color: #38bdf8;
-  line-height: 1.4;
-}
-
-/* Ensure body background matches other pages */
-body.settings-page {
-  background: #0f172a;
-}
-/* ===== ANALYTICS PAGE FINAL TWEAKS ===== */
-body.settings-page {
-  background: #0f172a; /* exact dashboard background */
-}
-
-/* Top bar sizing + color match */
-body.settings-page .top-nav {
-  background: #0f172a;      /* match dashboard */
-  padding: 0.95rem 1rem;    /* smaller height */ 
-  border-bottom: 1px solid #1f2937;
-}
-
-/* Ascend logo sizing + position */
-body.settings-page .top-nav {
-  font-size: 1.2rem;      /* slightly smaller */
-  font-weight: 600;
-  color: #38bdf8;
-}
-
-/* Bottom nav active highlight (word + icon) */
-.bottom-nav button.active {
-  color: #38bdf8;
-}
-
-.bottom-nav button.active img {
-  filter: brightness(1.4);
+/* Make top nav sit below the status bar */
+.top-nav {
+  padding-top: calc(env(safe-area-inset-top) + 0.75rem);
 }
