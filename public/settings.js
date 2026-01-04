@@ -247,14 +247,3 @@ function downloadCSV(csv) {
   document.body.removeChild(a);
   URL.revokeObjectURL(url);
 }
-// Function to trigger light haptic
-function haptic() {
-  if (navigator.vibrate) navigator.vibrate(10); // 10ms light tap
-}
-
-// Apply to all buttons inside settings page
-document.querySelectorAll(".settings-page button").forEach(btn => {
-  btn.addEventListener("click", () => {
-    haptic();
-  });
-});
