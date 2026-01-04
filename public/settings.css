@@ -835,4 +835,28 @@ input, select {
   background: #38bdf8;
   border-color: #38bdf8;
 }
+html, body {
+  background: #111827; /* same as your page */
+  margin: 0;
+  padding: 0;
+}
+body.settings-page {
+  background: #111827;
+}
+body.settings-page {
+  min-height: 100vh;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+html, body {
+  background: #111827;
+  margin: 0;
+  padding: 0;
+}
+
+body.settings-page {
+  min-height: 100vh;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
 
