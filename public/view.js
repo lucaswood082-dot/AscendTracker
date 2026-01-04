@@ -62,7 +62,10 @@ function addLongPress(el, callback, delay = 500) {
 ======================= */
 
 function startEditWorkout() {
-  const index = workouts.findIndex(w => w.id === workout.id);
+const index = workouts.findIndex(
+  w => w.name === workout.name && w.date === workout.date
+);
+
 
   if (index === -1) return;
 

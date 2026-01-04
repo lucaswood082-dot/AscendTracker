@@ -2248,9 +2248,321 @@ body.light-theme button.secondary {
   background: #e0e7ff;
   color: #1e3a8a;
 }
+.edit-btn {
+  background: #38bdf8;
+  color: #020617;
+  border: none;
+  border-radius: 8px;
+  padding: 6px 12px;
+  margin-right: 6px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.edit-btn:hover {
+  opacity: 0.85;
+}
+/* Make Edit button match Delete button style but green */
+button.edit-btn {
+  background-color: #16a34a; /* green */
+  color: #fff; /* text white */
+  border: none;
+  border-radius: 6px;
+  padding: 0.25rem 0.5rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  margin-left: 0.5rem; /* spacing from Delete button */
+  transition: opacity 0.2s;
+}
+
+button.edit-btn:hover {
+  opacity: 0.85;
+}
+/* Smaller, manually positionable Edit button */
+button.edit-btn {
+  background-color: #16a34a; /* green */
+  color: white;
+  border: none;
+  border-radius: 6px;
+  padding: 0.2rem 0.4rem;   /* smaller size */
+  font-size: 0.75rem;       /* smaller text */
+  font-weight: 600;
+  cursor: pointer;
+
+  /* Manual positioning */
+  position: relative;       /* allows left/top/right/bottom adjustments */
+  top: 0px;                 /* move vertically */
+  left: 10px;                /* move horizontally */
+  margin-left: 0.5rem;      /* spacing from previous element */
+  transition: opacity 0.2s;
+}
+/* ==========================
+   FULL OVERRIDE: Edit Button
+   ========================== */
+
+button.edit-btn {
+  all: unset; /* remove all inherited styles */
+  
+  display: inline-flex;            /* like Delete button */
+  align-items: center;
+  justify-content: center;
+
+  width: auto;                     /* same as Delete, will adjust to content */
+  min-height: 5px;                /* match Delete button height */
+  padding: 0.25rem 0.5rem;         /* same padding as Delete button */
+  font-size: 0.8rem;               /* same font size */
+  font-weight: 600;                /* same weight */
+  border-radius: 4px;              /* match Delete button border radius */
+  background-color: #16a34a;       /* green */
+  color: white;
+  cursor: pointer;
+
+  /* Manual positioning */
+  position: relative;              /* allows top/left/right/bottom adjustments */
+  top: 0px;                        /* move down/up */
+  left: 150px;                       /* move right/left */
+  margin-left: 0.5rem;             /* default spacing from Delete button */
+
+  text-align: center;
+  white-space: nowrap;              /* prevents text wrapping */
+  transition: all 0.2s ease;       /* smooth hover/position changes */
+}
+
+button.edit-btn:hover {
+  opacity: 0.85;
+}
+
+button.edit-btn {
+  min-width: 40px;   /* ensures it doesn’t get too small */
+  padding: 0.25rem 0.75rem; /* extra space inside */
+}
+
+/* ===================== EDIT BUTTON ===================== */
+button.edit-btn {
+  background-color: #22c55e; /* green */
+  color: #ffffff;
+  font-weight: 600;
+  font-size: 0.8rem;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+
+  /* Reduce vertical space inside button */
+  padding: 2px 6px;  /* very tight padding top-bottom, left-right adjustable */
+  line-height: 1.5;  /* makes button shorter */
+  display: inline-block;
+
+  min-width: 50px;  /* match delete button width if needed */
+}
+
+/* Optional: add spacing to separate from Delete button */
+button.edit-btn + button.danger {
+  margin-left: 6px; /* space between Edit and Delete */
+}
+
+/* ===================== SUMMARY LEFT ALIGN ===================== */
+.summary-left {
+  display: flex !important;
+  align-items: center !important;
+  gap: 4px !important;       /* smaller gap between arrow and title */
+  margin-left: 0 !important; /* move everything closer to the left edge */
+}
+
+/* If you want the arrow smaller */
+.summary-arrow {
+  font-size: 0.8rem !important;
+  margin-right: 2px !important;
+}
+
+/* Optional: shrink the title spacing */
+.summary-left span {
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+/* MOVE ARROW + WORKOUT NAME + DATE */
+#workoutsList summary .summary-left {
+  margin-left: -200px !important;   /* move RIGHT with + values */
+  margin-right: 0px !important;  /* move LEFT with + values */
+}
 
 
+/* ===== DELETE BUTTON HARD OVERRIDE ===== */
+#workoutsList summary button.danger {
+  all: unset;                 /* nukes inherited styles */
+  box-sizing: border-box;
 
+  /* SIZE */
+  height: 23.9px;               /* make shorter */
+  min-height: 23.9px;
+  padding: 0 9px;             /* controls height without text resize */
+  font-size: 0.8rem;
+  line-height: 1.5;
+  
 
+  /* LOOK */
+  background: #dc2626;        /* red */
+  color: #fff;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
 
+  /* POSITIONING */
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 
+  /* MANUAL MOVEMENT */
+  position: relative;
+  top: 0.2px;                   /* move up/down */
+  right: 0px;                 /* move left/right */
+}
+
+.summary-left {
+  display: flex;
+  align-items: center;
+  gap: 4px; /* small gap between arrow, name, and date */
+}
+
+.summary-left .title-text {
+  display: inline;       /* stays inline with the date */
+  font-weight: 600;
+}
+
+.summary-left .workout-date {
+  margin-left: 4px;      /* default small space from name */
+  font-weight: 400;
+  color: #9ca3af;        /* keep date subtle */
+}
+/* ===============================
+   HARD-LOCK ARROW POSITION
+   =============================== */
+
+/* DO NOT change summary layout */
+summary {
+  display: flex !important;
+  align-items: center !important;
+}
+
+/* Left container becomes a grid */
+.summary-left {
+  display: grid !important;
+  grid-template-columns: 20px auto !important; /* arrow column locked */
+  align-items: center !important;
+  column-gap: 6px !important;
+}
+
+/* Arrow: fixed slot, rotation untouched */
+.summary-arrow {
+  justify-self: start !important;
+}
+
+/* Text behaves normally */
+.summary-left span:not(.summary-arrow) {
+  white-space: nowrap !important;
+}
+.summary-left { width: 100% !important; }
+summary {
+  padding-left: 100px !important;
+}
+/* ===============================
+   DELETE BUTTON HOVER / PRESS FX
+   =============================== */
+
+.delete-btn {
+  transition:
+    transform 0.15s cubic-bezier(.2,.8,.2,1),
+    box-shadow 0.15s ease,
+    background-color 0.15s ease;
+}
+
+/* Hover (desktop) */
+.delete-btn:hover {
+  transform: scale(1.08);
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.25);
+}
+
+/* Press (mouse + touch) */
+.delete-btn:active {
+  transform: scale(0.94);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+}
+/* =====================================================
+   ABSOLUTE DELETE BUTTON HAPTIC OVERRIDE (FINAL)
+   ===================================================== */
+
+/* Catch ANY delete-style button anywhere */
+button.danger,
+button.btn-danger,
+button.red-btn,
+#confirmClear,
+#clearWorkout,
+button[class*="delete"],
+button[id*="delete"] {
+  transition:
+    transform 0.12s ease-out,
+    box-shadow 0.12s ease-out,
+    filter 0.12s ease-out !important;
+}
+
+/* HOVER — haptic lift */
+button.danger:hover,
+button.btn-danger:hover,
+button.red-btn:hover,
+#confirmClear:hover,
+#clearWorkout:hover,
+button[class*="delete"]:hover,
+button[id*="delete"]:hover {
+  transform: scale(1.06) !important;
+
+}
+
+/* PRESS — haptic press */
+button.danger:active,
+button.btn-danger:active,
+button.red-btn:active,
+#confirmClear:active,
+#clearWorkout:active,
+button[class*="delete"]:active,
+button[id*="delete"]:active {
+  transform: scale(0.94) !important;
+  box-shadow: 0 4px 12px rgba(239, 68, 68, 0.35) !important;
+}
+/* =====================================================
+   ABSOLUTE EDIT BUTTON HAPTIC OVERRIDE (FINAL)
+   ===================================================== */
+
+/* Catch ANY edit-style button anywhere */
+button.edit-btn,
+button.btn-edit,
+button.blue-btn,
+button.secondary,
+button[class*="edit"],
+button[id*="edit"] {
+  transition:
+    transform 0.12s ease-out,
+    box-shadow 0.12s ease-out,
+    filter 0.12s ease-out !important;
+}
+
+/* HOVER — haptic lift */
+button.edit-btn:hover,
+button.btn-edit:hover,
+button.blue-btn:hover,
+button.secondary:hover,
+button[class*="edit"]:hover,
+button[id*="edit"]:hover {
+  transform: scale(1.06) !important;
+}
+
+/* PRESS — haptic press */
+button.edit-btn:active,
+button.btn-edit:active,
+button.blue-btn:active,
+button.secondary:active,
+button[class*="edit"]:active,
+button[id*="edit"]:active {
+  transform: scale(0.94) !important;
+  box-shadow: 0 4px 12px rgba(56, 189, 248, 0.35) !important;
+}

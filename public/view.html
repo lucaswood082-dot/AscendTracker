@@ -57,7 +57,9 @@
     .summary-left { display: flex; align-items: center; gap: 6px; }
     .summary-arrow { transition: transform 0.3s ease; }
     details[open] .summary-arrow { transform: rotate(90deg); }
+    
   </style>
+  
 </head>
 <body>
 
@@ -124,16 +126,41 @@ function loadWorkouts() {
 
     leftDiv.appendChild(arrow);
     leftDiv.appendChild(title);
+    
+    // --- inside workouts.forEach ---
+const deleteBtn = document.createElement("button");
+deleteBtn.textContent = "Delete";
+deleteBtn.classList.add("danger");
+deleteBtn.addEventListener("click", e => {
+  e.stopPropagation();
+  workouts.splice(index, 1);
+  localStorage.setItem("workouts", JSON.stringify(workouts));
+  loadWorkouts();
+});
 
-    const deleteBtn = document.createElement("button");
-    deleteBtn.textContent = "Delete";
-    deleteBtn.classList.add("danger");
-    deleteBtn.addEventListener("click", e => {
-      e.stopPropagation();
-      workouts.splice(index, 1);
-      localStorage.setItem("workouts", JSON.stringify(workouts));
-      loadWorkouts();
-    });
+// CREATE EDIT BUTTON (LOGIC)
+const editBtn = document.createElement("button");
+editBtn.textContent = "Edit";
+editBtn.classList.add("edit-btn");
+
+editBtn.addEventListener("click", e => {
+  e.stopPropagation();
+
+  // Store edit index + workout
+  localStorage.setItem("editingWorkoutIndex", index);
+  localStorage.setItem("editingWorkout", JSON.stringify(workout));
+
+  // Go to workout editor
+  window.location.href = "workout.html";
+});
+
+
+summary.appendChild(leftDiv);
+summary.appendChild(deleteBtn);
+summary.appendChild(editBtn);  // <-- make sure this is appended
+
+
+    
 
     summary.appendChild(leftDiv);
     summary.appendChild(deleteBtn);
