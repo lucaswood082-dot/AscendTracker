@@ -19,19 +19,7 @@ body.light-theme {
   touch-action: manipulation;
 }
 
-/* ===== BASE ===== */
-html, body {
-  margin: 0;
-  padding: 0;
-  width: 100%;
-  height: 100%;
-  overflow: hidden;
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
-  background: #0f172a;
-  color: #e5e7eb;
-  font-size: 16px;
-  font-weight: 400;
-}
+
 
 /* ===== SCROLL ENABLE ===== */
 .scroll-page {
@@ -835,24 +823,9 @@ input, select {
   background: #38bdf8;
   border-color: #38bdf8;
 }
-html, body {
-  background: #111827; /* same as your page */
-  margin: 0;
-  padding: 0;
-}
-body.settings-page {
-  background: #111827;
-}
-body.settings-page {
-  min-height: 100vh;
-  overflow-y: auto;
-  -webkit-overflow-scrolling: touch;
-}
-html, body {
-  background: #111827;
-  margin: 0;
-  padding: 0;
-}
+
+
+/* ================= SETTINGS PAGE SCROLL FIX ================= */
 
 body.settings-page {
   min-height: 100vh;
@@ -860,3 +833,10 @@ body.settings-page {
   -webkit-overflow-scrolling: touch;
 }
 
+html {
+  background: #111827; /* fixes white top overscroll */
+}
+
+body.settings-page .page {
+  min-height: 100vh;
+}
