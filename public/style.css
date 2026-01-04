@@ -2349,7 +2349,7 @@ button.edit-btn {
   cursor: pointer;
 
   /* Reduce vertical space inside button */
-  padding: 2px 6px;  /* very tight padding top-bottom, left-right adjustable */
+  padding: 2px 2px;  /* very tight padding top-bottom, left-right adjustable */
   line-height: 1.5;  /* makes button shorter */
   display: inline-block;
 
