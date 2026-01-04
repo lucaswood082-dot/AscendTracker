@@ -2394,9 +2394,9 @@ button.edit-btn + button.danger {
   box-sizing: border-box;
 
   /* SIZE */
-  height: 23.9px;               /* make shorter */
+  height: 24px;               /* make shorter */
   min-height: 23.9px;
-  padding: 0 9px;             /* controls height without text resize */
+  padding: 0 6px;             /* controls height without text resize */
   font-size: 0.8rem;
   line-height: 1.5;
   

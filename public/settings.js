@@ -156,6 +156,13 @@ document.getElementById("unitsBtn").onclick = () => {
   `);
   updateUnitUI();
 };
+// Remove sticky highlight on mobile by blurring buttons after click
+document.querySelectorAll(".settings-page button").forEach(btn => {
+  btn.addEventListener("click", () => {
+    btn.blur(); // immediately remove focus
+  });
+});
+
 
 /* 🔥 THIS IS THE IMPORTANT PART 🔥 */
 document.addEventListener("click", (e) => {
