@@ -865,3 +865,53 @@ body.settings-page::before {
   background: #0f172a;
   z-index: -1;
 }
+/* ===============================
+   HARD iOS WHITE TOP OVERRIDE
+   =============================== */
+
+/* Force browser canvas color */
+html {
+  background-color: #0f172a !important;
+  height: 100% !important;
+  overscroll-behavior: none;
+}
+
+/* Kill body scroll entirely */
+body {
+  background-color: #0f172a !important;
+  min-height: 100% !important;
+  overflow: hidden !important;
+  position: relative !important;
+}
+
+/* Force settings page to be the ONLY scroll container */
+body.settings-page {
+  background-color: #0f172a !important;
+  overflow: hidden !important;
+}
+
+/* The actual scrolling surface */
+.settings-root,
+.settings-container,
+main,
+#settings,
+.page,
+.page-content {
+  background-color: #0f172a !important;
+  min-height: 100vh !important;
+  height: 100vh !important;
+  overflow-y: auto !important;
+  -webkit-overflow-scrolling: touch !important;
+}
+
+/* Absolute safety net: paint above viewport */
+body::before {
+  content: "";
+  position: fixed;
+  top: -200vh;
+  left: 0;
+  width: 100%;
+  height: 200vh;
+  background: #0f172a;
+  z-index: -9999;
+}
