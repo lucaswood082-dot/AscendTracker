@@ -840,3 +840,28 @@ html {
 body.settings-page .page {
   min-height: 100vh;
 }
+/* ===== iOS OVERSCROLL BACKGROUND FIX ===== */
+
+html {
+  background-color: #0f172a; /* use EXACT app background */
+  height: 100%;
+}
+
+body.settings-page {
+  background-color: #0f172a;
+  min-height: 100vh;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Prevent rubber-band showing white */
+body.settings-page::before {
+  content: "";
+  position: fixed;
+  top: -100vh;
+  left: 0;
+  right: 0;
+  height: 100vh;
+  background: #0f172a;
+  z-index: -1;
+}
