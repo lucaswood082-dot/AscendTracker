@@ -261,12 +261,23 @@ button {
   -webkit-focus-ring-color: transparent;    /* Safari focus */
   outline: none;                             /* remove default outline */
 }
+/* Remove the default mobile tap highlight and focus outline */
+button {
+  -webkit-tap-highlight-color: transparent; /* iOS/Android tap highlight */
+  outline: none;                             /* removes focus ring */
+}
+
+/* Optional: also remove the dotted outline that some browsers show on focus */
+button:focus {
+  outline: none;
+  box-shadow: none;
+}
 button {
   transition: transform 0.08s ease, box-shadow 0.08s ease;
   cursor: pointer;
   position: relative;
   -webkit-tap-highlight-color: transparent; /* remove mobile highlight */
-  outline: none;                             /* remove outline */
+  outline: none;                             /* remove focus outline */
 }
 
 button:active {
@@ -274,9 +285,13 @@ button:active {
   box-shadow: 0 0 4px rgba(0,0,0,0.2) inset;
 }
 
-/* Destructive buttons */
-button.danger:active {
+button.btn-destructive:active {
   box-shadow: 0 0 6px rgba(255,0,0,0.3) inset;
+}
+
+button:focus {
+  outline: none;
+  box-shadow: none;
 }
 
 </style>
