@@ -164,6 +164,34 @@ input:checked + .slider::after {
   left: 6px;
   right: auto;
 }
+/* ===============================
+   UNILATERAL TOGGLE – SMOOTH + SLOW
+   FULL OVERRIDE
+================================ */
+
+/* Slider track */
+.toggle-switch .slider {
+  transition-property: background-color, transform;
+  transition-duration: 0.5s;
+  transition-timing-function: ease-in-out;
+}
+
+/* Slider knob */
+.toggle-switch .slider::before {
+  transition-property: transform;
+  transition-duration: 0.10s;
+  transition-timing-function: ease-in-out;
+}
+
+/* Checked state (in case transform is used) */
+.toggle-switch input:checked + .slider {
+  transition-duration: 1000000000s;
+}
+
+.toggle-switch input:checked + .slider::before {
+  transition-duration: 0.5s;
+}
+
 
   </style>
   

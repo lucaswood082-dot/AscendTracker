@@ -1,9 +1,6 @@
 document.addEventListener("DOMContentLoaded", () => {
 
-  // If not coming from Edit, clear edit mode
-if (!localStorage.getItem("editingWorkout")) {
-  localStorage.removeItem("editingWorkoutIndex");
-}
+
 
   console.log("workouts.js loaded");
   
@@ -17,9 +14,13 @@ if (!localStorage.getItem("editingWorkout")) {
   const confirmClearBtn = document.getElementById("confirmClear");
 
   const DRAFT_KEY = "activeWorkoutDraft";
+  const IS_EDITING_KEY = "isEditingWorkout";
+
   let exercises = [];
   const EDIT_INDEX_KEY = "editingWorkoutIndex";
 const EDIT_WORKOUT_KEY = "editingWorkout";
+
+
 
 
 
@@ -53,6 +54,29 @@ const EDIT_WORKOUT_KEY = "editingWorkout";
     const day = String(now.getDate()).padStart(2, "0");
     return `${year}-${month}-${day}`;
   }
+  loadDraft();
+
+  /* ---------------- AUTO SAVE ON LEAVE ---------------- */
+
+// When switching tabs, navigating away, or backgrounding app
+document.addEventListener("visibilitychange", () => {
+  if (document.visibilityState === "hidden") {
+    saveDraft();
+  }
+});
+
+// iOS / Safari / PWA safety net
+window.addEventListener("pagehide", () => {
+  saveDraft();
+});
+
+// Desktop / hard navigation
+window.addEventListener("beforeunload", () => {
+  saveDraft();
+});
+window.addEventListener("beforeunload", () => {
+  saveDraft();
+});
 
   /* ---------------- SAVE DRAFT ---------------- */
   function saveDraft() {
@@ -329,7 +353,7 @@ localStorage.removeItem(EDIT_WORKOUT_KEY);
     totalReps
   };
 
-  if (editIndex !== null) {
+if (editIdx !== null) {
     storedWorkouts[editIndex] = workoutData; // ✅ REPLACE
     localStorage.removeItem("editWorkoutIndex");
     localStorage.removeItem("editingWorkout");
@@ -345,5 +369,7 @@ localStorage.removeItem(EDIT_WORKOUT_KEY);
   exercises = [];
   exerciseList.innerHTML = "";
   document.getElementById("workoutName").value = "";
+  
+
 });
 })
