@@ -875,3 +875,83 @@ body {
 .top-nav {
   padding-top: calc(env(safe-area-inset-top) + 0.75rem);
 }
+/* Remove tap highlight on mobile */
+* {
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Remove focus outline for mouse/touch, keep for keyboard */
+button:focus:not(:focus-visible),
+a:focus:not(:focus-visible) {
+  outline: none;
+  box-shadow: none;
+}
+
+/* Optional: remove highlight on bottom nav specifically */
+.bottom-nav button,
+.bottom-nav a {
+  outline: none;
+}
+/* Kill Chrome focus-visible boxes */
+:focus-visible {
+  outline: none !important;
+}
+
+/* Kill focus outline fallback */
+:focus {
+  outline: none;
+}
+
+/* Prevent buttons/links from keeping focus */
+button,
+a {
+  -webkit-user-select: none;
+  user-select: none;
+}
+/* ===============================
+   REMOVE ALL CLICK HIGHLIGHTS
+   (Chrome / Web / PWA)
+=============================== */
+
+/* Kill tap highlight */
+* {
+  -webkit-tap-highlight-color: transparent !important;
+}
+
+/* Kill ALL outlines */
+*:focus,
+*:focus-visible,
+*:active {
+  outline: none !important;
+}
+
+/* Kill box-shadows Chrome adds */
+button,
+a,
+button:focus,
+button:active,
+button:focus-visible,
+a:focus,
+a:active,
+a:focus-visible {
+  box-shadow: none !important;
+  outline: none !important;
+}
+
+/* Bottom nav specific hard reset */
+.bottom-nav *,
+nav *,
+.bottom-nav a,
+.bottom-nav button {
+  outline: none !important;
+  box-shadow: none !important;
+  background-color: transparent !important;
+}
+
+/* Prevent focus from sticking after click */
+button,
+a {
+  -webkit-user-select: none;
+  user-select: none;
+}
+
