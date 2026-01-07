@@ -148,10 +148,20 @@ deleteBtn.addEventListener("click", e => {
 const editBtn = document.createElement("button");
 editBtn.textContent = "Edit";
 editBtn.classList.add("edit-btn");
+
 editBtn.addEventListener("click", e => {
-  e.stopPropagation();
-  // logic to edit will come later
+  e.stopPropagation(); // Prevent <details> from toggling
+
+  // Save the index of the workout in localStorage
+  localStorage.setItem("editingWorkoutIndex", index);
+
+  // Save the full workout object
+  localStorage.setItem("editingWorkout", JSON.stringify(workout));
+
+  // Redirect to the workout creation page
+  window.location.href = "workout.html";
 });
+
 
 summary.appendChild(leftDiv);
 summary.appendChild(editBtn);
