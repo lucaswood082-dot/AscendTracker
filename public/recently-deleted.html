@@ -27,6 +27,53 @@
     font-size: 1.2rem;
     color: #38bdf8;
   }
+  /* ===============================
+   REMOVE ALL CLICK HIGHLIGHTS
+   (Chrome / Web / PWA)
+=============================== */
+
+/* Kill tap highlight */
+* {
+  -webkit-tap-highlight-color: transparent !important;
+}
+
+/* Kill ALL outlines */
+*:focus,
+*:focus-visible,
+*:active {
+  outline: none !important;
+}
+
+/* Kill box-shadows Chrome adds */
+button,
+a,
+button:focus,
+button:active,
+button:focus-visible,
+a:focus,
+a:active,
+a:focus-visible {
+  box-shadow: none !important;
+  outline: none !important;
+}
+
+/* Bottom nav specific hard reset */
+.bottom-nav *,
+nav *,
+.bottom-nav a,
+.bottom-nav button {
+  outline: none !important;
+  box-shadow: none !important;
+  background-color: transparent !important;
+}
+
+/* Prevent focus from sticking after click */
+button,
+a {
+  -webkit-user-select: none;
+  user-select: none;
+}
+
 
   /* ensure content doesn’t hide under nav */
   .page {
