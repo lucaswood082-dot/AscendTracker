@@ -84,42 +84,83 @@ function startEditWorkout() {
 /* =======================
    DELETE WORKOUT (INSTANT)
 ======================= */
-
 function deleteCurrentWorkout() {
-  const workouts = getWorkouts();
-  const workout = getViewedWorkout();
-  if (!workout) return;
+  const workouts = JSON.parse(localStorage.getItem("workouts")) || [];
+  const workout = JSON.parse(localStorage.getItem("viewWorkout"));
+
+  if (!workout) {
+    console.log("NO VIEWED WORKOUT");
+    return;
+  }
 
   const index = workouts.findIndex(
     w => w.name === workout.name && w.date === workout.date
   );
 
-  if (index === -1) return;
+  if (index === -1) {
+    console.log("WORKOUT NOT FOUND");
+    return;
+  }
 
-  const deleted =
-    JSON.parse(localStorage.getItem(RECENTLY_DELETED_KEY) || "[]");
+  const recentlyDeleted =
+    JSON.parse(localStorage.getItem("recentlyDeletedWorkouts")) || [];
 
   const [removed] = workouts.splice(index, 1);
 
+  recentlyDeleted.unshift({
+    ...removed,
+    deletedAt: Date.now()
+  });
+
+  localStorage.setItem("workouts", JSON.stringify(workouts));
+  localStorage.setItem(
+    "recentlyDeletedWorkouts",
+    JSON.stringify(recentlyDeleted)
+  );
+
+  localStorage.removeItem("viewWorkout");
+
+  console.log("DELETED:", removed);
+  console.log("RECENTLY DELETED:", recentlyDeleted);
+
+  window.location.href = "view.html";
+}
+  const workouts = JSON.parse(localStorage.getItem("workouts")) || [];
+  const workout = JSON.parse(localStorage.getItem(VIEW_KEY));
+
+  if (!workout) return; // nothing to delete
+
+  const index = workouts.findIndex(
+    w => w.name === workout.name && w.date === workout.date
+  );
+
+  if (index === -1) return; // workout not found
+
+  // get or create recently deleted array
+  let deleted = JSON.parse(localStorage.getItem(RECENTLY_DELETED_KEY)) || [];
+
+  // remove the workout from main array
+  const [removed] = workouts.splice(index, 1);
+
+  // add timestamp for recently deleted
   deleted.unshift({
     ...removed,
     deletedAt: Date.now()
   });
 
-  deleted.splice(10);
+  // keep only latest 10
+  deleted = deleted.slice(0, 10);
 
+  // save back to localStorage
   localStorage.setItem(WORKOUTS_KEY, JSON.stringify(workouts));
-  localStorage.setItem(
-    RECENTLY_DELETED_KEY,
-    JSON.stringify(deleted)
-  );
+  localStorage.setItem(RECENTLY_DELETED_KEY, JSON.stringify(deleted));
 
   // clear viewed workout so it doesn't ghost
   localStorage.removeItem(VIEW_KEY);
 
-  // go back instantly
+  // refresh page to reflect changes
   window.location.href = "view.html";
-}
+
 
 /* =======================
    RENDER
@@ -143,6 +184,7 @@ function renderWorkout() {
 
   workout.exercises.forEach(ex => {
     const card = document.createElement("div");
+    
     card.className = "exercise-card";
 
     card.innerHTML = `<h3>${ex.name}</h3>`;
@@ -185,4 +227,5 @@ window.addEventListener("focus", renderWorkout);
 
 // expose delete function for your delete button
 window.deleteCurrentWorkout = deleteCurrentWorkout;
+
 

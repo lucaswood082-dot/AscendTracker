@@ -86,6 +86,7 @@
     </div>
   </div>
 </div>
+<button onclick="deleteCurrentWorkout()" class="danger">Delete</button>
 
 <script>
 const UNIT_KEY = "weight_unit";
@@ -139,10 +140,36 @@ deleteBtn.textContent = "Delete";
 deleteBtn.classList.add("danger");
 deleteBtn.addEventListener("click", e => {
   e.stopPropagation();
+
+  // 1. Get recently deleted list (or create it)
+  const recentlyDeleted =
+    JSON.parse(localStorage.getItem("recentlyDeletedWorkouts")) || [];
+
+  // 2. Add metadata (optional but useful)
+  const deletedWorkout = {
+    ...workout,
+    deletedAt: new Date().toISOString()
+  };
+
+  // 3. Push into recently deleted
+  recentlyDeleted.unshift(deletedWorkout);
+
+  // 4. Save recently deleted
+  localStorage.setItem(
+    "recentlyDeletedWorkouts",
+    JSON.stringify(recentlyDeleted)
+  );
+
+  // 5. Remove from workouts
   workouts.splice(index, 1);
   localStorage.setItem("workouts", JSON.stringify(workouts));
+
+  // 6. Re-render
   loadWorkouts();
+
+  console.log("DELETED → recentlyDeletedWorkouts", deletedWorkout);
 });
+
 
 // CREATE EDIT BUTTON
 const editBtn = document.createElement("button");
@@ -275,6 +302,7 @@ loadWorkouts();
       btn.classList.add("active");
     }
   });
+  
 </script>
 
 </nav>

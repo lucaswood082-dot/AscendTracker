@@ -201,8 +201,6 @@ input:checked + .slider::after {
 <script src="settings.js"></script>
 </body>
 
-<body>
-
   <div class="top-nav">Ascend</div>
 
   <div style="text-align:center;">
@@ -353,16 +351,6 @@ input:checked + .slider::after {
     </div>
   </div>
 </div>
-<div id="clearModal" class="hidden">
-  <div class="modal-box">
-    <p>Clear all exercises?</p>
-
-    <div class="modal-actions">
-      <button id="cancelClear">Cancel</button>
-      <button id="confirmClear">Clear</button>
-    </div>
-  </div>
-</div>
 <script>
   // Highlight the active bottom nav button
   const currentPage = location.pathname.split("/").pop();
@@ -373,54 +361,10 @@ input:checked + .slider::after {
       btn.classList.add("active");
     }
   });
-  <div id="exportBar" style="display:none">
-  <button id="selectAllBtn">Select All</button>
-  <button id="exportBtn">Export</button>
-</div>
+
 if (editingWorkout) {
   document.querySelector("h1").textContent = "Edit Workout";
 }
 
-</script>
-<script>
-/* ===========================
-   EDIT WORKOUT PATCH (MINIMAL)
-   =========================== */
-
-const EDIT_INDEX_KEY = "editWorkoutIndex";
-const EDIT_WORKOUT_KEY = "editingWorkout";
-
-const editIndex = localStorage.getItem(EDIT_INDEX_KEY);
-const editingWorkout = JSON.parse(localStorage.getItem(EDIT_WORKOUT_KEY));
-
-if (editingWorkout && editIndex !== null) {
-  // fill workout name
-  const nameInput = document.getElementById("workoutName");
-  if (nameInput) nameInput.value = editingWorkout.name || "";
-
-  // inject exercises into workouts.js state
-  if (Array.isArray(editingWorkout.exercises)) {
-    exercises = editingWorkout.exercises;
-    renderExercises();
-  }
-
-  // override save to overwrite instead of push
-  const originalSave = saveWorkout;
-
-  saveWorkout = function () {
-    const workouts = JSON.parse(localStorage.getItem("workouts")) || [];
-    workouts[editIndex] = {
-      name: workoutName.value,
-      exercises
-    };
-
-    localStorage.setItem("workouts", JSON.stringify(workouts));
-
-    localStorage.removeItem(EDIT_INDEX_KEY);
-    localStorage.removeItem(EDIT_WORKOUT_KEY);
-
-    location.href = "view.html";
-  };
-}
 </script>
 
