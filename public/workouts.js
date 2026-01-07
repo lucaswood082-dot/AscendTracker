@@ -300,13 +300,12 @@ localStorage.removeItem(EDIT_WORKOUT_KEY);
     clearModal.classList.add("hidden");
   });
 
-  /* ---------------- SAVE WORKOUT ---------------- */
   saveWorkoutBtn.addEventListener("click", () => {
   const workoutName =
     document.getElementById("workoutName").value.trim() || "Workout";
 
-  exercises = [];
-
+  // Gather exercises
+  const exercisesToSave = [];
   let tonnage = 0;
   let totalSets = 0;
   let totalReps = 0;
@@ -338,30 +337,56 @@ localStorage.removeItem(EDIT_WORKOUT_KEY);
       }
     });
 
-    exercises.push({ name, unilateral, sets });
+    exercisesToSave.push({ name, unilateral, sets });
   });
 
-  const storedWorkouts = JSON.parse(localStorage.getItem("workouts") || "[]");
-  const editIdx = localStorage.getItem(EDIT_INDEX_KEY);
+let storedWorkouts = JSON.parse(localStorage.getItem("workouts") || "[]");
+storedWorkouts = storedWorkouts.filter(w => w); // remove nulls
 
+
+  const editIdx = localStorage.getItem(EDIT_INDEX_KEY);
   const workoutData = {
     name: workoutName,
     date: new Date().toISOString().split("T")[0],
-    exercises,
+    exercises: exercisesToSave,
     tonnage,
     totalSets,
     totalReps
   };
 
+  if (editIdx !== null) {
+    const idx = parseInt(editIdx, 10);  // convert string → number
+    storedWorkouts[idx] = workoutData;
+    localStorage.removeItem(EDIT_INDEX_KEY);
+    localStorage.removeItem(EDIT_WORKOUT_KEY);
+  } else {
+    storedWorkouts.push(workoutData);
+  }
+
+  console.log("SAVING WORKOUTS:", storedWorkouts);
+  localStorage.setItem("workouts", JSON.stringify(storedWorkouts));
+
+  // Clear UI
+  showPopup("Workout Saved!");
+  localStorage.removeItem(DRAFT_KEY);
+  exercises = [];
+  exerciseList.innerHTML = "";
+  document.getElementById("workoutName").value = "";
+});
+
+
 if (editIdx !== null) {
-    storedWorkouts[editIndex] = workoutData; // ✅ REPLACE
+    storedWorkouts[editIdx] = workoutData;
     localStorage.removeItem("editWorkoutIndex");
     localStorage.removeItem("editingWorkout");
   } else {
     storedWorkouts.push(workoutData); // ➕ NEW
   }
 
+console.log("BEFORE SAVE:", storedWorkouts);
   localStorage.setItem("workouts", JSON.stringify(storedWorkouts));
+localStorage.setItem("viewWorkout", JSON.stringify(workoutData)); // ✅ ADD THIS
+
 
   showPopup("Workout Saved!");
 
@@ -372,4 +397,3 @@ if (editIdx !== null) {
   
 
 });
-})

@@ -254,3 +254,11 @@ function downloadCSV(csv) {
   document.body.removeChild(a);
   URL.revokeObjectURL(url);
 }
+const recentlyDeletedBtn =
+  document.getElementById("recentlyDeletedBtn");
+
+if (recentlyDeletedBtn) {
+  recentlyDeletedBtn.addEventListener("click", () => {
+    location.href = "recently-deleted.html";
+  });
+}

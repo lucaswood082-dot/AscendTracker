@@ -2321,7 +2321,7 @@ button.edit-btn {
   /* Manual positioning */
   position: relative;              /* allows top/left/right/bottom adjustments */
   top: 0px;                        /* move down/up */
-  left: 102.5px;                       /* move right/left */
+  left: -20px;                       /* move right/left */
   margin-left: 0.5rem;             /* default spacing from Delete button */
 
   text-align: center;
@@ -2703,3 +2703,35 @@ a {
   user-select: none;
 }
 
+
+/* =======================
+   WORKOUT SUMMARY CONTENT CONTROL
+======================= */
+summary {
+  display: flex;           /* row layout */
+  align-items: center;     /* vertical align */
+  justify-content: flex-start; /* keep items to left by default */
+  gap: 0;                  /* no automatic spacing */
+  position: relative;      /* base for children */
+}
+
+/* WRAP CHILDREN IN RELATIVE CONTAINERS */
+.summary-left,
+.edit-btn,
+.danger {
+  position: relative;      /* lets us move individually */
+}
+
+/* ARROW */
+.summary-arrow {
+  position: relative;
+  left: 0px;  /* move right/left */
+  top: 0px;   /* move up/down */
+}
+
+/* TITLE TEXT */
+.summary-left span {
+  position: relative;
+  left: 110px; /* nudge horizontally */
+  top: 0px;  /* nudge vertically */
+}

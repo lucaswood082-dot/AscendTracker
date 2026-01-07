@@ -1,11 +1,14 @@
 // =======================
-// VIEW.JS (EDIT + UNITS WORKING)
+// VIEW.JS (CLEAN + STABLE)
 // =======================
 
 const WORKOUTS_KEY = "workouts";
 const VIEW_KEY = "viewWorkout";
 const EDIT_KEY = "editWorkoutIndex";
 const UNIT_KEY = "weight_unit";
+const RECENTLY_DELETED_KEY = "recentlyDeletedWorkouts";
+
+const container = document.getElementById("workoutContainer");
 
 /* =======================
    UNIT HELPERS
@@ -16,25 +19,27 @@ function getUnit() {
 }
 
 function formatWeight(weightKg) {
-  if (weightKg === undefined || weightKg === null) return "";
-
+  if (weightKg == null) return "";
   if (getUnit() === "lb") {
     return `${(weightKg * 2.20462).toFixed(1)} lb`;
   }
-
   return `${weightKg} kg`;
 }
 
 /* =======================
-   LOAD DATA
+   LOAD DATA (FRESH EACH TIME)
 ======================= */
 
-const workouts = JSON.parse(localStorage.getItem(WORKOUTS_KEY)) || [];
-const workout = JSON.parse(localStorage.getItem(VIEW_KEY));
-const container = document.getElementById("workoutContainer");
+function getWorkouts() {
+  return JSON.parse(localStorage.getItem(WORKOUTS_KEY) || "[]");
+}
+
+function getViewedWorkout() {
+  return JSON.parse(localStorage.getItem(VIEW_KEY));
+}
 
 /* =======================
-   LONG PRESS HELPER
+   LONG PRESS
 ======================= */
 
 function addLongPress(el, callback, delay = 500) {
@@ -44,9 +49,7 @@ function addLongPress(el, callback, delay = 500) {
     timer = setTimeout(callback, delay);
   };
 
-  const cancel = () => {
-    clearTimeout(timer);
-  };
+  const cancel = () => clearTimeout(timer);
 
   el.addEventListener("touchstart", start);
   el.addEventListener("touchend", cancel);
@@ -58,14 +61,17 @@ function addLongPress(el, callback, delay = 500) {
 }
 
 /* =======================
-   EDIT WORKOUT HANDOFF
+   EDIT WORKOUT
 ======================= */
 
 function startEditWorkout() {
-const index = workouts.findIndex(
-  w => w.name === workout.name && w.date === workout.date
-);
+  const workouts = getWorkouts();
+  const workout = getViewedWorkout();
+  if (!workout) return;
 
+  const index = workouts.findIndex(
+    w => w.name === workout.name && w.date === workout.date
+  );
 
   if (index === -1) return;
 
@@ -76,11 +82,55 @@ const index = workouts.findIndex(
 }
 
 /* =======================
-   RENDER WORKOUT
+   DELETE WORKOUT (INSTANT)
+======================= */
+
+function deleteCurrentWorkout() {
+  const workouts = getWorkouts();
+  const workout = getViewedWorkout();
+  if (!workout) return;
+
+  const index = workouts.findIndex(
+    w => w.name === workout.name && w.date === workout.date
+  );
+
+  if (index === -1) return;
+
+  const deleted =
+    JSON.parse(localStorage.getItem(RECENTLY_DELETED_KEY) || "[]");
+
+  const [removed] = workouts.splice(index, 1);
+
+  deleted.unshift({
+    ...removed,
+    deletedAt: Date.now()
+  });
+
+  deleted.splice(10);
+
+  localStorage.setItem(WORKOUTS_KEY, JSON.stringify(workouts));
+  localStorage.setItem(
+    RECENTLY_DELETED_KEY,
+    JSON.stringify(deleted)
+  );
+
+  // clear viewed workout so it doesn't ghost
+  localStorage.removeItem(VIEW_KEY);
+
+  // go back instantly
+  window.location.href = "view.html";
+}
+
+/* =======================
+   RENDER
 ======================= */
 
 function renderWorkout() {
-  if (!workout || !container) {
+  const workout = getViewedWorkout();
+
+  if (!container) return;
+
+  if (!workout) {
     container.innerHTML = "<p>No workout found.</p>";
     return;
   }
@@ -91,28 +141,36 @@ function renderWorkout() {
   title.textContent = workout.name;
   container.appendChild(title);
 
-  workout.exercises.forEach(exercise => {
-    const exDiv = document.createElement("div");
-    exDiv.className = "exercise-card";
+  workout.exercises.forEach(ex => {
+    const card = document.createElement("div");
+    card.className = "exercise-card";
 
-    exDiv.innerHTML = `<h3>${exercise.name}</h3>`;
+    card.innerHTML = `<h3>${ex.name}</h3>`;
 
-    exercise.sets.forEach(set => {
-      const setDiv = document.createElement("div");
-      setDiv.className = "set-row";
+    ex.sets.forEach(set => {
+      const row = document.createElement("div");
+      row.className = "set-row";
 
-      setDiv.innerHTML = `
-        <span>${set.reps} reps</span>
+      let repsText = "";
+
+      if (ex.unilateral) {
+        repsText = `${set.leftReps || 0} / ${set.rightReps || 0} reps`;
+      } else {
+        repsText = `${set.reps || 0} reps`;
+      }
+
+      row.innerHTML = `
+        <span>${repsText}</span>
         <span>${formatWeight(set.weight)}</span>
       `;
 
-      exDiv.appendChild(setDiv);
+      card.appendChild(row);
     });
 
-    container.appendChild(exDiv);
+    container.appendChild(card);
   });
 
-  // 🔥 LONG PRESS TO EDIT
+  // long press anywhere to edit
   addLongPress(container, startEditWorkout);
 }
 
@@ -122,8 +180,9 @@ function renderWorkout() {
 
 renderWorkout();
 
-/* =======================
-   RE-RENDER ON UNIT CHANGE
-======================= */
-
+// re-render if units change
 window.addEventListener("focus", renderWorkout);
+
+// expose delete function for your delete button
+window.deleteCurrentWorkout = deleteCurrentWorkout;
+

@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+
   <!-- Prefetch other pages to make navigation faster -->
 <link rel="prefetch" href="dashboard.html">
 <link rel="prefetch" href="view.html">
@@ -8,6 +9,9 @@
 <link rel="prefetch" href="analytics.html">
 <link rel="prefetch" href="settings.html">
 <link rel="prefetch" href="planner.html">
+
+
+
 
   <meta name="theme-color" content="#111827">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -58,6 +62,7 @@
     .summary-arrow { transition: transform 0.3s ease; }
     details[open] .summary-arrow { transform: rotate(90deg); }
     
+    
   </style>
   
 </head>
@@ -84,6 +89,7 @@
 
 <script>
 const UNIT_KEY = "weight_unit";
+const workoutsList = document.getElementById("workoutsList");
 
 function getUnit() {
   return localStorage.getItem(UNIT_KEY) || "kg";
@@ -138,31 +144,23 @@ deleteBtn.addEventListener("click", e => {
   loadWorkouts();
 });
 
-// CREATE EDIT BUTTON (LOGIC)
+// CREATE EDIT BUTTON
 const editBtn = document.createElement("button");
 editBtn.textContent = "Edit";
 editBtn.classList.add("edit-btn");
-
 editBtn.addEventListener("click", e => {
   e.stopPropagation();
-
-  // Store edit index + workout
-  localStorage.setItem("editingWorkoutIndex", index);
-  localStorage.setItem("editingWorkout", JSON.stringify(workout));
-
-  // Go to workout editor
-  window.location.href = "workout.html";
+  // logic to edit will come later
 });
 
-
 summary.appendChild(leftDiv);
+summary.appendChild(editBtn);
 summary.appendChild(deleteBtn);
-summary.appendChild(editBtn);  // <-- make sure this is appended
+details.appendChild(summary);
 
 
-    
 
-    summary.appendChild(leftDiv);
+
     summary.appendChild(deleteBtn);
     details.appendChild(summary);
 
@@ -278,4 +276,4 @@ loadWorkouts();
 
 </body>
 </html>
-<script src="view.js"></script>
+
